@@ -226,10 +226,12 @@ class LandingViewController: UIViewController {
                     usr.firstName = name.substring(i: 0, j: name.indexOf(string: " "));
                     usr.lastName = name.substring(i: name.indexOf(string: " ") + 1 , j: name.length());
                     usr.email = self.emailField.text!;
+                    usr.password = self.passwordField.text!;
                     usr.id = user?.uid;
                     
                     self.addUserToDatabase(user: usr);
-                    
+                    print("CREATED ACCOUNT!");
+                    self.login();
                 } else {
                     print(error.debugDescription);
                 }
@@ -247,6 +249,35 @@ class LandingViewController: UIViewController {
         loginBtn.duration = 1.0;
         loginBtn.animate();
         
+        
+        ref.child("Users").child(emailField.text!.substring(i: 0, j: emailField.text!.length() - 4)).observeSingleEvent(of: .value, with: { (snapshot) in
+            // Get user value
+            let value = snapshot.value as? NSDictionary
+            let firstName = value?["first_name"] as? String ?? "";
+            let lastName = value?["last_name"] as? String ?? "";
+            let userID = value?["id"] as? String ?? "";
+            let user = User(firstName: firstName, lastName: lastName, email: self.emailField.text! + ".com");
+            user.password = value?["password"] as? String ?? "";
+            user.id = userID;
+            
+            
+            
+            if value?["password"] as? String == self.passwordField.text! {
+                currentUser = user;
+                
+                print("LOGGED IN!");
+                print(currentUser.firstName);
+                print(currentUser.lastName);
+                print(currentUser.email);
+                print(currentUser.password);
+                print(currentUser.id);
+            } else {
+                print("WRONG PASSWORD");
+            }
+            
+        }) { (error) in
+            print(error.localizedDescription)
+        }
     }
     
     
@@ -259,11 +290,13 @@ class LandingViewController: UIViewController {
         
         ref.child("Users").child(emailData).child("first_name").setValue(user.firstName);
         ref.child("Users").child(emailData).child("last_name").setValue(user.lastName);
+        ref.child("Users").child(emailData).child("password").setValue(user.password);
         ref.child("Users").child(emailData).child("id").setValue(user.id);
 
         print(user.firstName);
         print(user.lastName);
         print(user.email);
+        print(user.password);
         print(user.id);
     }
     

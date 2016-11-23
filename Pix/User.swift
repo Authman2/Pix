@@ -30,6 +30,10 @@ class User {
     var email: String!;
     
     
+    // The user's password
+    var password: String!
+    
+    
     // The user's unique ID
     var id: String!;
     
