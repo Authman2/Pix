@@ -116,7 +116,18 @@ class LandingViewController: UIViewController {
     }();
     
     
-    
+    // A label to show the status of logging in/signing up
+    let statusLabel: SpringLabel = {
+        let sl: SpringLabel = SpringLabel();
+        sl.translatesAutoresizingMaskIntoConstraints = false;
+        sl.textColor = UIColor.red;
+        sl.font = UIFont.boldSystemFont(ofSize: 15);
+        sl.textAlignment = .center;
+        sl.isUserInteractionEnabled = false;
+        sl.isHidden = true;
+        
+        return sl;
+    }();
     
     
     
@@ -162,6 +173,7 @@ class LandingViewController: UIViewController {
         view.addSubview(emailField);
         view.addSubview(passwordField);
         view.addSubview(fullNameField);
+        view.addSubview(statusLabel);
         
         // A view for the buttons
         let btnView = UIView();
@@ -180,8 +192,9 @@ class LandingViewController: UIViewController {
         emailField.align(.underCentered, relativeTo: titleLabel, padding: padding, width: view.frame.width, height: formHeight);
         passwordField.align(.underCentered, relativeTo: emailField, padding: padding, width: view.frame.width, height: formHeight);
         fullNameField.align(.underCentered, relativeTo: passwordField, padding: padding, width: view.frame.width, height: formHeight);
+        statusLabel.align(.underCentered, relativeTo: fullNameField, padding: 5, width: view.frame.width, height: 20);
         
-        btnView.align(.underCentered, relativeTo: fullNameField, padding: padding - 5, width: view.frame.width, height: 50);
+        btnView.align(.underCentered, relativeTo: statusLabel, padding: padding - 5, width: view.frame.width, height: 50);
         btnView.groupInCenter(group: .horizontal, views: [signUpBtn, loginBtn], padding: 20, width: 70, height: 50);
     }
     
@@ -230,10 +243,11 @@ class LandingViewController: UIViewController {
                     usr.id = user?.uid;
                     
                     self.addUserToDatabase(user: usr);
-                    print("CREATED ACCOUNT!");
                     self.login();
                 } else {
-                    print(error.debugDescription);
+                    self.statusLabel.isHidden = false;
+                    self.statusLabel.textColor = UIColor.red;
+                    self.statusLabel.text = "Invalid Credentials";
                 }
             });
         }
@@ -249,34 +263,38 @@ class LandingViewController: UIViewController {
         loginBtn.duration = 1.0;
         loginBtn.animate();
         
-        
-        ref.child("Users").child(emailField.text!.substring(i: 0, j: emailField.text!.length() - 4)).observeSingleEvent(of: .value, with: { (snapshot) in
-            // Get user value
-            let value = snapshot.value as? NSDictionary
-            let firstName = value?["first_name"] as? String ?? "";
-            let lastName = value?["last_name"] as? String ?? "";
-            let userID = value?["id"] as? String ?? "";
-            let user = User(firstName: firstName, lastName: lastName, email: self.emailField.text! + ".com");
-            user.password = value?["password"] as? String ?? "";
-            user.id = userID;
-            
-            
-            
-            if value?["password"] as? String == self.passwordField.text! {
-                currentUser = user;
+        if(emailField.text != nil && emailField.text != "") {
+            ref.child("Users").child(emailField.text!.substring(i: 0, j: emailField.text!.length() - 4)).observeSingleEvent(of: .value, with: { (snapshot) in
+                // Get user value
+                let value = snapshot.value as? NSDictionary
+                let firstName = value?["first_name"] as? String ?? "";
+                let lastName = value?["last_name"] as? String ?? "";
+                let userID = value?["id"] as? String ?? "";
+                let user = User(firstName: firstName, lastName: lastName, email: self.emailField.text! + ".com");
+                user.password = value?["password"] as? String ?? "";
+                user.id = userID;
                 
-                print("LOGGED IN!");
-                print(currentUser.firstName);
-                print(currentUser.lastName);
-                print(currentUser.email);
-                print(currentUser.password);
-                print(currentUser.id);
-            } else {
-                print("WRONG PASSWORD");
+                
+                
+                if value?["password"] as? String == self.passwordField.text! {
+                    currentUser = user;
+                    
+                    self.statusLabel.isHidden = false;
+                    self.statusLabel.textColor = UIColor.green;
+                    self.statusLabel.text = "Logging in!";
+                } else {
+                    self.statusLabel.isHidden = false;
+                    self.statusLabel.textColor = UIColor.red;
+                    self.statusLabel.text = "Wrong username or password";
+                }
+                
+            }) { (error) in
+                print(error.localizedDescription)
             }
-            
-        }) { (error) in
-            print(error.localizedDescription)
+        } else {
+            self.statusLabel.isHidden = false;
+            self.statusLabel.textColor = UIColor.red;
+            self.statusLabel.text = "Invalid Credentials";
         }
     }
     
