@@ -8,9 +8,11 @@
 
 import UIKit
 import Neon
+import Spring
 
 class LandingViewController: UIViewController {
 
+    
     ////////////////////////
     ///
     ///
@@ -72,8 +74,8 @@ class LandingViewController: UIViewController {
     
     
     // A button to create a new account
-    let signUpBtn: UIButton = {
-        let btn: UIButton = UIButton();
+    let signUpBtn: SpringButton = {
+        let btn: SpringButton = SpringButton();
         btn.setTitle("Sign Up", for: .normal);
         btn.backgroundColor = UIColor(red: 21/255, green: 180/255, blue: 133/255, alpha: 1);
         btn.layer.cornerRadius = 25;
@@ -84,8 +86,8 @@ class LandingViewController: UIViewController {
     
     
     // A button to login
-    let loginBtn: UIButton = {
-        let btn: UIButton = UIButton(frame: CGRect(x: 0, y: 0, width: 50, height: 50));
+    let loginBtn: SpringButton = {
+        let btn: SpringButton = SpringButton(frame: CGRect(x: 0, y: 0, width: 50, height: 50));
         btn.setTitle("Login", for: .normal);
         btn.backgroundColor = UIColor(red: 21/255, green: 180/255, blue: 133/255, alpha: 1);
         btn.layer.cornerRadius = 25;
@@ -122,8 +124,15 @@ class LandingViewController: UIViewController {
         // Add all the necessary elements on screen.
         layoutElements();
         
+        
+        // Add a tap recognizer
         let tap = UITapGestureRecognizer(target: self, action: #selector(LandingViewController.dismissKeyboard));
         view.addGestureRecognizer(tap);
+        
+        
+        // Add the button functions
+        signUpBtn.addTarget(self, action: #selector(LandingViewController.signUp), for: .touchUpInside);
+        loginBtn.addTarget(self, action: #selector(LandingViewController.login), for: .touchUpInside);
     }
 
     
@@ -163,5 +172,42 @@ class LandingViewController: UIViewController {
     // Close the keyboard
     @objc private func dismissKeyboard() {
         view.endEditing(true);
+    }
+    
+    
+    // Sign up for a new account. First show the full name area, then actually sign up.
+    @objc private func signUp() {
+        signUpBtn.animation = "pop";
+        signUpBtn.curve = "spring";
+        signUpBtn.duration = 1.0;
+        signUpBtn.animate();
+        
+        // First time clicking? Show full name field.
+        if(fullNameField.isHidden) {
+            fullNameField.alpha = 0;
+            fullNameField.isHidden = false;
+            
+            UIView.animate(withDuration: 0.3, animations: {
+                
+                self.fullNameField.alpha = 1;
+                
+            }, completion: nil);
+            
+            return;
+        }
+        
+        // Second time clicking? Actually create an account and login.
+        print("Creating Account!");
+    }
+    
+    
+    // Login to the app.
+    @objc private func login() {
+        loginBtn.animation = "pop";
+        loginBtn.curve = "spring";
+        loginBtn.duration = 1.0;
+        loginBtn.animate();
+        
+        print("Logging in!");
     }
 }

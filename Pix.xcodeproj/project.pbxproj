@@ -13,7 +13,10 @@
 		5A12DFF41DDCD29D00660075 /* BlankImage.png in Resources */ = {isa = PBXBuildFile; fileRef = 5A12DFF31DDCD29D00660075 /* BlankImage.png */; };
 		5A12DFF71DDCE94E00660075 /* LandingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A12DFF61DDCE94E00660075 /* LandingViewController.swift */; };
 		5A572AE81DDB940F000D2527 /* PostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A572AE71DDB940F000D2527 /* PostCell.swift */; };
+		5A6229CB1DE5720A002510AA /* Spring.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A6229CA1DE5720A002510AA /* Spring.framework */; };
+		5A6229CD1DE5720D002510AA /* ChameleonFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A6229CC1DE5720D002510AA /* ChameleonFramework.framework */; };
 		5A785AA01DE5630600EF5323 /* Neon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5AAB2DB61DE5628C0007A726 /* Neon.framework */; };
+		5AF484BE1DE56D7F00EF503E /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF484BD1DE56D7F00EF503E /* Utilities.swift */; };
 		5AFF27511DDB60F4001CBF95 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AFF27501DDB60F4001CBF95 /* AppDelegate.swift */; };
 		5AFF27581DDB60F4001CBF95 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5AFF27571DDB60F4001CBF95 /* Assets.xcassets */; };
 		5AFF275B1DDB60F4001CBF95 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5AFF27591DDB60F4001CBF95 /* LaunchScreen.storyboard */; };
@@ -31,7 +34,10 @@
 		5A12DFF31DDCD29D00660075 /* BlankImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = BlankImage.png; path = Pix/BlankImage.png; sourceTree = SOURCE_ROOT; };
 		5A12DFF61DDCE94E00660075 /* LandingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LandingViewController.swift; sourceTree = "<group>"; };
 		5A572AE71DDB940F000D2527 /* PostCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostCell.swift; sourceTree = "<group>"; };
+		5A6229CA1DE5720A002510AA /* Spring.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Spring.framework; path = "../../../../Library/Developer/Xcode/DerivedData/Pix-ctukwtofcongdnezqcfllkcuomcc/Build/Products/Debug-iphonesimulator/Spring/Spring.framework"; sourceTree = "<group>"; };
+		5A6229CC1DE5720D002510AA /* ChameleonFramework.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ChameleonFramework.framework; path = "../../../../Library/Developer/Xcode/DerivedData/Pix-ctukwtofcongdnezqcfllkcuomcc/Build/Products/Debug-iphonesimulator/ChameleonFramework/ChameleonFramework.framework"; sourceTree = "<group>"; };
 		5AAB2DB61DE5628C0007A726 /* Neon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Neon.framework; path = "../../../../Library/Developer/Xcode/DerivedData/Pix-ctukwtofcongdnezqcfllkcuomcc/Build/Products/Debug-iphonesimulator/Neon/Neon.framework"; sourceTree = "<group>"; };
+		5AF484BD1DE56D7F00EF503E /* Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		5AFF274D1DDB60F4001CBF95 /* Pix.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pix.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5AFF27501DDB60F4001CBF95 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5AFF27571DDB60F4001CBF95 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -51,6 +57,8 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5A6229CD1DE5720D002510AA /* ChameleonFramework.framework in Frameworks */,
+				5A6229CB1DE5720A002510AA /* Spring.framework in Frameworks */,
 				5A785AA01DE5630600EF5323 /* Neon.framework in Frameworks */,
 				19E466EE712F77175523C79E /* Pods_Pix.framework in Frameworks */,
 			);
@@ -62,6 +70,8 @@
 		3913120E1B5200134427A0AB /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				5A6229CC1DE5720D002510AA /* ChameleonFramework.framework */,
+				5A6229CA1DE5720A002510AA /* Spring.framework */,
 				5AAB2DB61DE5628C0007A726 /* Neon.framework */,
 				6F2E2AED695C23906B91EBD7 /* Pods_Pix.framework */,
 			);
@@ -85,6 +95,14 @@
 				5A12DFF61DDCE94E00660075 /* LandingViewController.swift */,
 			);
 			name = LoginSignUpDirectory;
+			sourceTree = "<group>";
+		};
+		5AF484BC1DE56D6E00EF503E /* Utilities */ = {
+			isa = PBXGroup;
+			children = (
+				5AF484BD1DE56D7F00EF503E /* Utilities.swift */,
+			);
+			name = Utilities;
 			sourceTree = "<group>";
 		};
 		5AFF27441DDB60F4001CBF95 = {
@@ -112,9 +130,10 @@
 				5AFF27501DDB60F4001CBF95 /* AppDelegate.swift */,
 				5AFF276D1DDB6FE6001CBF95 /* Extensions */,
 				5AFF276A1DDB6925001CBF95 /* UsersDirectory */,
-				5AFF27671DDB67B1001CBF95 /* PostsDirectory */,
 				5AFF27641DDB667D001CBF95 /* HomeDirectory */,
+				5AFF27671DDB67B1001CBF95 /* PostsDirectory */,
 				5A12DFF51DDCE8EB00660075 /* LoginSignUpDirectory */,
+				5AF484BC1DE56D6E00EF503E /* Utilities */,
 				5AFF27571DDB60F4001CBF95 /* Assets.xcassets */,
 				5AFF27591DDB60F4001CBF95 /* LaunchScreen.storyboard */,
 				5AFF275C1DDB60F4001CBF95 /* Info.plist */,
@@ -297,6 +316,7 @@
 				5AFF27661DDB66C2001CBF95 /* HFCollectionViewController.swift in Sources */,
 				5AFF27511DDB60F4001CBF95 /* AppDelegate.swift in Sources */,
 				5AFF276C1DDB69AB001CBF95 /* User.swift in Sources */,
+				5AF484BE1DE56D7F00EF503E /* Utilities.swift in Sources */,
 				5A12DFF71DDCE94E00660075 /* LandingViewController.swift in Sources */,
 				5AFF27691DDB67C1001CBF95 /* Post.swift in Sources */,
 			);
@@ -415,8 +435,14 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = FDB360F8138C0890D86A77EE /* Pods-Pix.debug.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = ZNAXL37NHX;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/build/Debug-iphoneos/ChameleonFramework",
+					"$(PROJECT_DIR)/build/Debug-iphoneos/Spring",
+				);
 				INFOPLIST_FILE = Pix/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
@@ -430,8 +456,14 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 563268E86F8F81BF23A9236C /* Pods-Pix.release.xcconfig */;
 			buildSettings = {
+				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				DEVELOPMENT_TEAM = ZNAXL37NHX;
+				FRAMEWORK_SEARCH_PATHS = (
+					"$(inherited)",
+					"$(PROJECT_DIR)/build/Debug-iphoneos/ChameleonFramework",
+					"$(PROJECT_DIR)/build/Debug-iphoneos/Spring",
+				);
 				INFOPLIST_FILE = Pix/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
