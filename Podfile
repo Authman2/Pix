@@ -9,5 +9,8 @@ target 'Pix' do
   pod 'Neon'
   pod 'ChameleonFramework/Swift', :git => 'https://github.com/ViccAlexander/Chameleon.git'
   pod 'Spring', :git => 'https://github.com/MengTo/Spring.git', :branch => 'swift3'
-
+  pod 'Firebase/Core'
+  pod 'Firebase/Auth'
+  pod 'Firebase/Database'
+  
 end

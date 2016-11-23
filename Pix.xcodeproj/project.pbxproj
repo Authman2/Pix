@@ -15,6 +15,7 @@
 		5A572AE81DDB940F000D2527 /* PostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A572AE71DDB940F000D2527 /* PostCell.swift */; };
 		5A6229CB1DE5720A002510AA /* Spring.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A6229CA1DE5720A002510AA /* Spring.framework */; };
 		5A6229CD1DE5720D002510AA /* ChameleonFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A6229CC1DE5720D002510AA /* ChameleonFramework.framework */; };
+		5A756DCA1DE5E802003FD2C0 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5A756DC91DE5E802003FD2C0 /* GoogleService-Info.plist */; };
 		5A785AA01DE5630600EF5323 /* Neon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5AAB2DB61DE5628C0007A726 /* Neon.framework */; };
 		5AF484BE1DE56D7F00EF503E /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF484BD1DE56D7F00EF503E /* Utilities.swift */; };
 		5AFF27511DDB60F4001CBF95 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AFF27501DDB60F4001CBF95 /* AppDelegate.swift */; };
@@ -24,7 +25,7 @@
 		5AFF27661DDB66C2001CBF95 /* HFCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AFF27651DDB66C2001CBF95 /* HFCollectionViewController.swift */; };
 		5AFF27691DDB67C1001CBF95 /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AFF27681DDB67C1001CBF95 /* Post.swift */; };
 		5AFF276C1DDB69AB001CBF95 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AFF276B1DDB69AB001CBF95 /* User.swift */; };
-		5AFF276F1DDB6FF7001CBF95 /* StringExt.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AFF276E1DDB6FF7001CBF95 /* StringExt.swift */; };
+		5AFF276F1DDB6FF7001CBF95 /* Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AFF276E1DDB6FF7001CBF95 /* Ext.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -36,6 +37,7 @@
 		5A572AE71DDB940F000D2527 /* PostCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostCell.swift; sourceTree = "<group>"; };
 		5A6229CA1DE5720A002510AA /* Spring.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Spring.framework; path = "../../../../Library/Developer/Xcode/DerivedData/Pix-ctukwtofcongdnezqcfllkcuomcc/Build/Products/Debug-iphonesimulator/Spring/Spring.framework"; sourceTree = "<group>"; };
 		5A6229CC1DE5720D002510AA /* ChameleonFramework.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ChameleonFramework.framework; path = "../../../../Library/Developer/Xcode/DerivedData/Pix-ctukwtofcongdnezqcfllkcuomcc/Build/Products/Debug-iphonesimulator/ChameleonFramework/ChameleonFramework.framework"; sourceTree = "<group>"; };
+		5A756DC91DE5E802003FD2C0 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		5AAB2DB61DE5628C0007A726 /* Neon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Neon.framework; path = "../../../../Library/Developer/Xcode/DerivedData/Pix-ctukwtofcongdnezqcfllkcuomcc/Build/Products/Debug-iphonesimulator/Neon/Neon.framework"; sourceTree = "<group>"; };
 		5AF484BD1DE56D7F00EF503E /* Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		5AFF274D1DDB60F4001CBF95 /* Pix.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pix.app; sourceTree = BUILT_PRODUCTS_DIR; };
@@ -47,7 +49,7 @@
 		5AFF27651DDB66C2001CBF95 /* HFCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HFCollectionViewController.swift; sourceTree = "<group>"; };
 		5AFF27681DDB67C1001CBF95 /* Post.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		5AFF276B1DDB69AB001CBF95 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
-		5AFF276E1DDB6FF7001CBF95 /* StringExt.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = StringExt.swift; sourceTree = "<group>"; };
+		5AFF276E1DDB6FF7001CBF95 /* Ext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Ext.swift; sourceTree = "<group>"; };
 		6F2E2AED695C23906B91EBD7 /* Pods_Pix.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Pix.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FDB360F8138C0890D86A77EE /* Pods-Pix.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Pix.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Pix/Pods-Pix.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -137,6 +139,7 @@
 				5AFF27571DDB60F4001CBF95 /* Assets.xcassets */,
 				5AFF27591DDB60F4001CBF95 /* LaunchScreen.storyboard */,
 				5AFF275C1DDB60F4001CBF95 /* Info.plist */,
+				5A756DC91DE5E802003FD2C0 /* GoogleService-Info.plist */,
 			);
 			path = Pix;
 			sourceTree = "<group>";
@@ -170,7 +173,7 @@
 		5AFF276D1DDB6FE6001CBF95 /* Extensions */ = {
 			isa = PBXGroup;
 			children = (
-				5AFF276E1DDB6FF7001CBF95 /* StringExt.swift */,
+				5AFF276E1DDB6FF7001CBF95 /* Ext.swift */,
 			);
 			name = Extensions;
 			sourceTree = "<group>";
@@ -252,6 +255,7 @@
 				5A12DFF41DDCD29D00660075 /* BlankImage.png in Resources */,
 				5A12DFE81DDC9D0900660075 /* friends_icon.png in Resources */,
 				5AFF27581DDB60F4001CBF95 /* Assets.xcassets in Resources */,
+				5A756DCA1DE5E802003FD2C0 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -311,7 +315,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5A572AE81DDB940F000D2527 /* PostCell.swift in Sources */,
-				5AFF276F1DDB6FF7001CBF95 /* StringExt.swift in Sources */,
+				5AFF276F1DDB6FF7001CBF95 /* Ext.swift in Sources */,
 				5AFF27631DDB632D001CBF95 /* Home.swift in Sources */,
 				5AFF27661DDB66C2001CBF95 /* HFCollectionViewController.swift in Sources */,
 				5AFF27511DDB60F4001CBF95 /* AppDelegate.swift in Sources */,

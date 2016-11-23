@@ -9,6 +9,16 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>GTMSessionFetcher.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>GoogleToolboxForMac.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Neon.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -27,7 +37,7 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>384BD544747ABDE06BC155A2BA292378</key>
+		<key>107A9565F9DF88517DFD3E28C05B2B96</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -37,12 +47,22 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>D0CEA03DDBB846996C731C298CF78094</key>
+		<key>C052BEBFBD0AB5218CC64BA3450F6547</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>C68A727298B99CEE2CD0B35767B059FE</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
 		<key>EF630AB9720279E0A1F904F21F31CF0B</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>FAB0804C8D114630C5CF6DDC95F3E149</key>
 		<dict>
 			<key>primary</key>
 			<true/>

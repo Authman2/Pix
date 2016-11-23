@@ -9,6 +9,15 @@
 import UIKit
 import Neon
 import Spring
+import Firebase
+
+
+
+/// The current user. Global constant.
+var currentUser: User = User();
+
+
+
 
 class LandingViewController: UIViewController {
 
@@ -20,8 +29,12 @@ class LandingViewController: UIViewController {
     ///
     ///
     ////////////////////////
+    
+    // The reference to the Firebase database
+    var ref: FIRDatabaseReference! = FIRDatabase.database().reference();
 
-    // Displays the naem of the app
+    
+    // Displays the name of the app
     let titleLabel: UILabel = {
         let label: UILabel = UILabel();
         label.text = "Pix";
@@ -29,6 +42,7 @@ class LandingViewController: UIViewController {
         label.translatesAutoresizingMaskIntoConstraints = false;
         label.font = UIFont.boldSystemFont(ofSize: 35);
         label.textAlignment = .center;
+        label.isUserInteractionEnabled = false;
         
         return label;
     }();
@@ -41,6 +55,8 @@ class LandingViewController: UIViewController {
         eField.translatesAutoresizingMaskIntoConstraints = false;
         eField.backgroundColor = UIColor.white;
         eField.textAlignment = .center;
+        eField.autocapitalizationType = .none;
+        eField.autocorrectionType = .no;
         
         return eField;
     }();
@@ -54,6 +70,8 @@ class LandingViewController: UIViewController {
         pass.translatesAutoresizingMaskIntoConstraints = false;
         pass.backgroundColor = UIColor.white;
         pass.textAlignment = .center;
+        pass.autocorrectionType = .no;
+        pass.autocapitalizationType = .none;
         
         return pass;
     }();
@@ -63,11 +81,12 @@ class LandingViewController: UIViewController {
     let fullNameField: UITextField = {
         let fnf: UITextField = UITextField();
         fnf.placeholder = "Full Name";
-        fnf.isSecureTextEntry = true;
         fnf.translatesAutoresizingMaskIntoConstraints = false;
         fnf.backgroundColor = UIColor.white;
         fnf.textAlignment = .center;
         fnf.isHidden = true;
+        fnf.autocapitalizationType = .none;
+        fnf.autocorrectionType = .no;
         
         return fnf;
     }();
@@ -116,7 +135,7 @@ class LandingViewController: UIViewController {
 
     
     
-    
+    // Standard viewDidLoad method.
     override func viewDidLoad() {
         super.viewDidLoad()
         view.backgroundColor = UIColor(red: 41/255, green: 200/255, blue: 153/255, alpha: 1);
@@ -175,6 +194,7 @@ class LandingViewController: UIViewController {
     }
     
     
+    
     // Sign up for a new account. First show the full name area, then actually sign up.
     @objc private func signUp() {
         signUpBtn.animation = "pop";
@@ -192,13 +212,32 @@ class LandingViewController: UIViewController {
                 self.fullNameField.alpha = 1;
                 
             }, completion: nil);
-            
-            return;
-        }
         
-        // Second time clicking? Actually create an account and login.
-        print("Creating Account!");
+        
+        } else {
+        
+        
+            // Second time clicking? Actually create an account and login.
+            FIRAuth.auth()?.createUser(withEmail: emailField.text!, password: passwordField.text!, completion: { (user: FIRUser?, error: Error?) in
+
+                if(error == nil) {
+                    var name = self.fullNameField.text!;
+                    let usr = User();
+                    usr.firstName = name.substring(i: 0, j: name.indexOf(string: " "));
+                    usr.lastName = name.substring(i: name.indexOf(string: " ") + 1 , j: name.length());
+                    usr.email = self.emailField.text!;
+                    usr.id = user?.uid;
+                    
+                    self.addUserToDatabase(user: usr);
+                    
+                } else {
+                    print(error.debugDescription);
+                }
+            });
+        }
     }
+    
+    
     
     
     // Login to the app.
@@ -208,6 +247,27 @@ class LandingViewController: UIViewController {
         loginBtn.duration = 1.0;
         loginBtn.animate();
         
-        print("Logging in!");
     }
+    
+    
+    
+    
+    
+    // Adds a node for the users
+    private func addUserToDatabase(user: User) {
+        let emailData = user.email.substring(i: 0, j: user.email.length() - 4);
+        
+        ref.child("Users").child(emailData).child("first_name").setValue(user.firstName);
+        ref.child("Users").child(emailData).child("last_name").setValue(user.lastName);
+        ref.child("Users").child(emailData).child("id").setValue(user.id);
+
+        print(user.firstName);
+        print(user.lastName);
+        print(user.email);
+        print(user.id);
+    }
+    
+    
+    
+    
 }
