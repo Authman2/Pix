@@ -7,6 +7,7 @@
 //
 
 import UIKit
+import Neon
 
 class LandingViewController: UIViewController {
 
@@ -25,6 +26,7 @@ class LandingViewController: UIViewController {
         label.textColor = UIColor.white;
         label.translatesAutoresizingMaskIntoConstraints = false;
         label.font = UIFont.boldSystemFont(ofSize: 35);
+        label.textAlignment = .center;
         
         return label;
     }();
@@ -55,11 +57,27 @@ class LandingViewController: UIViewController {
     }();
     
     
+    // Enter the user's full name (only visible when trying to sign up).
+    let fullNameField: UITextField = {
+        let fnf: UITextField = UITextField();
+        fnf.placeholder = "Full Name";
+        fnf.isSecureTextEntry = true;
+        fnf.translatesAutoresizingMaskIntoConstraints = false;
+        fnf.backgroundColor = UIColor.white;
+        fnf.textAlignment = .center;
+        fnf.isHidden = true;
+        
+        return fnf;
+    }();
+    
+    
     // A button to create a new account
     let signUpBtn: UIButton = {
         let btn: UIButton = UIButton();
-        btn.titleLabel?.text = "Sign Up";
+        btn.setTitle("Sign Up", for: .normal);
         btn.backgroundColor = UIColor(red: 21/255, green: 180/255, blue: 133/255, alpha: 1);
+        btn.layer.cornerRadius = 25;
+        btn.titleLabel?.font = UIFont(name: (btn.titleLabel?.font.fontName)!, size: 15);
         
         return btn;
     }();
@@ -67,12 +85,33 @@ class LandingViewController: UIViewController {
     
     // A button to login
     let loginBtn: UIButton = {
-        let btn: UIButton = UIButton();
-        btn.titleLabel?.text = "Login";
+        let btn: UIButton = UIButton(frame: CGRect(x: 0, y: 0, width: 50, height: 50));
+        btn.setTitle("Login", for: .normal);
         btn.backgroundColor = UIColor(red: 21/255, green: 180/255, blue: 133/255, alpha: 1);
+        btn.layer.cornerRadius = 25;
+        btn.titleLabel?.font = UIFont(name: (btn.titleLabel?.font.fontName)!, size: 15);
         
         return btn;
     }();
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    ////////////////////////
+    ///
+    ///
+    /// Methods
+    ///
+    ///
+    ////////////////////////
+
     
     
     
@@ -81,57 +120,48 @@ class LandingViewController: UIViewController {
         view.backgroundColor = UIColor(red: 41/255, green: 200/255, blue: 153/255, alpha: 1);
         
         // Add all the necessary elements on screen.
-        createElements();
+        layoutElements();
+        
+        let tap = UITapGestureRecognizer(target: self, action: #selector(LandingViewController.dismissKeyboard));
+        view.addGestureRecognizer(tap);
     }
 
     
     
-    func createElements() {
-        // Setup stack views to hold the elements.
-        let stackView = UIStackView();
-        stackView.addArrangedSubview(titleLabel);
-        stackView.addArrangedSubview(emailField);
-        stackView.addArrangedSubview(passwordField);
+    // Creating and layouting out the view elements.
+    func layoutElements() {
+        view.addSubview(titleLabel);
+        view.addSubview(emailField);
+        view.addSubview(passwordField);
+        view.addSubview(fullNameField);
         
-        let btnStackView = UIStackView();
-        btnStackView.addArrangedSubview(signUpBtn);
-        btnStackView.addArrangedSubview(loginBtn);
-        
-        let everythingStackView = UIStackView();
-        everythingStackView.addArrangedSubview(stackView);
-        everythingStackView.addArrangedSubview(btnStackView);
+        // A view for the buttons
+        let btnView = UIView();
+        btnView.addSubview(signUpBtn);
+        btnView.addSubview(loginBtn);
+        view.addSubview(btnView);
         
         
-        // Edit some stack view properties
-        stackView.axis = .vertical;
-        stackView.translatesAutoresizingMaskIntoConstraints = false;
-        stackView.alignment = .center;
-        stackView.spacing = 20;
-        
-        btnStackView.axis = .horizontal;
-        btnStackView.translatesAutoresizingMaskIntoConstraints = false;
-        btnStackView.alignment = .center;
-        btnStackView.spacing = 20;
-        
-        everythingStackView.axis = .vertical;
-        everythingStackView.translatesAutoresizingMaskIntoConstraints = false;
-        everythingStackView.alignment = .center;
+        let padding: CGFloat = 25;
+        let formHeight: CGFloat = 35;
         
         
-        // Do layout stuff
-        view.addSubview(everythingStackView);
+        // Use Neon to align them.
+        titleLabel.anchorAndFillEdge(.top, xPad: 0, yPad: 50, otherSize: AutoHeight);
         
-        view.addConstraintToFrom(from: stackView, attr1: .centerY, relation: .equal, to: view, attr2: .centerY, multiplier: 0.5, constant: 0);
+        emailField.align(.underCentered, relativeTo: titleLabel, padding: padding, width: view.frame.width, height: formHeight);
+        passwordField.align(.underCentered, relativeTo: emailField, padding: padding, width: view.frame.width, height: formHeight);
+        fullNameField.align(.underCentered, relativeTo: passwordField, padding: padding, width: view.frame.width, height: formHeight);
         
-        view.addConstraintToFrom(from: emailField, attr1: .width, relation: .equal, to: view, attr2: .width, multiplier: 1, constant: 0);
-        view.addConstraintToFrom(from: passwordField, attr1: .width, relation: .equal, to: view, attr2: .width, multiplier: 1, constant: 0);
-        view.addConstraintToFrom(from: emailField, attr1: .height, relation: .equal, to: view, attr2: .height, multiplier: 0.05, constant: 0);
-        view.addConstraintToFrom(from: passwordField, attr1: .height, relation: .equal, to: view, attr2: .height, multiplier: 0.05, constant: 0);
-        
-        view.addConstraintToFrom(from: everythingStackView, attr1: .centerX, relation: .equal, to: view, attr2: .centerX, multiplier: 1, constant: 0);
-        view.addConstraintToFrom(from: everythingStackView, attr1: .centerY, relation: .equal, to: view, attr2: .centerY, multiplier: 0.75, constant: 0);
+        btnView.align(.underCentered, relativeTo: fullNameField, padding: padding - 5, width: view.frame.width, height: 50);
+        btnView.groupInCenter(group: .horizontal, views: [signUpBtn, loginBtn], padding: 20, width: 70, height: 50);
     }
     
     
     
+    
+    // Close the keyboard
+    @objc private func dismissKeyboard() {
+        view.endEditing(true);
+    }
 }
