@@ -1,0 +1,6 @@
+framework module AUNavigationMenuController {
+  umbrella header "AUNavigationMenuController-umbrella.h"
+
+  export *
+  module * { export * }
+}

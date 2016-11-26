@@ -12,5 +12,6 @@ target 'Pix' do
   pod 'Firebase/Core'
   pod 'Firebase/Auth'
   pod 'Firebase/Database'
+  pod 'AUNavigationMenuController'
   
 end

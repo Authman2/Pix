@@ -10,13 +10,11 @@ import UIKit
 import Neon
 import Spring
 import Firebase
-
+import AUNavigationMenuController
 
 
 /// The current user. Global constant.
 var currentUser: User = User();
-
-
 
 
 class LandingViewController: UIViewController {
@@ -208,6 +206,30 @@ class LandingViewController: UIViewController {
     
     
     
+    
+    // Go to the actually app: the home page with the feed for posts.
+    private func goToApp() {
+        // This is just a temporary view so that you can move to other views.
+        let homefeed = HFCollectionViewController(collectionViewLayout: UICollectionViewFlowLayout());
+        
+        
+        // The views that the menu items will take the user to.
+        let homefeedMenuItem = HFCollectionViewController(collectionViewLayout: UICollectionViewFlowLayout());
+        let profileView = ProfileViewController();
+        
+        
+        // Set up the navigation controller.
+        let nav = AUNavigationMenuController(rootViewController: homefeed);
+        nav.addMenuItem(name: "Home", image: nil, destination: homefeedMenuItem);
+        nav.addMenuItem(name: "Profile", image: nil, destination: profileView);
+        
+        
+        show(nav, sender: self);
+    }
+    
+    
+    
+    
     // Sign up for a new account. First show the full name area, then actually sign up.
     @objc private func signUp() {
         signUpBtn.animation = "pop";
@@ -282,6 +304,8 @@ class LandingViewController: UIViewController {
                     self.statusLabel.isHidden = false;
                     self.statusLabel.textColor = UIColor.green;
                     self.statusLabel.text = "Logging in!";
+                    
+                    self.goToApp();
                 } else {
                     self.statusLabel.isHidden = false;
                     self.statusLabel.textColor = UIColor.red;

@@ -14,9 +14,9 @@
             buildForAnalyzing = "YES">
             <BuildableReference
                BuildableIdentifier = "primary"
-               BlueprintIdentifier = "107A9565F9DF88517DFD3E28C05B2B96"
-               BuildableName = "GoogleToolboxForMac.framework"
-               BlueprintName = "GoogleToolboxForMac"
+               BlueprintIdentifier = "FFBC5B68FE87BD33676DB63C54DAFFC2"
+               BuildableName = "AUNavigationMenuController.framework"
+               BlueprintName = "AUNavigationMenuController"
                ReferencedContainer = "container:Pods.xcodeproj">
             </BuildableReference>
          </BuildActionEntry>
@@ -45,9 +45,9 @@
       <MacroExpansion>
          <BuildableReference
             BuildableIdentifier = "primary"
-            BlueprintIdentifier = "107A9565F9DF88517DFD3E28C05B2B96"
-            BuildableName = "GoogleToolboxForMac.framework"
-            BlueprintName = "GoogleToolboxForMac"
+            BlueprintIdentifier = "FFBC5B68FE87BD33676DB63C54DAFFC2"
+            BuildableName = "AUNavigationMenuController.framework"
+            BlueprintName = "AUNavigationMenuController"
             ReferencedContainer = "container:Pods.xcodeproj">
          </BuildableReference>
       </MacroExpansion>

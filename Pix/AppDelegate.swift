@@ -8,6 +8,7 @@
 
 import UIKit
 import Firebase
+import AUNavigationMenuController
 
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
@@ -25,12 +26,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         
         // Create the views
-        //let homeFeedController = HFCollectionViewController(collectionViewLayout: (collectionViewLayout: UICollectionViewFlowLayout()));
-                //let navigationController = UINavigationController(rootViewController: homeFeedController);
-        //window?.rootViewController = navigationController;
         let landingViewController = LandingViewController();
         window?.rootViewController = landingViewController;
-
+        
+        
         
         
         // Appearance

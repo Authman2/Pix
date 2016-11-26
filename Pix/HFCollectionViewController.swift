@@ -10,6 +10,8 @@
 //
 
 import UIKit
+import Firebase
+import AUNavigationMenuController
 
 
 class HFCollectionViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
@@ -33,17 +35,7 @@ class HFCollectionViewController: UICollectionViewController, UICollectionViewDe
         // Register cell classes
         collectionView!.register(PostCell.self, forCellWithReuseIdentifier: reuseIdentifier);
     
-        
-        let user1: User = User(firstName: "Adeola", lastName: "Uthman", email: "au535@nyu.edu");
-        let user2: User = User(firstName: "Joe", lastName: "Schmo", email: "schmo@nyu.edu");
-        let user3: User = User(firstName: "Bob", lastName: "Simmons", email: "bsimmons@nyu.edu");
-        
-        let post1: Post = Post(img: UIImage(named: "Edge of mountain 2.png"), caption: "My Image 1", user: user1);
-        let post2: Post = Post(img: nil, caption: "My Image 2", user: user2);
-        let post3: Post = Post(img: nil, caption: "My Image 3", user: user3);
-        
-        postData = [post1, post2, post3];
-        
+        // Load data from the database
     }
 
     
