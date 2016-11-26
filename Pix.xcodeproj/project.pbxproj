@@ -22,7 +22,6 @@
 		5AFF27511DDB60F4001CBF95 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AFF27501DDB60F4001CBF95 /* AppDelegate.swift */; };
 		5AFF27581DDB60F4001CBF95 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5AFF27571DDB60F4001CBF95 /* Assets.xcassets */; };
 		5AFF275B1DDB60F4001CBF95 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5AFF27591DDB60F4001CBF95 /* LaunchScreen.storyboard */; };
-		5AFF27631DDB632D001CBF95 /* Home.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AFF27621DDB632D001CBF95 /* Home.swift */; };
 		5AFF27661DDB66C2001CBF95 /* HFCollectionViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AFF27651DDB66C2001CBF95 /* HFCollectionViewController.swift */; };
 		5AFF27691DDB67C1001CBF95 /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AFF27681DDB67C1001CBF95 /* Post.swift */; };
 		5AFF276C1DDB69AB001CBF95 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AFF276B1DDB69AB001CBF95 /* User.swift */; };
@@ -47,7 +46,6 @@
 		5AFF27571DDB60F4001CBF95 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
 		5AFF275A1DDB60F4001CBF95 /* Base */ = {isa = PBXFileReference; lastKnownFileType = file.storyboard; name = Base; path = Base.lproj/LaunchScreen.storyboard; sourceTree = "<group>"; };
 		5AFF275C1DDB60F4001CBF95 /* Info.plist */ = {isa = PBXFileReference; lastKnownFileType = text.plist.xml; path = Info.plist; sourceTree = "<group>"; };
-		5AFF27621DDB632D001CBF95 /* Home.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Home.swift; sourceTree = "<group>"; };
 		5AFF27651DDB66C2001CBF95 /* HFCollectionViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = HFCollectionViewController.swift; sourceTree = "<group>"; };
 		5AFF27681DDB67C1001CBF95 /* Post.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		5AFF276B1DDB69AB001CBF95 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
@@ -149,7 +147,6 @@
 		5AFF27641DDB667D001CBF95 /* HomeDirectory */ = {
 			isa = PBXGroup;
 			children = (
-				5AFF27621DDB632D001CBF95 /* Home.swift */,
 				5AFF27651DDB66C2001CBF95 /* HFCollectionViewController.swift */,
 			);
 			name = HomeDirectory;
@@ -320,7 +317,6 @@
 				5A572AE81DDB940F000D2527 /* PostCell.swift in Sources */,
 				5AFF276F1DDB6FF7001CBF95 /* Ext.swift in Sources */,
 				5AEEEC651DE90B3E00D8BAC4 /* ProfileViewController.swift in Sources */,
-				5AFF27631DDB632D001CBF95 /* Home.swift in Sources */,
 				5AFF27661DDB66C2001CBF95 /* HFCollectionViewController.swift in Sources */,
 				5AFF27511DDB60F4001CBF95 /* AppDelegate.swift in Sources */,
 				5AFF276C1DDB69AB001CBF95 /* User.swift in Sources */,
@@ -385,7 +381,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = YES;
 				ONLY_ACTIVE_ARCH = YES;
 				SDKROOT = iphoneos;
@@ -430,7 +426,7 @@
 				GCC_WARN_UNINITIALIZED_AUTOS = YES_AGGRESSIVE;
 				GCC_WARN_UNUSED_FUNCTION = YES;
 				GCC_WARN_UNUSED_VARIABLE = YES;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.1;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				MTL_ENABLE_DEBUG_INFO = NO;
 				SDKROOT = iphoneos;
 				SWIFT_OPTIMIZATION_LEVEL = "-Owholemodule";

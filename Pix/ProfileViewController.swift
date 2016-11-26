@@ -14,8 +14,9 @@ class ProfileViewController: UIViewController {
     // The user's profile picture.
     let profilePic: UIImageView = {
         let img = UIImageView();
-        img.layer.cornerRadius = 25;
+        img.layer.cornerRadius = 45;
         img.translatesAutoresizingMaskIntoConstraints = false;
+        img.backgroundColor = UIColor.lightGray;
         
         return img;
     }();
@@ -39,13 +40,14 @@ class ProfileViewController: UIViewController {
     
     override func viewDidLoad() {
         super.viewDidLoad()
-        view.backgroundColor = UIColor.green;
+        view.backgroundColor = UIColor(red: 239/255, green: 255/255, blue:245/255, alpha: 1);
+        navigationItem.title = "Profile";
 
         view.addSubview(profilePic);
         view.addSubview(nameLabel);
         
-        profilePic.anchorToEdge(.top, padding: 20, width: 100, height: 100);
-        nameLabel.align(.underCentered, relativeTo: profilePic, padding: 10, width: view.frame.width, height: 100);
+        profilePic.align(.underCentered, relativeTo: (navigationController?.navigationBar)!, padding: 30, width: 90, height: 90);
+        nameLabel.align(.underCentered, relativeTo: profilePic, padding: 5, width: view.frame.width, height: 100);
     }
 
 

@@ -11,6 +11,9 @@
 //
 
 import Foundation
+import UIKit
+import Spring
+
 
 public extension String {
     
@@ -59,5 +62,31 @@ public extension String {
         
         return result;
     }
+    
+}
+
+
+public extension SpringButton {
+    
+    public func animateButtonClick() {
+        self.animation = "pop";
+        self.curve = "spring";
+        self.duration = 1.0;
+        self.animate();
+        UIView.animate(withDuration: 0.2, delay: 0.0, options: [], animations: {
+            
+            self.backgroundColor = self.backgroundColor?.darkened();
+            
+        }, completion: { (bool: Bool) in
+            
+            UIView.animate(withDuration: 0.2, delay: 0.0, options: [], animations: {
+                
+                self.backgroundColor = self.backgroundColor?.lighter();
+                
+            }, completion: nil);
+            
+        });
+    }
+    
     
 }

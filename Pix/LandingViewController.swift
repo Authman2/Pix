@@ -11,6 +11,7 @@ import Neon
 import Spring
 import Firebase
 import AUNavigationMenuController
+import DynamicColor
 
 
 /// The current user. Global constant.
@@ -232,10 +233,7 @@ class LandingViewController: UIViewController {
     
     // Sign up for a new account. First show the full name area, then actually sign up.
     @objc private func signUp() {
-        signUpBtn.animation = "pop";
-        signUpBtn.curve = "spring";
-        signUpBtn.duration = 1.0;
-        signUpBtn.animate();
+        signUpBtn.animateButtonClick();
         
         // First time clicking? Show full name field.
         if(fullNameField.isHidden) {
@@ -280,10 +278,7 @@ class LandingViewController: UIViewController {
     
     // Login to the app.
     @objc private func login() {
-        loginBtn.animation = "pop";
-        loginBtn.curve = "spring";
-        loginBtn.duration = 1.0;
-        loginBtn.animate();
+        loginBtn.animateButtonClick();
         
         if(emailField.text != nil && emailField.text != "") {
             ref.child("Users").child(emailField.text!.substring(i: 0, j: emailField.text!.length() - 4)).observeSingleEvent(of: .value, with: { (snapshot) in
