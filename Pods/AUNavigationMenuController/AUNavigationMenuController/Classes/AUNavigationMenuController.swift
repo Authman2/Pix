@@ -87,8 +87,6 @@ public class AUNavigationMenuController: UINavigationController, UICollectionVie
     /////////////////////////
     
     
-    
-    
     ///////// Setup //////////
     
     /* Sets up the navigation bar so that it can recognize taps by the user. */
@@ -170,7 +168,11 @@ public class AUNavigationMenuController: UINavigationController, UICollectionVie
         // Add the menu view to the container
         view.addSubview(collectionView);
         view.sendSubview(toBack: collectionView);
-        collectionView.backgroundColor = UIColor(red: 248/255.0, green: 248/255.0, blue: 248/255.0, alpha: 0.8);
+        if let _ = UINavigationBar.appearance().barTintColor {
+            collectionView.backgroundColor = UINavigationBar.appearance().barTintColor;
+        } else {
+            collectionView.backgroundColor = UIColor(red: 248/255.0, green: 248/255.0, blue: 248/255.0, alpha: 0.8);
+        }
         collectionView.isHidden = true;
         
         collectionView.delegate = self;
