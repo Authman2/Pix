@@ -216,12 +216,16 @@ class LandingViewController: UIViewController {
         
         // The views that the menu items will take the user to.
         let homefeedMenuItem = HFCollectionViewController(collectionViewLayout: UICollectionViewFlowLayout());
+        let exploreView = UIViewController();
+        let activityView = UIViewController();
         let profileView = ProfileViewController();
         
         
         // Set up the navigation controller.
         let nav = AUNavigationMenuController(rootViewController: homefeed);
         nav.addMenuItem(name: "Home", image: nil, destination: homefeedMenuItem);
+        nav.addMenuItem(name: "Explore", image: nil, destination: exploreView);
+        nav.addMenuItem(name: "Activity", image: nil, destination: activityView);
         nav.addMenuItem(name: "Profile", image: nil, destination: profileView);
         
         

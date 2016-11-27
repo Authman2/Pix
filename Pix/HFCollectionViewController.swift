@@ -12,9 +12,11 @@
 import UIKit
 import Firebase
 import AUNavigationMenuController
+import DZNEmptyDataSet
 
 
-class HFCollectionViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout {
+class HFCollectionViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
+    
     
     // The reusable cell identifier
     private let reuseIdentifier = "cell";
@@ -32,9 +34,17 @@ class HFCollectionViewController: UICollectionViewController, UICollectionViewDe
         // Set up some basic window properties
         setupWindow();
         
+        
         // Register cell classes
         collectionView!.register(PostCell.self, forCellWithReuseIdentifier: reuseIdentifier);
     
+        
+        // Setup empty data set stuff
+        collectionView?.emptyDataSetSource = self;
+        collectionView?.emptyDataSetDelegate = self;
+        collectionView?.contentMode = .scaleAspectFit;
+        
+        
         // Load data from the database
     }
 
@@ -74,15 +84,19 @@ class HFCollectionViewController: UICollectionViewController, UICollectionViewDe
     
 
     
+    // Sections
     override func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1;
     }
 
 
+    // Number of items
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return postData.count;
     }
 
+    
+    // Cell for index path
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> PostCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: reuseIdentifier, for: indexPath) as! PostCell;
         
@@ -97,6 +111,7 @@ class HFCollectionViewController: UICollectionViewController, UICollectionViewDe
     }
     
     
+    // Size for cell
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
         
         let size: CGSize! = CGSize(width: view.frame.width - 20, height: 300);
@@ -104,36 +119,10 @@ class HFCollectionViewController: UICollectionViewController, UICollectionViewDe
         return size;
     }
     
-
-    // MARK: UICollectionViewDelegate
-
-    /*
-    // Uncomment this method to specify if the specified item should be highlighted during tracking
-    override func collectionView(_ collectionView: UICollectionView, shouldHighlightItemAt indexPath: IndexPath) -> Bool {
-        return true
-    }
-    */
-
-    /*
-    // Uncomment this method to specify if the specified item should be selected
-    override func collectionView(_ collectionView: UICollectionView, shouldSelectItemAt indexPath: IndexPath) -> Bool {
-        return true
-    }
-    */
-
-    /*
-    // Uncomment these methods to specify if an action menu should be displayed for the specified item, and react to actions performed on the item
-    override func collectionView(_ collectionView: UICollectionView, shouldShowMenuForItemAt indexPath: IndexPath) -> Bool {
-        return false
-    }
-
-    override func collectionView(_ collectionView: UICollectionView, canPerformAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) -> Bool {
-        return false
-    }
-
-    override func collectionView(_ collectionView: UICollectionView, performAction action: Selector, forItemAt indexPath: IndexPath, withSender sender: Any?) {
     
+    // Empty set
+    func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
+        let s = NSAttributedString(string: "No photos to display");
+        return s;
     }
-    */
-
 }

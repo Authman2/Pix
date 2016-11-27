@@ -16,5 +16,6 @@ target 'Pix' do
     pod 'Firebase/Database'
     pod 'AUNavigationMenuController'
     pod 'DynamicColor', '~> 3.1.0'
+    pod 'DZNEmptyDataSet'
   
 end

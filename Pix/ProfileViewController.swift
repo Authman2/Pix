@@ -8,8 +8,9 @@
 
 import UIKit
 import Neon
+import DZNEmptyDataSet
 
-class ProfileViewController: UIViewController {
+class ProfileViewController: UIViewController, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
 
     // The user's profile picture.
     let profilePic: UIImageView = {
@@ -26,11 +27,15 @@ class ProfileViewController: UIViewController {
     let nameLabel: UILabel = {
         let l = UILabel();
         l.translatesAutoresizingMaskIntoConstraints = false;
-        l.text = currentUser.firstName + " " + currentUser.lastName;
+        l.text = currentUser.firstName + " " + currentUser.lastName;    // By the time you get here, current user will not be nil
         l.textAlignment = .center;
         
         return l;
     }();
+    
+    
+    // The collection view that displays all of the user's photos.
+    var photosCollectionView: UICollectionView!
     
     
     
@@ -42,15 +47,35 @@ class ProfileViewController: UIViewController {
         super.viewDidLoad()
         view.backgroundColor = UIColor(red: 239/255, green: 255/255, blue:245/255, alpha: 1);
         navigationItem.title = "Profile";
-
+        setupCollectionView();
+        
         view.addSubview(profilePic);
         view.addSubview(nameLabel);
+        view.addSubview(photosCollectionView);
         
         profilePic.align(.underCentered, relativeTo: (navigationController?.navigationBar)!, padding: 30, width: 90, height: 90);
-        nameLabel.align(.underCentered, relativeTo: profilePic, padding: 5, width: view.frame.width, height: 100);
+        nameLabel.align(.underCentered, relativeTo: profilePic, padding: 0, width: view.frame.width, height: 100);
+        photosCollectionView.anchorAndFillEdge(.bottom, xPad: 0, yPad: 0, otherSize: 300);
     }
 
+    
 
 
-
+    private func setupCollectionView() {
+        let layout = UICollectionViewFlowLayout();
+        layout.scrollDirection = .vertical;
+        
+        photosCollectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 300), collectionViewLayout: layout);
+        photosCollectionView.backgroundColor = view.backgroundColor;
+        photosCollectionView.backgroundColor = UIColor.blue;
+        photosCollectionView.emptyDataSetDelegate = self;
+        photosCollectionView.emptyDataSetSource = self;
+    }
+    
+    
+    
+    func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
+        let s = NSAttributedString(string: "No photos to display.");
+        return s;
+    }
 }

@@ -9,9 +9,9 @@
 /* Begin PBXBuildFile section */
 		19E466EE712F77175523C79E /* Pods_Pix.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F2E2AED695C23906B91EBD7 /* Pods_Pix.framework */; };
 		5A12DFE81DDC9D0900660075 /* friends_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 5A12DFE71DDC9D0900660075 /* friends_icon.png */; };
-		5A12DFEA1DDC9D2100660075 /* Edge of mountain 2.png in Resources */ = {isa = PBXBuildFile; fileRef = 5A12DFE91DDC9D2100660075 /* Edge of mountain 2.png */; };
 		5A12DFF41DDCD29D00660075 /* BlankImage.png in Resources */ = {isa = PBXBuildFile; fileRef = 5A12DFF31DDCD29D00660075 /* BlankImage.png */; };
 		5A12DFF71DDCE94E00660075 /* LandingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A12DFF61DDCE94E00660075 /* LandingViewController.swift */; };
+		5A25ADD51DEB483500301468 /* DZNEmptyDataSet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A25ADD41DEB483500301468 /* DZNEmptyDataSet.framework */; };
 		5A572AE81DDB940F000D2527 /* PostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A572AE71DDB940F000D2527 /* PostCell.swift */; };
 		5A6229CB1DE5720A002510AA /* Spring.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A6229CA1DE5720A002510AA /* Spring.framework */; };
 		5A6229CD1DE5720D002510AA /* ChameleonFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A6229CC1DE5720D002510AA /* ChameleonFramework.framework */; };
@@ -31,9 +31,9 @@
 /* Begin PBXFileReference section */
 		563268E86F8F81BF23A9236C /* Pods-Pix.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Pix.release.xcconfig"; path = "Pods/Target Support Files/Pods-Pix/Pods-Pix.release.xcconfig"; sourceTree = "<group>"; };
 		5A12DFE71DDC9D0900660075 /* friends_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = friends_icon.png; sourceTree = "<group>"; };
-		5A12DFE91DDC9D2100660075 /* Edge of mountain 2.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = "Edge of mountain 2.png"; path = "/Users/adeolauthman/Library/Developer/Xcode/DerivedData/Pix-fxasifqveepilocagonwpmxpulij/Build/Products/Debug-iphoneos/../../../../../../../../Documents/AdeolasCodingStuff/Xcode/Pix/Pix/Edge of mountain 2.png"; sourceTree = "<absolute>"; };
 		5A12DFF31DDCD29D00660075 /* BlankImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = BlankImage.png; path = Pix/BlankImage.png; sourceTree = SOURCE_ROOT; };
 		5A12DFF61DDCE94E00660075 /* LandingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LandingViewController.swift; sourceTree = "<group>"; };
+		5A25ADD41DEB483500301468 /* DZNEmptyDataSet.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DZNEmptyDataSet.framework; path = "../../../../Library/Developer/Xcode/DerivedData/Pix-ctukwtofcongdnezqcfllkcuomcc/Build/Products/Debug-iphoneos/DZNEmptyDataSet/DZNEmptyDataSet.framework"; sourceTree = "<group>"; };
 		5A572AE71DDB940F000D2527 /* PostCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostCell.swift; sourceTree = "<group>"; };
 		5A6229CA1DE5720A002510AA /* Spring.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Spring.framework; path = "../../../../Library/Developer/Xcode/DerivedData/Pix-ctukwtofcongdnezqcfllkcuomcc/Build/Products/Debug-iphonesimulator/Spring/Spring.framework"; sourceTree = "<group>"; };
 		5A6229CC1DE5720D002510AA /* ChameleonFramework.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ChameleonFramework.framework; path = "../../../../Library/Developer/Xcode/DerivedData/Pix-ctukwtofcongdnezqcfllkcuomcc/Build/Products/Debug-iphonesimulator/ChameleonFramework/ChameleonFramework.framework"; sourceTree = "<group>"; };
@@ -59,6 +59,7 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5A25ADD51DEB483500301468 /* DZNEmptyDataSet.framework in Frameworks */,
 				5A6229CD1DE5720D002510AA /* ChameleonFramework.framework in Frameworks */,
 				5A6229CB1DE5720A002510AA /* Spring.framework in Frameworks */,
 				5A785AA01DE5630600EF5323 /* Neon.framework in Frameworks */,
@@ -72,6 +73,7 @@
 		3913120E1B5200134427A0AB /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				5A25ADD41DEB483500301468 /* DZNEmptyDataSet.framework */,
 				5A6229CC1DE5720D002510AA /* ChameleonFramework.framework */,
 				5A6229CA1DE5720A002510AA /* Spring.framework */,
 				5AAB2DB61DE5628C0007A726 /* Neon.framework */,
@@ -83,7 +85,6 @@
 		5A12DFE61DDC9CE600660075 /* Images */ = {
 			isa = PBXGroup;
 			children = (
-				5A12DFE91DDC9D2100660075 /* Edge of mountain 2.png */,
 				5A12DFF31DDCD29D00660075 /* BlankImage.png */,
 				5A12DFE71DDC9D0900660075 /* friends_icon.png */,
 			);
@@ -250,7 +251,6 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
-				5A12DFEA1DDC9D2100660075 /* Edge of mountain 2.png in Resources */,
 				5AFF275B1DDB60F4001CBF95 /* LaunchScreen.storyboard in Resources */,
 				5A12DFF41DDCD29D00660075 /* BlankImage.png in Resources */,
 				5A12DFE81DDC9D0900660075 /* friends_icon.png in Resources */,
