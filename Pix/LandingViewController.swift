@@ -208,6 +208,7 @@ class LandingViewController: UIViewController {
     
     
     
+    
     // Go to the actually app: the home page with the feed for posts.
     private func goToApp() {
         // This is just a temporary view so that you can move to other views.
@@ -265,6 +266,8 @@ class LandingViewController: UIViewController {
                     usr.email = self.emailField.text!;
                     usr.password = self.passwordField.text!;
                     usr.id = user?.uid;
+                    usr.following = [User]();
+                    usr.followers = [User]();
                     
                     self.addUserToDatabase(user: usr);
                     self.login();
@@ -333,12 +336,8 @@ class LandingViewController: UIViewController {
         ref.child("Users").child(emailData).child("last_name").setValue(user.lastName);
         ref.child("Users").child(emailData).child("password").setValue(user.password);
         ref.child("Users").child(emailData).child("id").setValue(user.id);
-
-        print(user.firstName);
-        print(user.lastName);
-        print(user.email);
-        print(user.password);
-        print(user.id);
+        ref.child("Users").child(emailData).child("followers").setValue(user.followers);
+        ref.child("Users").child(emailData).child("following").setValue(user.following);
     }
     
     

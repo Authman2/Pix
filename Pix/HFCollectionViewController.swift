@@ -15,11 +15,20 @@ import AUNavigationMenuController
 import DZNEmptyDataSet
 
 
-class HFCollectionViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
+class HFCollectionViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+    
+    
+    // Firebase reference
+    let ref: FIRDatabaseReference! = FIRDatabase.database().reference();
     
     
     // The reusable cell identifier
     private let reuseIdentifier = "cell";
+    
+    
+    // Image picker
+    let imgPicker = UIImagePickerController();
+    
     
     // An array of posts (this one is only used for testing purposes)
     private var postData: [Post] = [];
@@ -33,6 +42,17 @@ class HFCollectionViewController: UICollectionViewController, UICollectionViewDe
         
         // Set up some basic window properties
         setupWindow();
+        
+        
+        // Add a navigation item to add upload a photo
+        let uploadBarButton = UIBarButtonItem(barButtonSystemItem: .add, target: self, action: #selector(uploadPhoto));
+        uploadBarButton.tintColor = UIColor.white;
+        navigationItem.rightBarButtonItem = uploadBarButton;
+        
+        
+        // Image picker
+        imgPicker.delegate = self;
+        imgPicker.sourceType = .photoLibrary;
         
         
         // Register cell classes
@@ -54,9 +74,6 @@ class HFCollectionViewController: UICollectionViewController, UICollectionViewDe
     
     
     
-    // MARK: - Setup
-    
-    
     private func setupWindow() {
         collectionView?.backgroundColor = UIColor(red: 239/255, green: 255/255, blue:245/255, alpha: 1);
         navigationItem.title = "Pix";
@@ -65,6 +82,12 @@ class HFCollectionViewController: UICollectionViewController, UICollectionViewDe
         collectionView?.showsVerticalScrollIndicator = false;
     }
     
+    
+    
+    // Upload photo
+    @objc private func uploadPhoto() {
+        show(imgPicker, sender: self);
+    }
     
     
     
@@ -124,5 +147,17 @@ class HFCollectionViewController: UICollectionViewController, UICollectionViewDe
     func title(forEmptyDataSet scrollView: UIScrollView!) -> NSAttributedString! {
         let s = NSAttributedString(string: "No photos to display");
         return s;
+    }
+    
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        if let photo = info[UIImagePickerControllerOriginalImage] as? UIImage {
+            let post = Post(img: photo, caption: "", user: currentUser);
+            let vc = UploadPhotoViewController();
+            vc.post = post;
+            vc.imageView.image = photo;
+            navigationController?.pushViewController(vc, animated: true);
+            imgPicker.dismiss(animated: true, completion: nil);
+        }
     }
 }

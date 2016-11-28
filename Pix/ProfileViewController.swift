@@ -34,6 +34,28 @@ class ProfileViewController: UIViewController, DZNEmptyDataSetSource, DZNEmptyDa
     }();
     
     
+    // The label that says followers
+    let followersLabel: UILabel = {
+        let l = UILabel();
+        l.translatesAutoresizingMaskIntoConstraints = false;
+        l.text = "Followers: \(currentUser.followers.count)";
+        l.textAlignment = .center;
+        
+        return l;
+    }();
+    
+    
+    // The label that says followers
+    let followingLabel: UILabel = {
+        let l = UILabel();
+        l.translatesAutoresizingMaskIntoConstraints = false;
+        l.text = "Following: \(currentUser.following.count)";
+        l.textAlignment = .center;
+        
+        return l;
+    }();
+    
+    
     // The collection view that displays all of the user's photos.
     var photosCollectionView: UICollectionView!
     
@@ -51,10 +73,14 @@ class ProfileViewController: UIViewController, DZNEmptyDataSetSource, DZNEmptyDa
         
         view.addSubview(profilePic);
         view.addSubview(nameLabel);
+        view.addSubview(followersLabel);
+        view.addSubview(followingLabel);
         view.addSubview(photosCollectionView);
         
         profilePic.align(.underCentered, relativeTo: (navigationController?.navigationBar)!, padding: 30, width: 90, height: 90);
-        nameLabel.align(.underCentered, relativeTo: profilePic, padding: 0, width: view.frame.width, height: 100);
+        nameLabel.align(.underCentered, relativeTo: profilePic, padding: 10, width: view.frame.width, height: 20);
+        followersLabel.align(.underCentered, relativeTo: nameLabel, padding: 0, width: view.frame.width, height: 20);
+        followingLabel.align(.underCentered, relativeTo: followersLabel, padding: 0, width: view.frame.width, height: 20);
         photosCollectionView.anchorAndFillEdge(.bottom, xPad: 0, yPad: 0, otherSize: 300);
     }
 

@@ -38,8 +38,12 @@ class User {
     var id: String!;
     
     
-    // An array of users that this user is following.
+    // An array of users that follow this user.
     var followers: [User]! = [User]();
+    
+    
+    // An array of the people that this person is following.
+    var following: [User]! = [User]();
     
     
     // An array of all of this user's posts
