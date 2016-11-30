@@ -8,6 +8,7 @@
 
 import Foundation
 import UIKit
+import Neon
 
 class PostCell: UICollectionViewCell {
     
@@ -64,50 +65,16 @@ class PostCell: UICollectionViewCell {
     
     // Layout all of the components on screen.
     func setupLayout() {
-        
-        // Create the stack views
-        let photoStackView = UIStackView();
-        let profileStackView = UIStackView();
-        let labelsStackView = UIStackView();
-        let profileLabelsStackView = UIStackView();
-        let everythingStackView = UIStackView();
+        addSubview(photo);
+        addSubview(profilePhoto);
+        addSubview(nameLabel);
+        addSubview(captionLabel);
         
         
-        // Quick setup
-        photoStackView.translatesAutoresizingMaskIntoConstraints = false;
-        profileStackView.translatesAutoresizingMaskIntoConstraints = false;
-        labelsStackView.translatesAutoresizingMaskIntoConstraints = false;
-        profileLabelsStackView.translatesAutoresizingMaskIntoConstraints = false;
-        everythingStackView.translatesAutoresizingMaskIntoConstraints = false;
-        
-        
-        // Set whether vertical/horizontal
-        photoStackView.axis = UILayoutConstraintAxis.vertical;
-        profileStackView.axis = UILayoutConstraintAxis.vertical;
-        labelsStackView.axis = UILayoutConstraintAxis.vertical;
-        profileLabelsStackView.axis = UILayoutConstraintAxis.horizontal;
-        everythingStackView.axis = UILayoutConstraintAxis.vertical;
-        
-        
-        // Add elements to the stack views
-        photoStackView.addArrangedSubview(photo);
-        profileStackView.addArrangedSubview(profilePhoto);
-        labelsStackView.addArrangedSubview(captionLabel);
-        labelsStackView.addArrangedSubview(nameLabel);
-        
-        profileLabelsStackView.addArrangedSubview(profileStackView);
-        profileLabelsStackView.addArrangedSubview(labelsStackView);
-        
-        everythingStackView.addArrangedSubview(photoStackView);
-        everythingStackView.addArrangedSubview(profileLabelsStackView);
-        
-        
-        // Add the everythingStackView to the cell
-        addSubview(everythingStackView);
-        
-        
-        // Perform layout operations
-        createConstraints(profileStackView: profileStackView, everythingStackView: everythingStackView);
+        photo.anchorToEdge(.top, padding: 0, width: frame.width, height: frame.height);
+        profilePhoto.align(.underMatchingLeft, relativeTo: photo, padding: 5, width: frame.width / 8, height: AutoHeight);
+        captionLabel.align(.toTheRightMatchingTop, relativeTo: profilePhoto, padding: 10, width: frame.width, height: AutoHeight);
+        nameLabel.align(.underCentered, relativeTo: captionLabel, padding: 10, width: frame.width, height: AutoHeight);
     }
     
     
@@ -148,42 +115,4 @@ class PostCell: UICollectionViewCell {
     }
     
     
-    
-    
-    
-    func createConstraints(profileStackView: UIStackView, everythingStackView: UIStackView) {
-        // Add constraints for the actual photo
-        addConstraintToFrom(from: photo, attr1: .width, relation: .equal, to: self, attr2: .width, multiplier: 1, constant: 0);
-        addConstraintToFrom(from: photo, attr1: .height, relation: .equal, to: self, attr2: .height, multiplier: 0.85, constant: 0);
-        addConstraintToFrom(from: photo, attr1: .top, relation: .equal, to: self, attr2: .top, multiplier: 1, constant: 0);
-        
-        
-        // Add constraints for the profileLabelsStackView
-        addConstraintToFrom(from: profileStackView, attr1: .leftMargin, relation: .equal, to: self, attr2: .leftMargin, multiplier: 1, constant: 0);
-        addConstraintToFrom(from: profileStackView, attr1: .width, relation: .equal, to: self, attr2: .width, multiplier: 0.25, constant: 0);
-        
-        
-        // Add constraints for the everything stack view
-        addConstraintToFrom(from: everythingStackView, attr1: .centerX, relation: .equal, to: self, attr2: .centerX, multiplier: 1, constant: 0);
-        addConstraintToFrom(from: everythingStackView, attr1: .bottomMargin, relation: .equal, to: self, attr2: .bottomMargin, multiplier: 1, constant: 0);
-    }
-    
 }
-
-
-
-
-
-
-// Extension
-extension UIView {
-    
-    // Just a slightly simpler way to add constraints
-    public func addConstraintToFrom(from: UIView, attr1: NSLayoutAttribute, relation: NSLayoutRelation, to: UIView, attr2: NSLayoutAttribute, multiplier: CGFloat, constant: CGFloat) {
-        
-        addConstraint(NSLayoutConstraint(item: from, attribute: attr1, relatedBy: relation, toItem: to, attribute: attr2, multiplier: multiplier, constant: constant));
-        
-    }
-    
-}
-

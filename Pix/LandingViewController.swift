@@ -294,7 +294,7 @@ class LandingViewController: UIViewController {
                 let firstName = value?["first_name"] as? String ?? "";
                 let lastName = value?["last_name"] as? String ?? "";
                 let userID = value?["id"] as? String ?? "";
-                let user = User(firstName: firstName, lastName: lastName, email: self.emailField.text! + ".com");
+                let user = User(firstName: firstName, lastName: lastName, email: self.emailField.text!);
                 user.password = value?["password"] as? String ?? "";
                 user.id = userID;
                 
@@ -336,8 +336,13 @@ class LandingViewController: UIViewController {
         ref.child("Users").child(emailData).child("last_name").setValue(user.lastName);
         ref.child("Users").child(emailData).child("password").setValue(user.password);
         ref.child("Users").child(emailData).child("id").setValue(user.id);
-        ref.child("Users").child(emailData).child("followers").setValue(user.followers);
-        ref.child("Users").child(emailData).child("following").setValue(user.following);
+        
+        for follower in user.followers {
+            ref.child("Users").child(emailData).child("Followers").setValue(follower);
+        }
+        for following in user.following {
+            ref.child("Users").child(emailData).child("Following").setValue(following);
+        }
     }
     
     

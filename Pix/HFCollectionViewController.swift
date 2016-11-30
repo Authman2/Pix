@@ -18,10 +18,6 @@ import DZNEmptyDataSet
 class HFCollectionViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     
-    // Firebase reference
-    let ref: FIRDatabaseReference! = FIRDatabase.database().reference();
-    
-    
     // The reusable cell identifier
     private let reuseIdentifier = "cell";
     
