@@ -9,9 +9,12 @@
 import UIKit
 import Neon
 import DZNEmptyDataSet
+import Firebase
 
-class ProfileViewController: UIViewController, DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
+class ProfileViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource,UICollectionViewDelegateFlowLayout , DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
 
+
+    
     // The user's profile picture.
     let profilePic: UIImageView = {
         let img = UIImageView();
@@ -60,8 +63,18 @@ class ProfileViewController: UIViewController, DZNEmptyDataSetSource, DZNEmptyDa
     var photosCollectionView: UICollectionView!
     
     
+    // The posts from the db
+    let postsFromDB: NSMutableArray! = NSMutableArray();
     
     
+    
+    
+    
+    ///////////////////////////
+    //
+    // Methods
+    //
+    ///////////////////////////
     
     
     
@@ -78,12 +91,18 @@ class ProfileViewController: UIViewController, DZNEmptyDataSetSource, DZNEmptyDa
         view.addSubview(photosCollectionView);
         
         profilePic.align(.underCentered, relativeTo: (navigationController?.navigationBar)!, padding: 30, width: 90, height: 90);
-        nameLabel.align(.underCentered, relativeTo: profilePic, padding: 10, width: view.frame.width, height: 20);
-        followersLabel.align(.underCentered, relativeTo: nameLabel, padding: 0, width: view.frame.width, height: 20);
-        followingLabel.align(.underCentered, relativeTo: followersLabel, padding: 0, width: view.frame.width, height: 20);
+        nameLabel.align(.underCentered, relativeTo: profilePic, padding: 10, width: view.frame.width, height: AutoHeight);
+        followersLabel.align(.underCentered, relativeTo: nameLabel, padding: 0, width: view.frame.width, height: AutoHeight);
+        followingLabel.align(.underCentered, relativeTo: followersLabel, padding: 0, width: view.frame.width, height: AutoHeight);
         photosCollectionView.anchorAndFillEdge(.bottom, xPad: 0, yPad: 0, otherSize: 300);
     }
 
+    
+    override func viewDidAppear(_ animated: Bool) {
+        postsFromDB.removeAllObjects();
+        loadCurrentUsersPhotos();
+    }
+    
     
 
 
@@ -92,10 +111,13 @@ class ProfileViewController: UIViewController, DZNEmptyDataSetSource, DZNEmptyDa
         layout.scrollDirection = .vertical;
         
         photosCollectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 300), collectionViewLayout: layout);
+        photosCollectionView.register(PostCell.self, forCellWithReuseIdentifier: "Cell");
         photosCollectionView.backgroundColor = view.backgroundColor;
         photosCollectionView.backgroundColor = UIColor.blue;
         photosCollectionView.emptyDataSetDelegate = self;
         photosCollectionView.emptyDataSetSource = self;
+        photosCollectionView.delegate = self;
+        photosCollectionView.dataSource = self;
     }
     
     
@@ -104,4 +126,86 @@ class ProfileViewController: UIViewController, DZNEmptyDataSetSource, DZNEmptyDa
         let s = NSAttributedString(string: "No photos to display.");
         return s;
     }
+    
+    
+    
+    
+    // Grabs all of this user's photos from the database
+    private func loadCurrentUsersPhotos() {
+        
+        // Observe the database elements.
+        FIRDatabase.database().reference().child("Photos").child(currentUser.email!.substring(i: 0, j: currentUser.email!.length() - 4)).observeSingleEvent(of: .value, with: { (snapshot) in
+            
+            if let postDictionary = snapshot.value as? [String : AnyObject] {
+                
+                // Get each post from the database.
+                for post in postDictionary {
+                    self.postsFromDB.add(post.value);
+                }
+                self.photosCollectionView.reloadData();
+            }
+        });
+        
+        
+        
+        
+    }
+
+    
+    
+    
+    
+    /////////// Collection View Stuff ////////////
+    
+    func numberOfSections(in collectionView: UICollectionView) -> Int {
+        return 1;
+    }
+    
+    
+    @available(iOS 6.0, *)
+    public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+        return postsFromDB.count;
+    }
+    
+    
+    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = photosCollectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! PostCell;
+        
+        let aPost = postsFromDB[indexPath.item] as! [String: AnyObject];
+        
+        if let imgName = aPost["image"] as? String {
+            var image: UIImage?;
+            let imgRef = FIRStorage.storage().reference().child("\(currentUser.email!)/\(imgName)");
+            imgRef.data(withMaxSize: 25 * 1024 * 1024, completion: { (data, error) in
+                
+                if error == nil {
+                    image = UIImage(data: data!)!;
+                    let cap = aPost["caption"] as? String ?? "";
+                    let likes = aPost["likes"] as? Int ?? 0;
+                    let actualPost = Post(img: image, caption: cap, user: currentUser);
+                    actualPost.likes = likes;
+                    
+                    
+                    cell.post = actualPost;
+                    cell.setupLayout();
+                    cell.setupVariables();
+
+                } else {
+                    print("ERROR LOADING IMAGE");
+                    print(error.debugDescription);
+                }
+                
+            })
+        }
+        
+        return cell;
+    }
+ 
+    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
+        return CGSize(width: 100, height: 120);
+    }
+    
+    
+    
 }

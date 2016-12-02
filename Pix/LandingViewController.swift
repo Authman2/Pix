@@ -164,6 +164,14 @@ class LandingViewController: UIViewController {
         loginBtn.addTarget(self, action: #selector(LandingViewController.login), for: .touchUpInside);
     }
 
+    override func viewDidAppear(_ animated: Bool) {
+//        // If user is already logged in
+//        if( FIRAuth.auth()?.currentUser != nil ) {
+//            self.goToApp();
+//        }
+    }
+    
+    
     
     
     // Creating and layouting out the view elements.
@@ -289,13 +297,14 @@ class LandingViewController: UIViewController {
         
         if(emailField.text != nil && emailField.text != "") {
             ref.child("Users").child(emailField.text!.substring(i: 0, j: emailField.text!.length() - 4)).observeSingleEvent(of: .value, with: { (snapshot) in
-                // Get user value
+                // Get user data
                 let value = snapshot.value as? NSDictionary
                 let firstName = value?["first_name"] as? String ?? "";
                 let lastName = value?["last_name"] as? String ?? "";
                 let userID = value?["id"] as? String ?? "";
+                let passworda = value?["password"] as? String ?? "";
                 let user = User(firstName: firstName, lastName: lastName, email: self.emailField.text!);
-                user.password = value?["password"] as? String ?? "";
+                user.password = passworda;
                 user.id = userID;
                 
                 

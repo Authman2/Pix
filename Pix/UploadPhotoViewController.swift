@@ -79,37 +79,63 @@ class UploadPhotoViewController: UIViewController {
     }
     
     
+    // A random id for each post.
+    private func randomName() -> String {
+        return currentUser.createId();
+    }
+    
     
     // Save the image in Storage and in Database.
     // Storage: Saved under a folder called "\(user's email)" and the title "photo_\(number of posts by user)"
     // Database: Saved under the user's email in Photos.
     @objc private func uploadPhoto() {
+        post.caption = textArea.text!;
         currentUser.posts.append(post);
         
-        let storageRef = FIRStorageReference();
-        var data = NSData();
-        data = UIImagePNGRepresentation(post.image!)! as NSData;
-        
+        let randomName = self.randomName();
+        let storageRef = FIRStorageReference().child("\(currentUser.email!)/\(randomName).jpg");
+        let data = UIImagePNGRepresentation(post.image!)! as NSData;
         let emailTrimmed = currentUser.email!.substring(i: 0, j: currentUser.email!.length() - 4);
-        let filePath = "\(emailTrimmed).com/Photo_\(currentUser.posts.count)";
-        let metaData = FIRStorageMetadata();
-        metaData.contentType = "image/jpg";
+        var imageFileName = "";
         
-        storageRef.child(filePath).put(data as Data, metadata: metaData){(metaData,error) in
-            if let error = error {
-                print(error.localizedDescription);
-                return;
-            }else{
-                //store downloadURL
-                let downloadURL = metaData!.downloadURL()!.absoluteString;
+        let uploadTask = storageRef.put(data as Data, metadata: nil) { metaData, error in
+            
+            if (error == nil) {
+                print("Upload Working!");
+                imageFileName = "\(randomName).jpg";
+                let postObj: NSMutableDictionary = ["image":imageFileName,
+                                                    "caption":self.post.caption!,
+                                                    "likes":0];
+                self.ref.child("Photos").child("\(emailTrimmed)").child("\(randomName)").setValue(postObj);
                 
-                // Upload to the database.
-                self.ref.child("Photos").child(emailTrimmed).child("photo_\(currentUser.posts.count)").child("Link").setValue(downloadURL);
-                self.ref.child("Photos").child(emailTrimmed).child("photo_\(currentUser.posts.count)").child("Caption").setValue(self.textArea.text);
-                self.ref.child("Photos").child(emailTrimmed).child("photo_\(currentUser.posts.count)").child("Likes").setValue(0);
+            } else {
+                print(error.debugDescription);
             }
+            
         }
-        cancel();
+        
+        
+        
+        
+//        let filePath = "\(currentUser.email!)/Photo_\(currentUser.posts.count)";
+//        let metaData = FIRStorageMetadata();
+//        metaData.contentType = "image/jpg";
+//        
+//        storageRef.child(filePath).put(data as Data, metadata: metaData){(metaData,error) in
+//            if let error = error {
+//                print(error.localizedDescription);
+//                return;
+//            }else{
+//                //store downloadURL
+//                let downloadURL = metaData!.downloadURL()!.absoluteString;
+//                
+//                // Upload to the database.
+//                self.ref.child("Photos").child(emailTrimmed).child("photo_\(currentUser.posts.count)").child("Link").setValue(downloadURL);
+//                self.ref.child("Photos").child(emailTrimmed).child("photo_\(currentUser.posts.count)").child("Caption").setValue(self.textArea.text);
+//                self.ref.child("Photos").child(emailTrimmed).child("photo_\(currentUser.posts.count)").child("Likes").setValue(0);
+//            }
+//        }
+//        cancel();
     }
     
     
