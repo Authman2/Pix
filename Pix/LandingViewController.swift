@@ -324,6 +324,9 @@ class LandingViewController: UIViewController {
                 }
                 
             }) { (error) in
+                self.statusLabel.isHidden = false;
+                self.statusLabel.textColor = UIColor.red;
+                self.statusLabel.text = "Permission Denied";
                 print(error.localizedDescription)
             }
         } else {

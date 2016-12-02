@@ -98,7 +98,7 @@ class UploadPhotoViewController: UIViewController {
         let emailTrimmed = currentUser.email!.substring(i: 0, j: currentUser.email!.length() - 4);
         var imageFileName = "";
         
-        let uploadTask = storageRef.put(data as Data, metadata: nil) { metaData, error in
+        _ = storageRef.put(data as Data, metadata: nil) { metaData, error in
             
             if (error == nil) {
                 print("Upload Working!");

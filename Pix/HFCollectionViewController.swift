@@ -49,7 +49,12 @@ class HFCollectionViewController: UICollectionViewController, UICollectionViewDe
         // Image picker
         imgPicker.delegate = self;
         imgPicker.sourceType = .photoLibrary;
-        
+        if let leftBtn =  imgPicker.navigationItem.leftBarButtonItem {
+            leftBtn.tintColor = UIColor.white;
+        }
+        if let rightBtn =  imgPicker.navigationItem.rightBarButtonItem {
+            rightBtn.tintColor = UIColor.white;
+        }
         
         // Register cell classes
         collectionView!.register(PostCell.self, forCellWithReuseIdentifier: reuseIdentifier);

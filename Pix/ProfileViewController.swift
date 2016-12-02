@@ -95,6 +95,11 @@ class ProfileViewController: UIViewController, UICollectionViewDelegate, UIColle
         followersLabel.align(.underCentered, relativeTo: nameLabel, padding: 0, width: view.frame.width, height: AutoHeight);
         followingLabel.align(.underCentered, relativeTo: followersLabel, padding: 0, width: view.frame.width, height: AutoHeight);
         photosCollectionView.anchorAndFillEdge(.bottom, xPad: 0, yPad: 0, otherSize: 300);
+        
+        
+        let logoutBtn = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(Logout));
+        logoutBtn.tintColor = UIColor.white;
+        navigationItem.leftBarButtonItem = logoutBtn;
     }
 
     
@@ -145,9 +150,22 @@ class ProfileViewController: UIViewController, UICollectionViewDelegate, UIColle
                 self.photosCollectionView.reloadData();
             }
         });
+    }
+    
+    
+    
+    
+    // Logs the user out and goes back to the landing page
+    @objc private func Logout() {
+        navigationController?.pushViewController(LandingViewController(), animated: false);
+        navigationController?.navigationBar.isHidden = true;
         
-        
-        
+        currentUser = User(firstName: "", lastName: "", email: "");
+        currentUser.id = "";
+        currentUser.password = "";
+        currentUser.followers = nil;
+        currentUser.following = nil;
+        currentUser.posts = nil;
         
     }
 
