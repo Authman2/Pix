@@ -7,11 +7,11 @@
 //
 
 import UIKit
-import Neon
 import DZNEmptyDataSet
 import Firebase
 import AUNavigationMenuController
 import SnapKit
+import Presentr
 
 class ProfileViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout , DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
 
@@ -234,6 +234,8 @@ class ProfileViewController: UICollectionViewController, UICollectionViewDelegat
                     let actualPost = Post(img: image, caption: cap, user: currentUser);
                     actualPost.likes = likes;
                     
+                    currentUser.posts.append(actualPost);
+                    
                     cell.post = actualPost;
                     cell.setupLayout();
                     
@@ -257,4 +259,25 @@ class ProfileViewController: UICollectionViewController, UICollectionViewDelegat
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
         return 5;
     }
+    
+    
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        
+        // Create the Presentr view
+        let presenter: Presentr = {
+            let pres = Presentr(presentationType: .popup);
+            pres.presentationType = .popup;
+            
+            return pres;
+        }();
+        
+        // Actually "present" the Presentr view
+        let detailPost = DetailPostView();
+        detailPost.post = currentUser.posts[indexPath.item];
+        
+        customPresentViewController(presenter, viewController: detailPost, animated: true, completion: nil);
+    }
+    
+    
+    
 }

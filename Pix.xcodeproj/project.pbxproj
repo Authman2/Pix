@@ -8,6 +8,7 @@
 
 /* Begin PBXBuildFile section */
 		19E466EE712F77175523C79E /* Pods_Pix.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F2E2AED695C23906B91EBD7 /* Pods_Pix.framework */; };
+		5A0AEE2A1DF337820075CA35 /* DetailPostView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A0AEE291DF337820075CA35 /* DetailPostView.swift */; };
 		5A12DFE81DDC9D0900660075 /* friends_icon.png in Resources */ = {isa = PBXBuildFile; fileRef = 5A12DFE71DDC9D0900660075 /* friends_icon.png */; };
 		5A12DFF41DDCD29D00660075 /* BlankImage.png in Resources */ = {isa = PBXBuildFile; fileRef = 5A12DFF31DDCD29D00660075 /* BlankImage.png */; };
 		5A12DFF71DDCE94E00660075 /* LandingViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A12DFF61DDCE94E00660075 /* LandingViewController.swift */; };
@@ -32,6 +33,7 @@
 
 /* Begin PBXFileReference section */
 		563268E86F8F81BF23A9236C /* Pods-Pix.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Pix.release.xcconfig"; path = "Pods/Target Support Files/Pods-Pix/Pods-Pix.release.xcconfig"; sourceTree = "<group>"; };
+		5A0AEE291DF337820075CA35 /* DetailPostView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = DetailPostView.swift; sourceTree = "<group>"; };
 		5A12DFE71DDC9D0900660075 /* friends_icon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = friends_icon.png; sourceTree = "<group>"; };
 		5A12DFF31DDCD29D00660075 /* BlankImage.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; name = BlankImage.png; path = Pix/BlankImage.png; sourceTree = SOURCE_ROOT; };
 		5A12DFF61DDCE94E00660075 /* LandingViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LandingViewController.swift; sourceTree = "<group>"; };
@@ -164,6 +166,7 @@
 				5A572AE71DDB940F000D2527 /* PostCell.swift */,
 				5A159E171DEBF2B800C5B9A6 /* UploadPhotoViewController.swift */,
 				5AFFA0A81DF2671200FD63F6 /* ProfilePostCell.swift */,
+				5A0AEE291DF337820075CA35 /* DetailPostView.swift */,
 			);
 			name = PostsDirectory;
 			sourceTree = "<group>";
@@ -331,6 +334,7 @@
 				5AF484BE1DE56D7F00EF503E /* Utilities.swift in Sources */,
 				5A12DFF71DDCE94E00660075 /* LandingViewController.swift in Sources */,
 				5AFF27691DDB67C1001CBF95 /* Post.swift in Sources */,
+				5A0AEE2A1DF337820075CA35 /* DetailPostView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};

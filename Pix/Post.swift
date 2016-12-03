@@ -36,6 +36,10 @@ class Post {
     var likes: Int = Int();
     
     
+    // Whether or not you can like this photo.
+    var canLike: Bool = true;
+    
+    
     // The number of favorites the post has
     var favorites: Int = Int();
     
