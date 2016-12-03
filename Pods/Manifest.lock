@@ -52,6 +52,8 @@ PODS:
   - GoogleToolboxForMac/NSString+URLArguments (2.1.0)
   - GTMSessionFetcher/Core (1.1.7)
   - Neon (0.4.0)
+  - Presentr (1.0.3)
+  - SnapKit (3.0.2)
   - Spring (1.0.3)
 
 DEPENDENCIES:
@@ -64,6 +66,8 @@ DEPENDENCIES:
   - Firebase/Database
   - Firebase/Storage
   - Neon
+  - Presentr
+  - SnapKit (~> 3.0.2)
   - Spring (from `https://github.com/MengTo/Spring.git`, branch `swift3`)
 
 EXTERNAL SOURCES:
@@ -98,8 +102,10 @@ SPEC CHECKSUMS:
   GoogleToolboxForMac: 2b2596cbb7186865e98cadf2b1e262d851c2b168
   GTMSessionFetcher: a1f8ed39e4fe21c68957daed472c7afbcdf29166
   Neon: 7fb5a9327e7e57911843f608e08f4893a74deaf9
+  Presentr: 9759bf538d9f3211a5ee1314a541a11bbea7ea71
+  SnapKit: 2e456761aa92d4d4067a7a5594c18769d451a8ad
   Spring: 3f02b5dc3308572ef177b3cad0fa7bbc4b0706f7
 
-PODFILE CHECKSUM: da649941fa5dc073525e16e382abece74f7650cc
+PODFILE CHECKSUM: bbf32b5802657385c97d9a84d9c16e0d754a7761
 
 COCOAPODS: 1.1.1

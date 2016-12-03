@@ -18,5 +18,7 @@ target 'Pix' do
     pod 'DynamicColor', '~> 3.1.0'
     pod 'DZNEmptyDataSet'
     pod 'Firebase/Storage'
+    pod 'SnapKit', '~> 3.0.2'
+    pod 'Presentr'
   
 end

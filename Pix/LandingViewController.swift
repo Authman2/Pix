@@ -165,10 +165,7 @@ class LandingViewController: UIViewController {
     }
 
     override func viewDidAppear(_ animated: Bool) {
-//        // If user is already logged in
-//        if( FIRAuth.auth()?.currentUser != nil ) {
-//            self.goToApp();
-//        }
+        
     }
     
     
@@ -218,7 +215,7 @@ class LandingViewController: UIViewController {
     
     
     // Go to the actually app: the home page with the feed for posts.
-    private func goToApp() {
+    public func goToApp() {
         // This is just a temporary view so that you can move to other views.
         let homefeed = HFCollectionViewController(collectionViewLayout: UICollectionViewFlowLayout());
         
@@ -227,7 +224,7 @@ class LandingViewController: UIViewController {
         let homefeedMenuItem = HFCollectionViewController(collectionViewLayout: UICollectionViewFlowLayout());
         let exploreView = UIViewController();
         let activityView = UIViewController();
-        let profileView = ProfileViewController();
+        let profileView = ProfileViewController(collectionViewLayout: UICollectionViewFlowLayout());
         
         
         // Set up the navigation controller.
@@ -245,7 +242,7 @@ class LandingViewController: UIViewController {
     
     
     // Sign up for a new account. First show the full name area, then actually sign up.
-    @objc private func signUp() {
+    @objc public func signUp() {
         signUpBtn.animateButtonClick();
         
         // First time clicking? Show full name field.
@@ -292,7 +289,7 @@ class LandingViewController: UIViewController {
     
     
     // Login to the app.
-    @objc private func login() {
+    @objc public func login() {
         loginBtn.animateButtonClick();
         
         if(emailField.text != nil && emailField.text != "") {

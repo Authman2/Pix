@@ -10,8 +10,10 @@ import UIKit
 import Neon
 import DZNEmptyDataSet
 import Firebase
+import AUNavigationMenuController
+import SnapKit
 
-class ProfileViewController: UIViewController, UICollectionViewDelegate, UICollectionViewDataSource,UICollectionViewDelegateFlowLayout , DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
+class ProfileViewController: UICollectionViewController, UICollectionViewDelegateFlowLayout , DZNEmptyDataSetSource, DZNEmptyDataSetDelegate {
 
 
     
@@ -30,8 +32,9 @@ class ProfileViewController: UIViewController, UICollectionViewDelegate, UIColle
     let nameLabel: UILabel = {
         let l = UILabel();
         l.translatesAutoresizingMaskIntoConstraints = false;
-        l.text = currentUser.firstName + " " + currentUser.lastName;    // By the time you get here, current user will not be nil
+        l.text = currentUser.firstName! + " " + currentUser.lastName!;    // By the time you get here, current user will not be nil
         l.textAlignment = .center;
+        l.textColor = UIColor.black;
         
         return l;
     }();
@@ -43,6 +46,7 @@ class ProfileViewController: UIViewController, UICollectionViewDelegate, UIColle
         l.translatesAutoresizingMaskIntoConstraints = false;
         l.text = "Followers: \(currentUser.followers.count)";
         l.textAlignment = .center;
+        l.textColor = UIColor.black;
         
         return l;
     }();
@@ -54,13 +58,10 @@ class ProfileViewController: UIViewController, UICollectionViewDelegate, UIColle
         l.translatesAutoresizingMaskIntoConstraints = false;
         l.text = "Following: \(currentUser.following.count)";
         l.textAlignment = .center;
+        l.textColor = UIColor.black;
         
         return l;
     }();
-    
-    
-    // The collection view that displays all of the user's photos.
-    var photosCollectionView: UICollectionView!
     
     
     // The posts from the db
@@ -84,17 +85,44 @@ class ProfileViewController: UIViewController, UICollectionViewDelegate, UIColle
         navigationItem.title = "Profile";
         setupCollectionView();
         
+        
+        // Add all the components
         view.addSubview(profilePic);
         view.addSubview(nameLabel);
         view.addSubview(followersLabel);
         view.addSubview(followingLabel);
-        view.addSubview(photosCollectionView);
         
-        profilePic.align(.underCentered, relativeTo: (navigationController?.navigationBar)!, padding: 30, width: 90, height: 90);
-        nameLabel.align(.underCentered, relativeTo: profilePic, padding: 10, width: view.frame.width, height: AutoHeight);
-        followersLabel.align(.underCentered, relativeTo: nameLabel, padding: 0, width: view.frame.width, height: AutoHeight);
-        followingLabel.align(.underCentered, relativeTo: followersLabel, padding: 0, width: view.frame.width, height: AutoHeight);
-        photosCollectionView.anchorAndFillEdge(.bottom, xPad: 0, yPad: 0, otherSize: 300);
+ 
+        // SnapKit
+        profilePic.snp.makeConstraints { (maker: ConstraintMaker) in
+            maker.width.height.equalTo(90);
+            maker.top.equalTo(view).offset(80);
+            maker.centerX.equalTo(view);
+        }
+        nameLabel.snp.makeConstraints { (maker: ConstraintMaker) in
+            maker.width.equalTo(view.frame.width);
+            maker.height.equalTo(30);
+            maker.centerX.equalTo(view);
+            maker.top.equalTo(profilePic.snp.bottom).offset(10);
+        }
+        followersLabel.snp.makeConstraints { (maker: ConstraintMaker) in
+            maker.width.equalTo(view.frame.width);
+            maker.height.equalTo(30);
+            maker.centerX.equalTo(view);
+            maker.top.equalTo(nameLabel.snp.bottom);
+        }
+        followingLabel.snp.makeConstraints { (maker: ConstraintMaker) in
+            maker.width.equalTo(view.frame.width);
+            maker.height.equalTo(30);
+            maker.centerX.equalTo(view);
+            maker.top.equalTo(followersLabel.snp.bottom);
+        }
+        collectionView?.snp.makeConstraints({ (maker: ConstraintMaker) in
+            maker.width.equalTo(view.frame.width);
+            maker.centerX.equalTo(view);
+            maker.top.equalTo(followingLabel.snp.bottom).offset(10);
+            maker.bottom.equalTo(view.snp.bottom);
+        })
         
         
         let logoutBtn = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(Logout));
@@ -115,14 +143,15 @@ class ProfileViewController: UIViewController, UICollectionViewDelegate, UIColle
         let layout = UICollectionViewFlowLayout();
         layout.scrollDirection = .vertical;
         
-        photosCollectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 300), collectionViewLayout: layout);
-        photosCollectionView.register(ProfilePostCell.self, forCellWithReuseIdentifier: "Cell");
-        photosCollectionView.backgroundColor = view.backgroundColor;
-        photosCollectionView.backgroundColor = UIColor.blue;
-        photosCollectionView.emptyDataSetDelegate = self;
-        photosCollectionView.emptyDataSetSource = self;
-        photosCollectionView.delegate = self;
-        photosCollectionView.dataSource = self;
+        let colViewFrame = CGRect(x: 0, y: 0, width: 0, height: 0);
+        
+        collectionView = UICollectionView(frame: colViewFrame, collectionViewLayout: layout);
+        collectionView?.register(ProfilePostCell.self, forCellWithReuseIdentifier: "Cell");
+        collectionView?.backgroundColor = view.backgroundColor;
+        collectionView?.emptyDataSetDelegate = self;
+        collectionView?.emptyDataSetSource = self;
+        collectionView?.delegate = self;
+        collectionView?.dataSource = self;
     }
     
     
@@ -147,7 +176,7 @@ class ProfileViewController: UIViewController, UICollectionViewDelegate, UIColle
                 for post in postDictionary {
                     self.postsFromDB.add(post.value);
                 }
-                self.photosCollectionView.reloadData();
+                self.collectionView?.reloadData();
             }
         });
     }
@@ -157,6 +186,9 @@ class ProfileViewController: UIViewController, UICollectionViewDelegate, UIColle
     
     // Logs the user out and goes back to the landing page
     @objc private func Logout() {
+        let nav = navigationController as! AUNavigationMenuController;
+        nav.open = true;
+        nav.togglePulldownMenu();
         navigationController?.pushViewController(LandingViewController(), animated: false);
         navigationController?.navigationBar.isHidden = true;
         
@@ -166,7 +198,6 @@ class ProfileViewController: UIViewController, UICollectionViewDelegate, UIColle
         currentUser.followers = nil;
         currentUser.following = nil;
         currentUser.posts = nil;
-        
     }
 
     
@@ -175,26 +206,26 @@ class ProfileViewController: UIViewController, UICollectionViewDelegate, UIColle
     
     /////////// Collection View Stuff ////////////
     
-    func numberOfSections(in collectionView: UICollectionView) -> Int {
+    override func numberOfSections(in collectionView: UICollectionView) -> Int {
         return 1;
     }
     
     
     @available(iOS 6.0, *)
-    public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
+    override public func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
         return postsFromDB.count;
     }
     
     
-    func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = photosCollectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! ProfilePostCell;
+    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! ProfilePostCell;
         
         let aPost = postsFromDB[indexPath.item] as! [String: AnyObject];
         
         if let imgName = aPost["image"] as? String {
             var image: UIImage?;
             let imgRef = FIRStorage.storage().reference().child("\(currentUser.email!)/\(imgName)");
-            imgRef.data(withMaxSize: 25 * 1024 * 1024, completion: { (data, error) in
+            imgRef.data(withMaxSize: 40 * 1024 * 1024, completion: { (data, error) in
                 
                 if error == nil {
                     image = UIImage(data: data!)!;
@@ -202,14 +233,6 @@ class ProfileViewController: UIViewController, UICollectionViewDelegate, UIColle
                     let likes = aPost["likes"] as? Int ?? 0;
                     let actualPost = Post(img: image, caption: cap, user: currentUser);
                     actualPost.likes = likes;
-                    
-                    
-                    if(currentUser.posts.contains(item: actualPost)) {
-                        print("YES, Working!");
-                    } else {
-                        print("Not contained");
-                    }
-                    
                     
                     cell.post = actualPost;
                     cell.setupLayout();
@@ -227,11 +250,11 @@ class ProfileViewController: UIViewController, UICollectionViewDelegate, UIColle
  
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 100, height: 120);
+        return CGSize(width: 120, height: 120);
     }
     
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return 20;
+        return 5;
     }
 }

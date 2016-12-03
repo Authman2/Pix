@@ -44,6 +44,16 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>Presentr.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>SnapKit.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>Spring.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -57,17 +67,22 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>1F93D44ED316F918CCC105C7E42F3E9B</key>
+		<key>3F9C0624A7DEBC2418B0E7D6496D8C5B</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>283A43B110F50BE8E6CCDAA97809A7E8</key>
+		<key>59FB3989C32A9FBCEA8D1A8FAC717287</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
 		<key>76BD4592010354D6C23D6ECCA20D83A8</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>A72CAA7B96C8487AE3689428FD3C65BA</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -88,6 +103,11 @@
 			<true/>
 		</dict>
 		<key>EF8525412A2229DEFA6C5415CAB7076C</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>F79EEBF46296688741A41FF2D71845BB</key>
 		<dict>
 			<key>primary</key>
 			<true/>

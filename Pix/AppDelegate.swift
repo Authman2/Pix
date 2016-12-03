@@ -30,8 +30,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window?.rootViewController = landingViewController;
         
         
-        
-        
         // Appearance
         UINavigationBar.appearance().barTintColor = UIColor(red: 41/255, green: 200/255, blue: 153/255, alpha: 1);
         UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white];

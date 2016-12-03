@@ -113,29 +113,7 @@ class UploadPhotoViewController: UIViewController {
             }
             
         }
-        
-        
-        
-        
-//        let filePath = "\(currentUser.email!)/Photo_\(currentUser.posts.count)";
-//        let metaData = FIRStorageMetadata();
-//        metaData.contentType = "image/jpg";
-//        
-//        storageRef.child(filePath).put(data as Data, metadata: metaData){(metaData,error) in
-//            if let error = error {
-//                print(error.localizedDescription);
-//                return;
-//            }else{
-//                //store downloadURL
-//                let downloadURL = metaData!.downloadURL()!.absoluteString;
-//                
-//                // Upload to the database.
-//                self.ref.child("Photos").child(emailTrimmed).child("photo_\(currentUser.posts.count)").child("Link").setValue(downloadURL);
-//                self.ref.child("Photos").child(emailTrimmed).child("photo_\(currentUser.posts.count)").child("Caption").setValue(self.textArea.text);
-//                self.ref.child("Photos").child(emailTrimmed).child("photo_\(currentUser.posts.count)").child("Likes").setValue(0);
-//            }
-//        }
-//        cancel();
+        cancel();
     }
     
     
