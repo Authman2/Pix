@@ -27,6 +27,7 @@
 		5AFF27691DDB67C1001CBF95 /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AFF27681DDB67C1001CBF95 /* Post.swift */; };
 		5AFF276C1DDB69AB001CBF95 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AFF276B1DDB69AB001CBF95 /* User.swift */; };
 		5AFF276F1DDB6FF7001CBF95 /* Ext.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AFF276E1DDB6FF7001CBF95 /* Ext.swift */; };
+		5AFFA0A91DF2671200FD63F6 /* ProfilePostCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AFFA0A81DF2671200FD63F6 /* ProfilePostCell.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
@@ -52,6 +53,7 @@
 		5AFF27681DDB67C1001CBF95 /* Post.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		5AFF276B1DDB69AB001CBF95 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		5AFF276E1DDB6FF7001CBF95 /* Ext.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Ext.swift; sourceTree = "<group>"; };
+		5AFFA0A81DF2671200FD63F6 /* ProfilePostCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfilePostCell.swift; sourceTree = "<group>"; };
 		6F2E2AED695C23906B91EBD7 /* Pods_Pix.framework */ = {isa = PBXFileReference; explicitFileType = wrapper.framework; includeInIndex = 0; path = Pods_Pix.framework; sourceTree = BUILT_PRODUCTS_DIR; };
 		FDB360F8138C0890D86A77EE /* Pods-Pix.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Pix.debug.xcconfig"; path = "Pods/Target Support Files/Pods-Pix/Pods-Pix.debug.xcconfig"; sourceTree = "<group>"; };
 /* End PBXFileReference section */
@@ -161,6 +163,7 @@
 				5AFF27681DDB67C1001CBF95 /* Post.swift */,
 				5A572AE71DDB940F000D2527 /* PostCell.swift */,
 				5A159E171DEBF2B800C5B9A6 /* UploadPhotoViewController.swift */,
+				5AFFA0A81DF2671200FD63F6 /* ProfilePostCell.swift */,
 			);
 			name = PostsDirectory;
 			sourceTree = "<group>";
@@ -321,6 +324,7 @@
 				5AFF276F1DDB6FF7001CBF95 /* Ext.swift in Sources */,
 				5AEEEC651DE90B3E00D8BAC4 /* ProfileViewController.swift in Sources */,
 				5AFF27661DDB66C2001CBF95 /* HFCollectionViewController.swift in Sources */,
+				5AFFA0A91DF2671200FD63F6 /* ProfilePostCell.swift in Sources */,
 				5A159E181DEBF2B800C5B9A6 /* UploadPhotoViewController.swift in Sources */,
 				5AFF27511DDB60F4001CBF95 /* AppDelegate.swift in Sources */,
 				5AFF276C1DDB69AB001CBF95 /* User.swift in Sources */,

@@ -27,10 +27,24 @@ class PostCell: UICollectionViewCell {
     
     
     // The photo that is being uploaded
-    private let photo: UIImageView = UIImageView();
+    private let photo: UIImageView = {
+        let photo = UIImageView();
+        photo.contentMode = .scaleToFill;
+        photo.translatesAutoresizingMaskIntoConstraints = false;
+        photo.image = UIImage(named: "BlankImage.png");
+        
+        return photo;
+    }();
     
     // The profile photo of the user
-    private let profilePhoto: UIImageView = UIImageView();
+    private let profilePhoto: UIImageView = {
+        let profilePhoto = UIImageView();
+        profilePhoto.contentMode = .scaleToFill;
+        profilePhoto.translatesAutoresizingMaskIntoConstraints = false;
+        profilePhoto.image = UIImage(named: "friends_icon.png");
+        
+        return profilePhoto;
+    }();
     
     // The label that displays the uploader's name
     private let nameLabel: UILabel = UILabel();
@@ -85,19 +99,10 @@ class PostCell: UICollectionViewCell {
         // Setup variables
         
         // Setup uploaded photo
-        photo.contentMode = .scaleAspectFit;
-        photo.translatesAutoresizingMaskIntoConstraints = false;
-        if let img = post.image {
-            photo.image = img;
-        } else {
-            photo.image = UIImage(named: "BlankImage.png");
-        }
-        
+        if let img = post.image { photo.image = img; }
         
         // Setup profile image
-        profilePhoto.contentMode = .scaleAspectFit;
-        profilePhoto.translatesAutoresizingMaskIntoConstraints = false;
-        profilePhoto.image = UIImage(named: "friends_icon.png");     // Change later
+        // if let (current user has profile pic), set profile picture to that.
         
         
         // Setup name label

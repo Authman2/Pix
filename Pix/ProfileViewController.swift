@@ -116,7 +116,7 @@ class ProfileViewController: UIViewController, UICollectionViewDelegate, UIColle
         layout.scrollDirection = .vertical;
         
         photosCollectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: 300), collectionViewLayout: layout);
-        photosCollectionView.register(PostCell.self, forCellWithReuseIdentifier: "Cell");
+        photosCollectionView.register(ProfilePostCell.self, forCellWithReuseIdentifier: "Cell");
         photosCollectionView.backgroundColor = view.backgroundColor;
         photosCollectionView.backgroundColor = UIColor.blue;
         photosCollectionView.emptyDataSetDelegate = self;
@@ -187,7 +187,7 @@ class ProfileViewController: UIViewController, UICollectionViewDelegate, UIColle
     
     
     func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = photosCollectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! PostCell;
+        let cell = photosCollectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! ProfilePostCell;
         
         let aPost = postsFromDB[indexPath.item] as! [String: AnyObject];
         
@@ -204,10 +204,16 @@ class ProfileViewController: UIViewController, UICollectionViewDelegate, UIColle
                     actualPost.likes = likes;
                     
                     
+                    if(currentUser.posts.contains(item: actualPost)) {
+                        print("YES, Working!");
+                    } else {
+                        print("Not contained");
+                    }
+                    
+                    
                     cell.post = actualPost;
                     cell.setupLayout();
-                    cell.setupVariables();
-
+                    
                 } else {
                     print("ERROR LOADING IMAGE");
                     print(error.debugDescription);
@@ -225,5 +231,7 @@ class ProfileViewController: UIViewController, UICollectionViewDelegate, UIColle
     }
     
     
-    
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return 20;
+    }
 }

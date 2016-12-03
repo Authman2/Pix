@@ -90,3 +90,27 @@ public extension SpringButton {
     
     
 }
+
+
+public extension Array {
+    
+    public func contains(item: AnyObject) -> Bool {
+        var b = false;
+        var s = "";
+        let target = "\(item)";
+        
+        for itm in self {
+            s += "\(itm)";
+        }
+        
+        if(s.contains(target)) {
+            b = true;
+        }
+        
+        
+        
+        return b;
+    }
+    
+    
+}
