@@ -32,7 +32,7 @@ public extension String {
     
     
     /* Returns an integer of the index of the given string. */
-    public mutating func indexOf(string: String) -> Int {
+    public func indexOf(string: String) -> Int {
         var ind = -1;
         var i = -1;
         
@@ -50,7 +50,7 @@ public extension String {
     
     
     /* Returns a certain part of the string */
-    public mutating func substring(i: Int, j: Int) -> String {
+    public func substring(i: Int, j: Int) -> String {
         var result = "";
         var chars = Array(self.characters);
         var indx = i;
@@ -92,21 +92,41 @@ public extension SpringButton {
 }
 
 
+
+public extension NSObject {
+    /// Returns a Boolean value indicating whether two values are equal.
+    ///
+    /// Equality is the inverse of inequality. For any values `a` and `b`,
+    /// `a == b` implies that `a != b` is `false`.
+    ///
+    /// - Parameters:
+    ///   - lhs: A value to compare.
+    ///   - rhs: Another value to compare.
+    public static func ==(lhs: NSObject, rhs: NSObject) -> Bool {
+        if lhs.isEqual(rhs) {
+            return true;
+        }
+        
+        return false;
+    }
+
+}
+
+
 public extension Array {
     
-    public func contains(item: AnyObject) -> Bool {
+    /// Returns whether or not the array contains the given object.
+    public func contains(item: NSObject) -> Bool {
         var b = false;
-        var s = "";
-        let target = "\(item)";
         
         for itm in self {
-            s += "\(itm)";
+            let tempItm = itm as! NSObject;
+            
+            if tempItm.isEqual(item) {
+                b = true;
+                break;
+            }
         }
-        
-        if(s.contains(target)) {
-            b = true;
-        }
-        
         
         
         return b;

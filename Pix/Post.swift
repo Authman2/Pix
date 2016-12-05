@@ -18,7 +18,7 @@ import Foundation
 import UIKit
 
 
-class Post {
+class Post: NSObject {
     
     // The uploaded image
     var image: UIImage?;
@@ -44,13 +44,17 @@ class Post {
     var favorites: Int = Int();
     
     
+    // The id from the Firebase database.
+    var id: String!;
+    
+    
     
     
     
     
     ///////// Constructors /////////
     
-    init() {}
+    override init() {}
     
     init(img: UIImage?, caption: String, user: User) {
         self.image = img;

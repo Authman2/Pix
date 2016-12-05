@@ -264,7 +264,7 @@ class LandingViewController: UIViewController {
             FIRAuth.auth()?.createUser(withEmail: emailField.text!, password: passwordField.text!, completion: { (user: FIRUser?, error: Error?) in
 
                 if(error == nil) {
-                    var name = self.fullNameField.text!;
+                    let name = self.fullNameField.text!;
                     let usr = User();
                     usr.firstName = name.substring(i: 0, j: name.indexOf(string: " "));
                     usr.lastName = name.substring(i: name.indexOf(string: " ") + 1 , j: name.length());

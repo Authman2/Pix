@@ -231,10 +231,15 @@ class ProfileViewController: UICollectionViewController, UICollectionViewDelegat
                     image = UIImage(data: data!)!;
                     let cap = aPost["caption"] as? String ?? "";
                     let likes = aPost["likes"] as? Int ?? 0;
+                    
                     let actualPost = Post(img: image, caption: cap, user: currentUser);
+                    actualPost.id = imgName.substring(i: 0, j: imgName.length() - 4);
                     actualPost.likes = likes;
                     
-                    currentUser.posts.append(actualPost);
+                    // If the current user's "posts" array does not contain one of the posts, add it. Then it can be used later by just calling it from the array.
+                    if (!currentUser.posts.contains(item: actualPost)) {
+                        currentUser.posts.append(actualPost);
+                    }
                     
                     cell.post = actualPost;
                     cell.setupLayout();
@@ -274,6 +279,7 @@ class ProfileViewController: UICollectionViewController, UICollectionViewDelegat
         // Actually "present" the Presentr view
         let detailPost = DetailPostView();
         detailPost.post = currentUser.posts[indexPath.item];
+        detailPost.setup();
         
         customPresentViewController(presenter, viewController: detailPost, animated: true, completion: nil);
     }
