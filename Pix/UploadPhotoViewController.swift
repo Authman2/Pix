@@ -105,7 +105,8 @@ class UploadPhotoViewController: UIViewController {
                 imageFileName = "\(randomName).jpg";
                 let postObj: NSMutableDictionary = ["image":imageFileName,
                                                     "caption":self.post.caption!,
-                                                    "likes":0];
+                                                    "likes":0,
+                                                    "uploaderLiked":false];
                 self.ref.child("Photos").child("\(emailTrimmed)").child("\(randomName)").setValue(postObj);
                 
             } else {

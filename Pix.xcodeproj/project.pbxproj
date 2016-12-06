@@ -19,6 +19,7 @@
 		5A6229CD1DE5720D002510AA /* ChameleonFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A6229CC1DE5720D002510AA /* ChameleonFramework.framework */; };
 		5A756DCA1DE5E802003FD2C0 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5A756DC91DE5E802003FD2C0 /* GoogleService-Info.plist */; };
 		5A785AA01DE5630600EF5323 /* Neon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5AAB2DB61DE5628C0007A726 /* Neon.framework */; };
+		5A8B55CA1DF5E8B20014769B /* ExploreViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A8B55C91DF5E8B20014769B /* ExploreViewController.swift */; };
 		5AEEEC651DE90B3E00D8BAC4 /* ProfileViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AEEEC641DE90B3E00D8BAC4 /* ProfileViewController.swift */; };
 		5AF484BE1DE56D7F00EF503E /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF484BD1DE56D7F00EF503E /* Utilities.swift */; };
 		5AFF27511DDB60F4001CBF95 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AFF27501DDB60F4001CBF95 /* AppDelegate.swift */; };
@@ -43,6 +44,7 @@
 		5A6229CA1DE5720A002510AA /* Spring.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Spring.framework; path = "../../../../Library/Developer/Xcode/DerivedData/Pix-ctukwtofcongdnezqcfllkcuomcc/Build/Products/Debug-iphonesimulator/Spring/Spring.framework"; sourceTree = "<group>"; };
 		5A6229CC1DE5720D002510AA /* ChameleonFramework.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ChameleonFramework.framework; path = "../../../../Library/Developer/Xcode/DerivedData/Pix-ctukwtofcongdnezqcfllkcuomcc/Build/Products/Debug-iphonesimulator/ChameleonFramework/ChameleonFramework.framework"; sourceTree = "<group>"; };
 		5A756DC91DE5E802003FD2C0 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		5A8B55C91DF5E8B20014769B /* ExploreViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreViewController.swift; sourceTree = "<group>"; };
 		5AAB2DB61DE5628C0007A726 /* Neon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Neon.framework; path = "../../../../Library/Developer/Xcode/DerivedData/Pix-ctukwtofcongdnezqcfllkcuomcc/Build/Products/Debug-iphonesimulator/Neon/Neon.framework"; sourceTree = "<group>"; };
 		5AEEEC641DE90B3E00D8BAC4 /* ProfileViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileViewController.swift; sourceTree = "<group>"; };
 		5AF484BD1DE56D7F00EF503E /* Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
@@ -106,6 +108,14 @@
 			name = LoginSignUpDirectory;
 			sourceTree = "<group>";
 		};
+		5A8B55C81DF5E8980014769B /* ExploreDirectory */ = {
+			isa = PBXGroup;
+			children = (
+				5A8B55C91DF5E8B20014769B /* ExploreViewController.swift */,
+			);
+			name = ExploreDirectory;
+			sourceTree = "<group>";
+		};
 		5AF484BC1DE56D6E00EF503E /* Utilities */ = {
 			isa = PBXGroup;
 			children = (
@@ -140,6 +150,7 @@
 				5AFF276D1DDB6FE6001CBF95 /* Extensions */,
 				5AFF276A1DDB6925001CBF95 /* UsersDirectory */,
 				5AFF27641DDB667D001CBF95 /* HomeDirectory */,
+				5A8B55C81DF5E8980014769B /* ExploreDirectory */,
 				5AFF27671DDB67B1001CBF95 /* PostsDirectory */,
 				5A12DFF51DDCE8EB00660075 /* LoginSignUpDirectory */,
 				5AF484BC1DE56D6E00EF503E /* Utilities */,
@@ -333,6 +344,7 @@
 				5AFF276C1DDB69AB001CBF95 /* User.swift in Sources */,
 				5AF484BE1DE56D7F00EF503E /* Utilities.swift in Sources */,
 				5A12DFF71DDCE94E00660075 /* LandingViewController.swift in Sources */,
+				5A8B55CA1DF5E8B20014769B /* ExploreViewController.swift in Sources */,
 				5AFF27691DDB67C1001CBF95 /* Post.swift in Sources */,
 				5A0AEE2A1DF337820075CA35 /* DetailPostView.swift in Sources */,
 			);

@@ -222,7 +222,7 @@ class LandingViewController: UIViewController {
         
         // The views that the menu items will take the user to.
         let homefeedMenuItem = HFCollectionViewController(collectionViewLayout: UICollectionViewFlowLayout());
-        let exploreView = UIViewController();
+        let exploreView = ExploreViewController();
         let activityView = UIViewController();
         let profileView = ProfileViewController(collectionViewLayout: UICollectionViewFlowLayout());
         

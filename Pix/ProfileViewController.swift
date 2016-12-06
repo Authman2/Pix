@@ -231,10 +231,12 @@ class ProfileViewController: UICollectionViewController, UICollectionViewDelegat
                     image = UIImage(data: data!)!;
                     let cap = aPost["caption"] as? String ?? "";
                     let likes = aPost["likes"] as? Int ?? 0;
+                    let canLike = aPost["uploaderLiked"] as? Bool ?? false;
                     
                     let actualPost = Post(img: image, caption: cap, user: currentUser);
                     actualPost.id = imgName.substring(i: 0, j: imgName.length() - 4);
                     actualPost.likes = likes;
+                    actualPost.canLike = canLike;
                     
                     // If the current user's "posts" array does not contain one of the posts, add it. Then it can be used later by just calling it from the array.
                     if (!currentUser.posts.contains(item: actualPost)) {
