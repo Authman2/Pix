@@ -147,7 +147,7 @@ class SignUpPage: UIViewController {
                     
                     
                     // Create a user and save it to the firebase database.
-                    let user = User(first: name.substring(i: 0, j: name.indexOf(string: " ")), last: name.substring(i: name.indexOf(string: " "), j: name.length()), email: em);
+                    let user = User(first: name.substring(i: 0, j: name.indexOf(string: " ")), last: name.substring(i: name.indexOf(string: " ") + 1, j: name.length()), email: em);
                     user.password = pass;
                     
                     
@@ -164,6 +164,8 @@ class SignUpPage: UIViewController {
                             print(error.debugDescription);
                         }
                     });
+                    
+                    dismiss(animated: true, completion: nil);
                 }
             }
         }

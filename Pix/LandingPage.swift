@@ -82,6 +82,20 @@ class LandingPage: UIViewController {
     }();
     
     
+    /* Displays the status of loggin in. */
+    let statusLabel: UILabel = {
+        let s = UILabel();
+        s.translatesAutoresizingMaskIntoConstraints = false;
+        s.textColor = UIColor.red;
+        s.isHidden = true;
+        s.isUserInteractionEnabled = false;
+        s.textAlignment = .center;
+        
+        return s;
+    }();
+    
+    
+    
     
     /* The firebase database reference. */
     let fireRef: FIRDatabaseReference! = FIRDatabase.database().reference();
@@ -109,6 +123,7 @@ class LandingPage: UIViewController {
         btnView.addSubview(signupButton);
         btnView.addSubview(loginButton);
         view.addSubview(btnView);
+        view.addSubview(statusLabel);
         
         
         titleLabel.snp.makeConstraints { (maker: ConstraintMaker) in
@@ -125,8 +140,14 @@ class LandingPage: UIViewController {
             maker.width.equalTo(view.width);
             maker.height.equalTo(30);
         }
+        statusLabel.snp.makeConstraints { (maker: ConstraintMaker) in
+            maker.top.equalTo(passwordField.snp.bottom);
+            maker.width.equalTo(view.width);
+            maker.height.equalTo(30);
+            maker.centerX.equalTo(view.snp.centerX);
+        }
         btnView.snp.makeConstraints { (maker: ConstraintMaker) in
-            maker.top.equalTo(passwordField.snp.bottom).offset(25);
+            maker.top.equalTo(statusLabel.snp.bottom).offset(25);
             maker.width.equalTo(view.width);
             maker.height.equalTo(100);
         }
@@ -146,6 +167,8 @@ class LandingPage: UIViewController {
         
         signupButton.addTarget(self, action: #selector(signUp), for: .touchUpInside);
         loginButton.addTarget(self, action: #selector(login), for: .touchUpInside);
+        let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard));
+        view.addGestureRecognizer(tap);
     }
     
     
@@ -164,9 +187,15 @@ class LandingPage: UIViewController {
         loginButton.animateButtonClick();
         
         // Sign in.
-        FIRAuth.auth()?.signIn(withEmail: emailField.text!, password: passwordField.text!, completion: { (usr: FIRUser?, error: Error?) in
+        if((self.emailField.text?.length())! > 0 && (self.passwordField.text?.length())! > 0) {
+            FIRAuth.auth()?.signIn(withEmail: emailField.text!, password: passwordField.text!, completion: { (usr: FIRUser?, error: Error?) in
             if error != nil {
-                print(error.debugDescription);
+
+                print("----------> Wrong Password!");
+                self.statusLabel.textColor = UIColor.red;
+                self.statusLabel.isHidden = false;
+                self.statusLabel.text = "Incorrect password.";
+                
             } else {
                 // Search in the database for the user with the email that has been entered.
                 let emailTrimmed = self.emailField.text!.substring(i: 0, j: self.emailField.text!.indexOf(string: "@"));
@@ -186,17 +215,20 @@ class LandingPage: UIViewController {
                         currentUser = usr;
                         
                         print("----------> Logged in!");
-                    } else {
-                        
-                        print("----------> Wrong Password!");
-                        
+                        self.statusLabel.textColor = UIColor.green;
+                        self.statusLabel.isHidden = false;
+                        self.statusLabel.text = "Logging In!";
                     }
-                    
                 });
                 print("----------> Signed In!");
             }
         });
-        
+        } else {
+            print("----------> Invalid Credentials!");
+            self.statusLabel.textColor = UIColor.red;
+            self.statusLabel.isHidden = false;
+            self.statusLabel.text = "Invalid Credentials.";
+        }
     }
     
     
@@ -205,8 +237,10 @@ class LandingPage: UIViewController {
     
     
     
-    
-    
+    // Close the keyboard
+    @objc private func dismissKeyboard() {
+        view.endEditing(true);
+    }
     
     
     
