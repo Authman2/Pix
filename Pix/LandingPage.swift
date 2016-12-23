@@ -9,6 +9,7 @@
 import UIKit
 import SnapKit
 import Firebase
+import Spring
 
 class LandingPage: UIViewController {
     
@@ -70,8 +71,8 @@ class LandingPage: UIViewController {
     
     
     /* The login button. */
-    let loginButton: UIButton = {
-        let s = UIButton();
+    let loginButton: SpringButton = {
+        let s = SpringButton();
         s.setTitle("Login", for: .normal);
         s.backgroundColor = UIColor(red: 21/255, green: 180/255, blue: 133/255, alpha: 1);
         s.layer.cornerRadius = 25;
@@ -83,7 +84,7 @@ class LandingPage: UIViewController {
     
     
     /* The firebase database reference. */
-    let fireRef: FIRDatabaseReference! = FIRDatabaseReference();
+    let fireRef: FIRDatabaseReference! = FIRDatabase.database().reference();
     
     
     
@@ -160,6 +161,41 @@ class LandingPage: UIViewController {
     
     /* Logs the user in and sends them to the home feed page. */
     @objc func login() {
+        loginButton.animateButtonClick();
+        
+        // Sign in.
+        FIRAuth.auth()?.signIn(withEmail: emailField.text!, password: passwordField.text!, completion: { (usr: FIRUser?, error: Error?) in
+            if error != nil {
+                print(error.debugDescription);
+            } else {
+                // Search in the database for the user with the email that has been entered.
+                let emailTrimmed = self.emailField.text!.substring(i: 0, j: self.emailField.text!.indexOf(string: "@"));
+                
+                self.fireRef.child("Users").child(emailTrimmed).observeSingleEvent(of: .value, with: { (snapshot) in
+                    let value = snapshot.value as? NSDictionary
+                    
+                    let first = value?["first_name"] as? String ?? "";
+                    let last = value?["last_name"] as? String ?? "";
+                    let pass = value?["password"] as? String ?? "";
+                    let em = value?["email"] as? String ?? "";
+                    
+                    // The password is correct.
+                    if pass == self.passwordField.text! {
+                        let usr = User(first: first, last: last, email: em);
+                        usr.password = pass;
+                        currentUser = usr;
+                        
+                        print("----------> Logged in!");
+                    } else {
+                        
+                        print("----------> Wrong Password!");
+                        
+                    }
+                    
+                });
+                print("----------> Signed In!");
+            }
+        });
         
     }
     
