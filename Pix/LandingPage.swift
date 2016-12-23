@@ -113,8 +113,11 @@ class LandingPage: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad();
         view.backgroundColor = UIColor(red: 41/255, green: 200/255, blue: 153/255, alpha: 1);
+        navigationController?.navigationBar.isHidden = true;
         
         
+        /* Set up the view. */
+       
         view.addSubview(titleLabel);
         view.addSubview(emailField);
         view.addSubview(passwordField);
@@ -223,6 +226,7 @@ class LandingPage: UIViewController {
                 print("----------> Signed In!");
             }
         });
+            self.goToApp();
         } else {
             print("----------> Invalid Credentials!");
             self.statusLabel.textColor = UIColor.red;
@@ -234,6 +238,10 @@ class LandingPage: UIViewController {
     
     
     
+    /* Tells the program to take the user to the actually application. */
+    private func goToApp() {
+        navigationController?.pushViewController(profilePage, animated: false);
+    }
     
     
     

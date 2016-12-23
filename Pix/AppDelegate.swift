@@ -10,6 +10,13 @@ import UIKit
 import Firebase
 import AUNavigationMenuController
 
+
+/* The different pages are global for easy access. */
+var profilePage: ProfilePage!
+
+
+
+
 @UIApplicationMain
 class AppDelegate: UIResponder, UIApplicationDelegate {
 
@@ -24,16 +31,23 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         window = UIWindow(frame: UIScreen.main.bounds);
         window?.makeKeyAndVisible();
         
-        
-        // Create the views
-        let landingPage = LandingPage();
-        window?.rootViewController = landingPage;
-        
-        
         // Appearance
         UINavigationBar.appearance().barTintColor = UIColor(red: 41/255, green: 200/255, blue: 153/255, alpha: 1);
         UINavigationBar.appearance().titleTextAttributes = [NSForegroundColorAttributeName: UIColor.white];
         application.statusBarStyle = .lightContent;
+        
+        
+        
+        // Create the views
+        let landingPage = LandingPage();
+        profilePage = ProfilePage();
+        let navContr = AUNavigationMenuController(rootViewController: landingPage);
+        
+        /* Add all of the views as menu items. */
+        navContr.addMenuItem(name: "Profile", image: nil, destination: profilePage);
+        
+        /* Set the root view controller. */
+        window?.rootViewController = navContr;
         
         
         
