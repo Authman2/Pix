@@ -37,10 +37,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         application.statusBarStyle = .lightContent;
         
         
-        
         // Create the views
         let landingPage = LandingPage();
-        profilePage = ProfilePage();
+        profilePage = ProfilePage(collectionViewLayout: createProfileCollectionViewLayout());
+        
         let navContr = AUNavigationMenuController(rootViewController: landingPage);
         
         /* Add all of the views as menu items. */
@@ -53,6 +53,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // Override point for customization after application launch.
         return true
+    }
+    
+    func createProfileCollectionViewLayout() -> UICollectionViewFlowLayout {
+        let layout = UICollectionViewFlowLayout();
+        layout.scrollDirection = .vertical;
+        return layout;
     }
 
     func applicationWillResignActive(_ application: UIApplication) {

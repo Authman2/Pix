@@ -211,22 +211,20 @@ class LandingPage: UIViewController {
                     let pass = value?["password"] as? String ?? "";
                     let em = value?["email"] as? String ?? "";
                     
-                    // The password is correct.
-                    if pass == self.passwordField.text! {
-                        let usr = User(first: first, last: last, email: em);
-                        usr.password = pass;
-                        currentUser = usr;
-                        
-                        print("----------> Logged in!");
-                        self.statusLabel.textColor = UIColor.green;
-                        self.statusLabel.isHidden = false;
-                        self.statusLabel.text = "Logging In!";
-                    }
+                    let usr = User(first: first, last: last, email: em);
+                    usr.password = pass;
+                    currentUser = usr;
+                    
+                    print("----------> Logged in!");
+                    self.statusLabel.textColor = UIColor.green;
+                    self.statusLabel.isHidden = false;
+                    self.statusLabel.text = "Logging In!";
+                    self.goToApp();
                 });
                 print("----------> Signed In!");
             }
         });
-            self.goToApp();
+            
         } else {
             print("----------> Invalid Credentials!");
             self.statusLabel.textColor = UIColor.red;
