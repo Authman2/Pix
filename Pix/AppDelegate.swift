@@ -26,8 +26,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         
         // Create the views
-        let landingViewController = LandingViewController();
-        window?.rootViewController = landingViewController;
+        let landingPage = LandingPage();
+        window?.rootViewController = landingPage;
         
         
         // Appearance

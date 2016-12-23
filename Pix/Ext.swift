@@ -13,7 +13,7 @@
 import Foundation
 import UIKit
 import Spring
-
+import DynamicColor
 
 public extension String {
     
@@ -90,7 +90,6 @@ public extension SpringButton {
     
     
 }
-
 
 
 public extension NSObject {
