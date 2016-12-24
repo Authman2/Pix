@@ -13,6 +13,7 @@
 		5A6229CD1DE5720D002510AA /* ChameleonFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A6229CC1DE5720D002510AA /* ChameleonFramework.framework */; };
 		5A756DCA1DE5E802003FD2C0 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5A756DC91DE5E802003FD2C0 /* GoogleService-Info.plist */; };
 		5A785AA01DE5630600EF5323 /* Neon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5AAB2DB61DE5628C0007A726 /* Neon.framework */; };
+		5A93F8EF1E0F0F72008C7154 /* PostDetailPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A93F8EE1E0F0F72008C7154 /* PostDetailPage.swift */; };
 		5AD6455F1E0D819B00E5929C /* ProfilePage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD6455E1E0D819B00E5929C /* ProfilePage.swift */; };
 		5AD645621E0DB5A400E5929C /* ProfilePageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD645611E0DB5A400E5929C /* ProfilePageCell.swift */; };
 		5AD645641E0DEFE600E5929C /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD645631E0DEFE600E5929C /* Post.swift */; };
@@ -33,6 +34,7 @@
 		5A6229CA1DE5720A002510AA /* Spring.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Spring.framework; path = "../../../../Library/Developer/Xcode/DerivedData/Pix-ctukwtofcongdnezqcfllkcuomcc/Build/Products/Debug-iphonesimulator/Spring/Spring.framework"; sourceTree = "<group>"; };
 		5A6229CC1DE5720D002510AA /* ChameleonFramework.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ChameleonFramework.framework; path = "../../../../Library/Developer/Xcode/DerivedData/Pix-ctukwtofcongdnezqcfllkcuomcc/Build/Products/Debug-iphonesimulator/ChameleonFramework/ChameleonFramework.framework"; sourceTree = "<group>"; };
 		5A756DC91DE5E802003FD2C0 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
+		5A93F8EE1E0F0F72008C7154 /* PostDetailPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostDetailPage.swift; sourceTree = "<group>"; };
 		5AAB2DB61DE5628C0007A726 /* Neon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Neon.framework; path = "../../../../Library/Developer/Xcode/DerivedData/Pix-ctukwtofcongdnezqcfllkcuomcc/Build/Products/Debug-iphonesimulator/Neon/Neon.framework"; sourceTree = "<group>"; };
 		5AD6455E1E0D819B00E5929C /* ProfilePage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfilePage.swift; sourceTree = "<group>"; };
 		5AD645611E0DB5A400E5929C /* ProfilePageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfilePageCell.swift; sourceTree = "<group>"; };
@@ -94,6 +96,7 @@
 				5AD645611E0DB5A400E5929C /* ProfilePageCell.swift */,
 				5AD645631E0DEFE600E5929C /* Post.swift */,
 				5AD645681E0DFEF800E5929C /* UploadPhotosViewController.swift */,
+				5A93F8EE1E0F0F72008C7154 /* PostDetailPage.swift */,
 			);
 			name = Posts;
 			sourceTree = "<group>";
@@ -306,6 +309,7 @@
 				5AD645671E0DF63100E5929C /* FeedPage.swift in Sources */,
 				5AFF276F1DDB6FF7001CBF95 /* Ext.swift in Sources */,
 				5AD645641E0DEFE600E5929C /* Post.swift in Sources */,
+				5A93F8EF1E0F0F72008C7154 /* PostDetailPage.swift in Sources */,
 				5AE3CCE41E0C89DC009F7816 /* SignUpPage.swift in Sources */,
 				5AE3CCE71E0C9633009F7816 /* User.swift in Sources */,
 				5AFF27511DDB60F4001CBF95 /* AppDelegate.swift in Sources */,

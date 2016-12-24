@@ -7,8 +7,10 @@
 //
 
 import UIKit
+import Foundation
 import SnapKit
 import Neon
+import Firebase
 
 class ProfilePage: UICollectionViewController, UICollectionViewDelegateFlowLayout {
 
@@ -75,7 +77,7 @@ class ProfilePage: UICollectionViewController, UICollectionViewDelegateFlowLayou
     
     /********************************
      *
-     *          METHODS
+     *           METHODS
      *
      ********************************/
     
@@ -93,8 +95,6 @@ class ProfilePage: UICollectionViewController, UICollectionViewDelegateFlowLayou
         view.addSubview(nameLabel);
         view.addSubview(followersLabel);
         view.addSubview(followingLabel);
-        
-        
         
         profilePicture.snp.makeConstraints { (maker: ConstraintMaker) in
             maker.centerX.equalTo(view.snp.centerX);
@@ -137,8 +137,6 @@ class ProfilePage: UICollectionViewController, UICollectionViewDelegateFlowLayou
     
     
     
-    
-    
     /********************************
      *
      *       COLLECTION VIEW
@@ -169,7 +167,7 @@ class ProfilePage: UICollectionViewController, UICollectionViewDelegateFlowLayou
         
         cell.imageView.image = currentUser.posts[indexPath.item].photo.image!;
         cell.setup();
-        
+    
         return cell;
     }
     

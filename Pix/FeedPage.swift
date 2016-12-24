@@ -34,7 +34,6 @@ class FeedPage: UICollectionViewController, UIImagePickerControllerDelegate, UIN
 
     override func viewDidLoad() {
         super.viewDidLoad()
-        landingPage.loadUsersPhotos(); /* Load all of the user's photos. */
         view.backgroundColor = UIColor(red: 239/255, green: 255/255, blue:245/255, alpha: 1);
         navigationController?.navigationBar.isHidden = false;
         navigationItem.hidesBackButton = true;

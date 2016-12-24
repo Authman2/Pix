@@ -220,7 +220,10 @@ class LandingPage: UIViewController {
                     self.statusLabel.isHidden = false;
                     self.statusLabel.text = "Logging In!";
                     
-                    self.goToApp();
+                    self.loadUsersPhotos(completion: { 
+                        self.debug(message: "All of the current user's posts have been loaded!");
+                        self.goToApp();
+                    })
                 });
                 self.debug(message: "Signed In!");
             }
@@ -253,60 +256,60 @@ class LandingPage: UIViewController {
     
     /* Loads all of the current user's photos from the firebase database.
      PRECONDITION: current user is already initialized to the user that just logged in. */
-    public func loadUsersPhotos() {
+    public func loadUsersPhotos(completion: () -> Void) {
         
         // Start from the beginning.
         currentUser.posts.removeAll();
-
         
         // Load all of the photo objects from the database.
         let emailTrimmed = currentUser.email.substring(i: 0, j: currentUser.email.indexOf(string: "@"));
-        fireRef.child("Photos").child(emailTrimmed).observe(.value) { (snapshot: FIRDataSnapshot) in
+        fireRef.child("Photos").child("\(emailTrimmed)").observe(FIRDataEventType.value, with: { (snapshot) in
             
             // First, make sure there is a value for the posts. If so, then load all of them.
-            if let postDictionary = snapshot.value as? [String : AnyObject] {
-            
+            let postDictionary = snapshot.value as? [String : AnyObject] ?? [:];
                 
-                // Get each post from the database (in the form of json data).
-                for post in postDictionary {
                 
+            // Get each post from the database (in the form of json data).
+            for post in postDictionary {
+                
+                // Get each individual post as a dictionary of elements with the form [key : value].
+                let aPost = post.value as! [String : AnyObject];
+                
+                
+                // Get the name of the photo that is used to identify it.
+                let imgName = aPost["image"] as? String;
+                
+                
+                // Get a reference to the firebase media storage.
+                let imgRef = FIRStorage.storage().reference().child("\(currentUser.email)/\(imgName!)");
+                imgRef.data(withMaxSize: 50 * 1024 * 1024, completion: { (data: Data?, error: Error?) in
                     
-                    // Get each individual post as a dictionary of elements with the form [key : value].
-                    let aPost = post.value as! [String : AnyObject];
-                    
-                    
-                    // Get the name of the photo that is used to identify it.
-                    let imgName = aPost["image"] as? String;
-                    
-                    
-                    // Get a reference to the firebase media storage.
-                    let imgRef = FIRStorage.storage().reference().child("\(currentUser.email)/\(imgName!)");
-                    imgRef.data(withMaxSize: 50 * 1024 * 1024, completion: { (data: Data?, error: Error?) in
-                       
-                        if error == nil {
-                            
-                            // Get the value of each important piece of information.
-                            let image = UIImage(data: data!);
-                            let capt = aPost["caption"] as? String ?? "";
-                            let likes = aPost["likes"] as? Int ?? 0;
-                            
-                            
-                            // Create a Post object and add it to the array.
-                            let actualPost = Post(photo: image, caption: capt, Uploader: currentUser);
-                            actualPost.likes = likes;
-                            currentUser.posts.append(actualPost);
-                        }
+                    if error == nil {
+                        
+                        // Get the value of each important piece of information.
+                        let image = UIImage(data: data!);
+                        let capt = aPost["caption"] as? String ?? "";
+                        let likes = aPost["likes"] as? Int ?? 0;
                         
                         
-                    }); // End of access to media storage.
+                        // Create a Post object and add it to the array.
+                        let actualPost = Post(photo: image, caption: capt, Uploader: currentUser);
+                        actualPost.likes = likes;
+                        currentUser.posts.append(actualPost);
+                        
+                        self.debug(message: "\(actualPost.toString())");
+                        
+                    } else {
+                        self.debug(message: "There was an error: \(error.debugDescription)");
+                    }
+                    
+                }); // End of access to media storage.
                 
-                } // End of for loop for each post.
-                
-                self.debug(message: "All of the current user's posts have been loaded!");
+            } // End of for loop for each post.
             
-            } // End of checking if the posts dictionary exists.
+        });
         
-        } // End of the observe event.
+        completion();
         
     } // End of the loadUsersPhotos() method.
     
@@ -320,7 +323,47 @@ class LandingPage: UIViewController {
     
     
     
-    
+//    // First, make sure there is a value for the posts. If so, then load all of them.
+//    if let postDictionary = snapshot.value as? [String : AnyObject] {
+//        
+//        
+//        // Get each post from the database (in the form of json data).
+//        for post in postDictionary {
+//            
+//            
+//            // Get each individual post as a dictionary of elements with the form [key : value].
+//            let aPost = post.value as! [String : AnyObject];
+//            
+//            
+//            // Get the name of the photo that is used to identify it.
+//            let imgName = aPost["image"] as? String;
+//            
+//            
+//            // Get a reference to the firebase media storage.
+//            let imgRef = FIRStorage.storage().reference().child("\(currentUser.email)/\(imgName!)");
+//            imgRef.data(withMaxSize: 50 * 1024 * 1024, completion: { (data: Data?, error: Error?) in
+//                
+//                if error == nil {
+//                    
+//                    // Get the value of each important piece of information.
+//                    let image = UIImage(data: data!);
+//                    let capt = aPost["caption"] as? String ?? "";
+//                    let likes = aPost["likes"] as? Int ?? 0;
+//                    
+//                    
+//                    // Create a Post object and add it to the array.
+//                    let actualPost = Post(photo: image, caption: capt, Uploader: currentUser);
+//                    actualPost.likes = likes;
+//                    currentUser.posts.append(actualPost);
+//                }
+//                
+//                
+//            }); // End of access to media storage.
+//            
+//        } // End of for loop for each post.
+//        
+//    } // End of checking if the posts dictionary exists.
+
     
     
     
