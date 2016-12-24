@@ -12,7 +12,8 @@ import AUNavigationMenuController
 
 
 /* The different pages are global for easy access. */
-var profilePage: ProfilePage!
+var profilePage: ProfilePage!;
+var feedPage: FeedPage!;
 
 
 
@@ -39,11 +40,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         // Create the views
         let landingPage = LandingPage();
-        profilePage = ProfilePage(collectionViewLayout: createProfileCollectionViewLayout());
+        feedPage = FeedPage(collectionViewLayout: createCollectionViewLayout());
+        profilePage = ProfilePage(collectionViewLayout: createCollectionViewLayout());
         
         let navContr = AUNavigationMenuController(rootViewController: landingPage);
         
         /* Add all of the views as menu items. */
+        navContr.addMenuItem(name: "Home", image: nil, destination: feedPage);
         navContr.addMenuItem(name: "Profile", image: nil, destination: profilePage);
         
         /* Set the root view controller. */
@@ -55,7 +58,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         return true
     }
     
-    func createProfileCollectionViewLayout() -> UICollectionViewFlowLayout {
+    func createCollectionViewLayout() -> UICollectionViewFlowLayout {
         let layout = UICollectionViewFlowLayout();
         layout.scrollDirection = .vertical;
         return layout;

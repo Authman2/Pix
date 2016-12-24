@@ -219,7 +219,9 @@ class LandingPage: UIViewController {
                     self.statusLabel.textColor = UIColor.green;
                     self.statusLabel.isHidden = false;
                     self.statusLabel.text = "Logging In!";
+                    
                     self.goToApp();
+                    self.loadUsersPhotos();
                 });
                 print("----------> Signed In!");
             }
@@ -238,7 +240,7 @@ class LandingPage: UIViewController {
     
     /* Tells the program to take the user to the actually application. */
     private func goToApp() {
-        navigationController?.pushViewController(profilePage, animated: false);
+        navigationController?.pushViewController(feedPage, animated: false);
     }
     
     
@@ -250,7 +252,9 @@ class LandingPage: UIViewController {
     
     
     
-    
+    private func loadUsersPhotos() {
+        //fireRef.child("Photos")
+    }
     
     
     

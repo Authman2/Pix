@@ -47,6 +47,13 @@ public class User: NSObject {
     var following: [User] = [User]();
     
     
+    /* All of the user's posts (in the form of firebase data). */
+    let posts_fb: NSMutableArray! = NSMutableArray();
+    
+    
+    /* All of the user's posts (in the form of a Post object). */
+    let posts: [Post] = [Post]();
+    
     
     
     

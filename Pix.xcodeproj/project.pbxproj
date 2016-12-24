@@ -15,6 +15,9 @@
 		5A785AA01DE5630600EF5323 /* Neon.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5AAB2DB61DE5628C0007A726 /* Neon.framework */; };
 		5AD6455F1E0D819B00E5929C /* ProfilePage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD6455E1E0D819B00E5929C /* ProfilePage.swift */; };
 		5AD645621E0DB5A400E5929C /* ProfilePageCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD645611E0DB5A400E5929C /* ProfilePageCell.swift */; };
+		5AD645641E0DEFE600E5929C /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD645631E0DEFE600E5929C /* Post.swift */; };
+		5AD645671E0DF63100E5929C /* FeedPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD645661E0DF63100E5929C /* FeedPage.swift */; };
+		5AD645691E0DFEF800E5929C /* UploadPhotosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD645681E0DFEF800E5929C /* UploadPhotosViewController.swift */; };
 		5AE3CCE41E0C89DC009F7816 /* SignUpPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AE3CCE31E0C89DC009F7816 /* SignUpPage.swift */; };
 		5AE3CCE71E0C9633009F7816 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AE3CCE61E0C9633009F7816 /* User.swift */; };
 		5AF346381E0AF2F5002FB896 /* LandingPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF346371E0AF2F5002FB896 /* LandingPage.swift */; };
@@ -33,6 +36,9 @@
 		5AAB2DB61DE5628C0007A726 /* Neon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Neon.framework; path = "../../../../Library/Developer/Xcode/DerivedData/Pix-ctukwtofcongdnezqcfllkcuomcc/Build/Products/Debug-iphonesimulator/Neon/Neon.framework"; sourceTree = "<group>"; };
 		5AD6455E1E0D819B00E5929C /* ProfilePage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfilePage.swift; sourceTree = "<group>"; };
 		5AD645611E0DB5A400E5929C /* ProfilePageCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfilePageCell.swift; sourceTree = "<group>"; };
+		5AD645631E0DEFE600E5929C /* Post.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
+		5AD645661E0DF63100E5929C /* FeedPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedPage.swift; sourceTree = "<group>"; };
+		5AD645681E0DFEF800E5929C /* UploadPhotosViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UploadPhotosViewController.swift; sourceTree = "<group>"; };
 		5AE3CCE31E0C89DC009F7816 /* SignUpPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpPage.swift; sourceTree = "<group>"; };
 		5AE3CCE61E0C9633009F7816 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		5AF346371E0AF2F5002FB896 /* LandingPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LandingPage.swift; sourceTree = "<group>"; };
@@ -82,12 +88,22 @@
 			name = Profile;
 			sourceTree = "<group>";
 		};
-		5AD645601E0DB58000E5929C /* PhotoCells */ = {
+		5AD645601E0DB58000E5929C /* Posts */ = {
 			isa = PBXGroup;
 			children = (
 				5AD645611E0DB5A400E5929C /* ProfilePageCell.swift */,
+				5AD645631E0DEFE600E5929C /* Post.swift */,
+				5AD645681E0DFEF800E5929C /* UploadPhotosViewController.swift */,
 			);
-			name = PhotoCells;
+			name = Posts;
+			sourceTree = "<group>";
+		};
+		5AD645651E0DF59A00E5929C /* Feed */ = {
+			isa = PBXGroup;
+			children = (
+				5AD645661E0DF63100E5929C /* FeedPage.swift */,
+			);
+			name = Feed;
 			sourceTree = "<group>";
 		};
 		5AE3CCE51E0C9622009F7816 /* User */ = {
@@ -132,8 +148,9 @@
 				5AFF276D1DDB6FE6001CBF95 /* Extras */,
 				5AE3CCE51E0C9622009F7816 /* User */,
 				5AF346361E0AF2DC002FB896 /* Landing */,
+				5AD645651E0DF59A00E5929C /* Feed */,
 				5AD6455D1E0D818C00E5929C /* Profile */,
-				5AD645601E0DB58000E5929C /* PhotoCells */,
+				5AD645601E0DB58000E5929C /* Posts */,
 				5AFF27571DDB60F4001CBF95 /* Assets.xcassets */,
 				5AFF27591DDB60F4001CBF95 /* LaunchScreen.storyboard */,
 				5AFF275C1DDB60F4001CBF95 /* Info.plist */,
@@ -283,9 +300,12 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5AD645691E0DFEF800E5929C /* UploadPhotosViewController.swift in Sources */,
 				5AD6455F1E0D819B00E5929C /* ProfilePage.swift in Sources */,
 				5AD645621E0DB5A400E5929C /* ProfilePageCell.swift in Sources */,
+				5AD645671E0DF63100E5929C /* FeedPage.swift in Sources */,
 				5AFF276F1DDB6FF7001CBF95 /* Ext.swift in Sources */,
+				5AD645641E0DEFE600E5929C /* Post.swift in Sources */,
 				5AE3CCE41E0C89DC009F7816 /* SignUpPage.swift in Sources */,
 				5AE3CCE71E0C9633009F7816 /* User.swift in Sources */,
 				5AFF27511DDB60F4001CBF95 /* AppDelegate.swift in Sources */,
