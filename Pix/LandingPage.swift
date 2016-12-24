@@ -194,7 +194,7 @@ class LandingPage: UIViewController {
             FIRAuth.auth()?.signIn(withEmail: emailField.text!, password: passwordField.text!, completion: { (usr: FIRUser?, error: Error?) in
             if error != nil {
 
-                print("----------> Wrong Password!");
+                self.debug(message: "Wrong Password!");
                 self.statusLabel.textColor = UIColor.red;
                 self.statusLabel.isHidden = false;
                 self.statusLabel.text = "Incorrect password.";
@@ -215,20 +215,19 @@ class LandingPage: UIViewController {
                     usr.password = pass;
                     currentUser = usr;
                     
-                    print("----------> Logged in!");
+                    self.debug(message: "Logged in!");
                     self.statusLabel.textColor = UIColor.green;
                     self.statusLabel.isHidden = false;
                     self.statusLabel.text = "Logging In!";
                     
                     self.goToApp();
-                    self.loadUsersPhotos();
                 });
-                print("----------> Signed In!");
+                self.debug(message: "Signed In!");
             }
         });
             
         } else {
-            print("----------> Invalid Credentials!");
+            self.debug(message: "Invalid Credentials!");
             self.statusLabel.textColor = UIColor.red;
             self.statusLabel.isHidden = false;
             self.statusLabel.text = "Invalid Credentials.";
@@ -252,9 +251,64 @@ class LandingPage: UIViewController {
     
     
     
-    private func loadUsersPhotos() {
-        //fireRef.child("Photos")
-    }
+    /* Loads all of the current user's photos from the firebase database.
+     PRECONDITION: current user is already initialized to the user that just logged in. */
+    public func loadUsersPhotos() {
+        
+        // Start from the beginning.
+        currentUser.posts.removeAll();
+
+        
+        // Load all of the photo objects from the database.
+        let emailTrimmed = currentUser.email.substring(i: 0, j: currentUser.email.indexOf(string: "@"));
+        fireRef.child("Photos").child(emailTrimmed).observe(.value) { (snapshot: FIRDataSnapshot) in
+            
+            // First, make sure there is a value for the posts. If so, then load all of them.
+            if let postDictionary = snapshot.value as? [String : AnyObject] {
+            
+                
+                // Get each post from the database (in the form of json data).
+                for post in postDictionary {
+                
+                    
+                    // Get each individual post as a dictionary of elements with the form [key : value].
+                    let aPost = post.value as! [String : AnyObject];
+                    
+                    
+                    // Get the name of the photo that is used to identify it.
+                    let imgName = aPost["image"] as? String;
+                    
+                    
+                    // Get a reference to the firebase media storage.
+                    let imgRef = FIRStorage.storage().reference().child("\(currentUser.email)/\(imgName!)");
+                    imgRef.data(withMaxSize: 50 * 1024 * 1024, completion: { (data: Data?, error: Error?) in
+                       
+                        if error == nil {
+                            
+                            // Get the value of each important piece of information.
+                            let image = UIImage(data: data!);
+                            let capt = aPost["caption"] as? String ?? "";
+                            let likes = aPost["likes"] as? Int ?? 0;
+                            
+                            
+                            // Create a Post object and add it to the array.
+                            let actualPost = Post(photo: image, caption: capt, Uploader: currentUser);
+                            actualPost.likes = likes;
+                            currentUser.posts.append(actualPost);
+                        }
+                        
+                        
+                    }); // End of access to media storage.
+                
+                } // End of for loop for each post.
+                
+                self.debug(message: "All of the current user's posts have been loaded!");
+            
+            } // End of checking if the posts dictionary exists.
+        
+        } // End of the observe event.
+        
+    } // End of the loadUsersPhotos() method.
     
     
     

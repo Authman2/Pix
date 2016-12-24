@@ -85,6 +85,7 @@ class ProfilePage: UICollectionViewController, UICollectionViewDelegateFlowLayou
         view.backgroundColor = UIColor(red: 239/255, green: 255/255, blue:245/255, alpha: 1);
         navigationController?.navigationBar.isHidden = false;
         navigationItem.hidesBackButton = true;
+        navigationItem.title = "Profile";
         setupCollectionView();
         
         
@@ -159,13 +160,14 @@ class ProfilePage: UICollectionViewController, UICollectionViewDelegateFlowLayou
     
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return 5;
+        return currentUser.posts.count;
     }
     
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! ProfilePageCell;
         
+        cell.imageView.image = currentUser.posts[indexPath.item].photo.image!;
         cell.setup();
         
         return cell;

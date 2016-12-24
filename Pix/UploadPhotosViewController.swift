@@ -109,16 +109,16 @@ class UploadPhotosViewController: UIViewController {
         let _ = storageRef.put(data! as Data, metadata: nil) { (metaData, error) in
             
             if (error == nil) {
-                print("----------> Photo Uploaded!");
                 
+                self.debug(message: "Photo Uploaded!");
                 let postObj = self.post.toDictionary(img: imageFileName);
                 self.fireRef.child("Photos").child("\(emailTrimmed)").child("\(randomName)").setValue(postObj);
+                self.cancel();
                 
             } else {
                 print(error.debugDescription);
             }
         }
-        self.cancel();
         
     } // End of upload method.
     

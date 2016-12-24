@@ -157,7 +157,8 @@ class SignUpPage: UIViewController {
                         if error == nil {
                             
                             self.fireRef.child("Users").child(em.substring(i: 0, j: em.indexOf(string: "@"))).setValue(user.toDictionary());
-                            print("----------> User created!");
+                            self.debug(message: "User created!");
+                            self.dismiss(animated: true, completion: nil);
                             
                         // Error.
                         } else {
@@ -165,7 +166,6 @@ class SignUpPage: UIViewController {
                         }
                     });
                     
-                    dismiss(animated: true, completion: nil);
                 }
             }
         }

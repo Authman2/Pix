@@ -9,7 +9,7 @@
 import Foundation
 import UIKit
 
-public class Post {
+public class Post: NSObject {
     
     /********************************
      *

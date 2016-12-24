@@ -133,3 +133,11 @@ public extension Array {
     
     
 }
+
+
+public extension UIViewController {
+    /// Prints a debug message using a nice looking format.
+    public func debug(message: String) {
+        print("----------> \(message)");
+    }
+}

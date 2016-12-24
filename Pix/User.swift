@@ -52,7 +52,7 @@ public class User: NSObject {
     
     
     /* All of the user's posts (in the form of a Post object). */
-    let posts: [Post] = [Post]();
+    var posts: [Post] = [Post]();
     
     
     

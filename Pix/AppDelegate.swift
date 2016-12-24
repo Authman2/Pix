@@ -12,6 +12,7 @@ import AUNavigationMenuController
 
 
 /* The different pages are global for easy access. */
+var landingPage: LandingPage!;
 var profilePage: ProfilePage!;
 var feedPage: FeedPage!;
 
@@ -39,7 +40,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         
         
         // Create the views
-        let landingPage = LandingPage();
+        landingPage = LandingPage();
         feedPage = FeedPage(collectionViewLayout: createCollectionViewLayout());
         profilePage = ProfilePage(collectionViewLayout: createCollectionViewLayout());
         
