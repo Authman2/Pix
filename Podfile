@@ -20,5 +20,6 @@ target 'Pix' do
     pod 'Firebase/Storage'
     pod 'SnapKit', '~> 3.0.2'
     pod 'Presentr'
+    pod 'PullToRefreshSwift'
   
 end

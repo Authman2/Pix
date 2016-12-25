@@ -9,8 +9,9 @@
 import UIKit
 import Foundation
 import SnapKit
-import Neon
 import Firebase
+import Presentr
+import PullToRefreshSwift
 
 class ProfilePage: UICollectionViewController, UICollectionViewDelegateFlowLayout {
 
@@ -75,6 +76,8 @@ class ProfilePage: UICollectionViewController, UICollectionViewDelegateFlowLayou
     
     
     
+    
+    
     /********************************
      *
      *           METHODS
@@ -91,6 +94,7 @@ class ProfilePage: UICollectionViewController, UICollectionViewDelegateFlowLayou
         setupCollectionView();
         
         
+        /* Setup/Layout the view. */
         view.addSubview(profilePicture);
         view.addSubview(nameLabel);
         view.addSubview(followersLabel);
@@ -131,7 +135,24 @@ class ProfilePage: UICollectionViewController, UICollectionViewDelegateFlowLayou
         followersLabel.text = "Followers: \(currentUser.followers.count)";
         followingLabel.text = "Following: \(currentUser.following.count)";
         
+        
+        /* Add the pull to refresh function. */
+        var options = PullToRefreshOption();
+        options.fixedSectionHeader = false;
+        collectionView?.addPullRefresh(options: options, refreshCompletion: { (Void) in
+            self.collectionView?.reloadData();
+            self.debug(message: "Size: \(currentUser.posts.count)");
+            self.collectionView?.stopPullRefreshEver();
+        });
+        
     } // End of viewDidLoad().
+    
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated);
+//        collectionView?.reloadData();
+//        debug(message: "Size: \(currentUser.posts.count)");
+    } // End of viewDidAppear().
     
     
     
@@ -179,6 +200,20 @@ class ProfilePage: UICollectionViewController, UICollectionViewDelegateFlowLayou
     
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
         return 10;
+    }
+    
+    
+    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
+        let presenter: Presentr = {
+            let pres = Presentr(presentationType: .popup);
+            
+            return pres;
+        }();
+        
+        let detailView = PostDetailPage();
+        detailView.setup(post: currentUser.posts[indexPath.item]);
+        
+        customPresentViewController(presenter, viewController: detailView, animated: true, completion: nil);
     }
     
 }

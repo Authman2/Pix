@@ -75,7 +75,7 @@ public class Post: NSObject {
     
     
     func toString() -> String {
-        return "caption=\(caption),likes=\(likes)";
+        return "caption=\(caption.text!),likes=\(likes)";
     }
     
     
