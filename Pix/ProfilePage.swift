@@ -206,7 +206,8 @@ class ProfilePage: UICollectionViewController, UICollectionViewDelegateFlowLayou
     override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         let presenter: Presentr = {
             let pres = Presentr(presentationType: .popup);
-            
+            pres.dismissOnSwipe = true;
+            pres.dismissAnimated = true;
             return pres;
         }();
         

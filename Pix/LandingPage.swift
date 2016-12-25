@@ -170,8 +170,6 @@ class LandingPage: UIViewController {
         
         signupButton.addTarget(self, action: #selector(signUp), for: .touchUpInside);
         loginButton.addTarget(self, action: #selector(login), for: .touchUpInside);
-        let tap = UITapGestureRecognizer(target: self, action: #selector(dismissKeyboard));
-        view.addGestureRecognizer(tap);
     }
     
     
@@ -248,13 +246,16 @@ class LandingPage: UIViewController {
     
     
     // Close the keyboard
-    @objc private func dismissKeyboard() {
-        view.endEditing(true);
+    override func touchesBegan(_ touches: Set<UITouch>, with event: UIEvent?) {
+        super.touchesBegan(touches, with: event);
+        emailField.endEditing(true);
+        passwordField.endEditing(true);
     }
     
     
     
-    /* Loads all of the current user's photos from the firebase database.
+    /* Loads all of the current user's photos from the firebase database. This method is public, and
+     therefore should be used in any other class that needs to refresh the user's posts.
      PRECONDITION: current user is already initialized to the user that just logged in. */
     public func loadUsersPhotos(completion: () -> Void) {
         

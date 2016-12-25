@@ -8,6 +8,7 @@
 
 import UIKit
 import SnapKit
+import Neon
 
 class PostDetailPage: UIViewController {
 
@@ -23,7 +24,7 @@ class PostDetailPage: UIViewController {
         let a = UIImageView();
         a.translatesAutoresizingMaskIntoConstraints = false;
         a.backgroundColor = UIColor.gray;
-        a.isUserInteractionEnabled = true;
+        a.contentMode = .scaleToFill;
         
         return a;
     }();
@@ -34,6 +35,9 @@ class PostDetailPage: UIViewController {
         let c = UILabel();
         c.translatesAutoresizingMaskIntoConstraints = false;
         c.textColor = .black;
+        c.backgroundColor = UIColor(red: 239/255, green: 255/255, blue:245/255, alpha: 1);
+        c.numberOfLines = 0;
+        c.font = UIFont(name: c.font.fontName, size: 15);
         
         return c;
     }();
@@ -44,6 +48,7 @@ class PostDetailPage: UIViewController {
         let l = UILabel();
         l.translatesAutoresizingMaskIntoConstraints = false;
         l.textColor = .black;
+        l.backgroundColor = UIColor(red: 239/255, green: 255/255, blue:245/255, alpha: 1);
         
         return l;
     }();
@@ -54,6 +59,7 @@ class PostDetailPage: UIViewController {
         let l = UILabel();
         l.translatesAutoresizingMaskIntoConstraints = false;
         l.textColor = .black;
+        l.backgroundColor = UIColor(red: 239/255, green: 255/255, blue:245/255, alpha: 1);
         
         return l;
     }();
@@ -79,41 +85,46 @@ class PostDetailPage: UIViewController {
         likesLabel.text = "Likes: \(post.likes)";
         uploaderLabel.text = "\(post.uploader.firstName) \(post.uploader.lastName)";
         
-        
         // Layout the components.
         view.addSubview(imageView);
+        
         let bottomView = UIView();
+        bottomView.backgroundColor = UIColor(red: 239/255, green: 255/255, blue:245/255, alpha: 1);
         bottomView.addSubview(captionLabel);
         bottomView.addSubview(likesLabel);
         bottomView.addSubview(uploaderLabel);
         view.addSubview(bottomView);
         
-        imageView.snp.makeConstraints { (maker: ConstraintMaker) in
-            maker.top.equalTo(view.snp.top);
-            maker.width.equalTo(view.width);
-            maker.centerX.equalTo(view.snp.centerX);
-        }
-        bottomView.snp.makeConstraints { (maker: ConstraintMaker) in
-            maker.top.equalTo(imageView.snp.bottom);
-            maker.width.equalTo(view.width);
-            maker.left.equalTo(view.snp.left);
-        }
-        captionLabel.snp.makeConstraints { (maker: ConstraintMaker) in
-            maker.top.equalTo(bottomView.snp.top);
-            maker.width.equalTo(bottomView.width);
-            maker.left.equalTo(bottomView.snp.left);
-        }
+        // Layout with Neon
+        imageView.anchorToEdge(.top, padding: 0, width: view.width, height: view.height / 1.25);
+        bottomView.align(.underCentered, relativeTo: imageView, padding: 0, width: view.width, height: view.height - (view.height / 1.25));
+        
+        // Layout with Snapkit
         likesLabel.snp.makeConstraints { (maker: ConstraintMaker) in
-            maker.top.equalTo(captionLabel.snp.bottom);
-            maker.width.equalTo(bottomView.width);
-            maker.left.equalTo(bottomView.snp.left);
+            maker.bottom.equalTo(view.snp.bottom);
+            maker.height.equalTo(20);
+            maker.right.equalTo(view.snp.right);
         }
         uploaderLabel.snp.makeConstraints { (maker: ConstraintMaker) in
-            maker.top.equalTo(likesLabel.snp.bottom);
-            maker.width.equalTo(bottomView.width);
-            maker.left.equalTo(bottomView.snp.left);
+            maker.bottom.equalTo(view.snp.bottom);
+            maker.height.equalTo(20);
+            maker.left.equalTo(view.snp.left);
+            maker.right.equalTo(likesLabel.snp.left);
         }
-        
+        captionLabel.snp.makeConstraints { (maker: ConstraintMaker) in
+            maker.bottom.equalTo(uploaderLabel.snp.top);
+            maker.width.equalTo(view.frame.width);
+            maker.height.equalTo(50);
+            maker.left.equalTo(view.snp.left);
+            maker.right.equalTo(view.snp.right);
+        }
+        imageView.snp.makeConstraints { (maker: ConstraintMaker) in
+            maker.width.equalTo(view.frame.width);
+            maker.left.equalTo(view.snp.left);
+            maker.right.equalTo(view.snp.right);
+            maker.top.equalTo(view.snp.top);
+            maker.bottom.equalTo(uploaderLabel.snp.top);
+        }
         
     } // End of setup method.
     
