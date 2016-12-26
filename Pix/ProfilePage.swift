@@ -81,7 +81,6 @@ class ProfilePage: UICollectionViewController, UICollectionViewDelegateFlowLayou
     
     
     
-    
     /********************************
      *
      *           METHODS
@@ -135,6 +134,7 @@ class ProfilePage: UICollectionViewController, UICollectionViewDelegateFlowLayou
             maker.bottom.equalTo(view.snp.bottom);
         })
         
+        
         /* Add the pull to refresh function. */
         var options = PullToRefreshOption();
         options.fixedSectionHeader = false;
@@ -145,16 +145,34 @@ class ProfilePage: UICollectionViewController, UICollectionViewDelegateFlowLayou
         });
         
         
+        let logoutButton = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(logout));
+        logoutButton.tintColor = .white;
+        navigationItem.leftBarButtonItem = logoutButton;
+        
     } // End of viewDidLoad().
     
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated);
+        collectionView?.reloadData();
         nameLabel.text = "\(useUser.firstName) \(useUser.lastName)";
         followersLabel.text = "Followers: \(useUser.followers.count)";
         followingLabel.text = "Following: \(useUser.following.count)";
     } // End of viewDidAppear().
     
+    
+    
+    @objc func logout() {
+        do {
+            try FIRAuth.auth()?.signOut();
+            currentUser = nil;
+            let _ = navigationController?.popToRootViewController(animated: true);
+            self.debug(message: "Signed out!");
+            self.debug(message: "Logged out!");
+        } catch {
+            self.debug(message: "There was a problem signing out.");
+        }
+    }
     
     
     

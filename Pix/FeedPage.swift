@@ -54,7 +54,12 @@ class FeedPage: UICollectionViewController, UIImagePickerControllerDelegate, UIN
     } // End of viewDidLoad().
 
     
-    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated);
+        navigationController?.navigationBar.isHidden = false;
+        navigationItem.hidesBackButton = true;
+        navigationItem.title = "Feed";
+    } // End of viewDidAppear().
     
     
     

@@ -115,7 +115,6 @@ class LandingPage: UIViewController {
         view.backgroundColor = UIColor(red: 41/255, green: 200/255, blue: 153/255, alpha: 1);
         navigationController?.navigationBar.isHidden = true;
         
-        
         /* Set up the view. */
        
         view.addSubview(titleLabel);
@@ -172,6 +171,12 @@ class LandingPage: UIViewController {
         loginButton.addTarget(self, action: #selector(login), for: .touchUpInside);
     }
     
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated);
+        navigationController?.navigationBar.isHidden = true;
+        statusLabel.isHidden = true;
+    }
+    
     
     
     
@@ -218,7 +223,7 @@ class LandingPage: UIViewController {
                     self.statusLabel.isHidden = false;
                     self.statusLabel.text = "Logging In!";
                     
-                    self.loadUsersPhotos(completion: { 
+                    self.loadUsersPhotos(user: currentUser, completion: {
                         self.debug(message: "Loading all of the user's posts...");
                         self.goToApp();
                     })
@@ -257,13 +262,13 @@ class LandingPage: UIViewController {
     /* Loads all of the current user's photos from the firebase database. This method is public, and
      therefore should be used in any other class that needs to refresh the user's posts.
      PRECONDITION: current user is already initialized to the user that just logged in. */
-    public func loadUsersPhotos(completion: () -> Void) {
+    public func loadUsersPhotos(user: User, completion: (() -> Void)?) {
         
         // Start from the beginning.
-        currentUser.posts.removeAll();
+        user.posts.removeAll();
         
         // Load all of the photo objects from the database.
-        let emailTrimmed = currentUser.email.substring(i: 0, j: currentUser.email.indexOf(string: "@"));
+        let emailTrimmed = user.email.substring(i: 0, j: user.email.indexOf(string: "@"));
         fireRef.child("Photos").child("\(emailTrimmed)").observe(FIRDataEventType.value, with: { (snapshot) in
             
             // First, make sure there is a value for the posts. If so, then load all of them.
@@ -282,7 +287,7 @@ class LandingPage: UIViewController {
                 
                 
                 // Get a reference to the firebase media storage.
-                let imgRef = FIRStorage.storage().reference().child("\(currentUser.email)/\(imgName!)");
+                let imgRef = FIRStorage.storage().reference().child("\(user.email)/\(imgName!)");
                 imgRef.data(withMaxSize: 50 * 1024 * 1024, completion: { (data: Data?, error: Error?) in
                     
                     if error == nil {
@@ -294,9 +299,9 @@ class LandingPage: UIViewController {
                         
                         
                         // Create a Post object and add it to the array.
-                        let actualPost = Post(photo: image, caption: capt, Uploader: currentUser);
+                        let actualPost = Post(photo: image, caption: capt, Uploader: user);
                         actualPost.likes = likes;
-                        currentUser.posts.append(actualPost);
+                        user.posts.append(actualPost);
                         
                         self.debug(message: "\(actualPost.toString())");
                         
@@ -310,7 +315,9 @@ class LandingPage: UIViewController {
             
         });
         
-        completion();
+        if let comp = completion {
+            comp();
+        }
         
     } // End of the loadUsersPhotos() method.
     

@@ -51,7 +51,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         /* Add all of the views as menu items. */
         navContr.addMenuItem(name: "Home", image: nil, destination: feedPage, completion: nil);
         navContr.addMenuItem(name: "Explore", image: nil, destination: explorePage, completion: nil);
-        navContr.addMenuItem(name: "Profile", image: nil, destination: profilePage, completion: { void in profilePage.useUser = currentUser; });
+        navContr.addMenuItem(name: "Profile", image: nil, destination: profilePage, completion: { void in
+            profilePage.useUser = currentUser;
+            profilePage.navigationItem.title = "Profile";
+        });
         
         /* Set the root view controller. */
         window?.rootViewController = navContr;

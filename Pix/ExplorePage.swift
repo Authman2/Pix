@@ -170,8 +170,10 @@ class ExplorePage: UITableViewController, UISearchResultsUpdating {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        profilePage.useUser = listOfUsers[indexPath.item];
+        profilePage.useUser = listOfUsers[indexPath.row];
+        landingPage.loadUsersPhotos(user: listOfUsers[indexPath.row], completion: nil);
         navigationController?.pushViewController(profilePage, animated: true);
+        profilePage.navigationItem.title = "\(listOfUsers[indexPath.row].firstName) \(listOfUsers[indexPath.row].lastName)";
     }
     
     /* Update the table view based on the search. */
