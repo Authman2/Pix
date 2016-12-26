@@ -187,11 +187,21 @@ public class AUNavigationMenuController: UINavigationController, UICollectionVie
         menuItems.append(item);
     }
     
-    
+        
     /* Appends a new menu item onto the menu.
      */
     public func addMenuItem(name: String, image: UIImage?, destination: UIViewController) {
-        let n = NavigationMenuItem(name: name, image: image, navCont: self, destination: destination);
+        let n = NavigationMenuItem(name: name, image: image, navCont: self, destination: destination, completion: nil);
+        menuItems.append(n);
+        collectionView.reloadData();
+    }
+    
+    
+    /* Appends a new menu item onto the menu.
+     @param completion - The actions that should be performed once the menu item is clicked on.
+     */
+    public func addMenuItem(name: String, image: UIImage?, destination: UIViewController, completion: (() -> Void)?) {
+        let n = NavigationMenuItem(name: name, image: image, navCont: self, destination: destination, completion: completion);
         menuItems.append(n);
         collectionView.reloadData();
     }

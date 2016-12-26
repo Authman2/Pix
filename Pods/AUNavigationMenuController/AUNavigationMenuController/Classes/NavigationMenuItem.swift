@@ -28,6 +28,9 @@ public class NavigationMenuItem {
     let navCont: AUNavigationMenuController!;
     
     
+    // The completion method.
+    var completion: (() -> Void)?;
+    
     
     
     
@@ -38,11 +41,12 @@ public class NavigationMenuItem {
     //
     /////////////////////////
     
-    init(name: String, image: UIImage?, navCont: AUNavigationMenuController, destination: UIViewController) {
+    init(name: String, image: UIImage?, navCont: AUNavigationMenuController, destination: UIViewController, completion: (() -> Void)?) {
         self.name = name;
         self.image = image;
         self.destination = destination;
         self.navCont = navCont;
+        self.completion = completion;
         navCont.navigationItem.hidesBackButton = true;
     }
     
@@ -65,7 +69,9 @@ public class NavigationMenuItem {
             navCont.togglePulldownMenu();
         }
         
-        
+        if let comp = completion {
+            comp();
+        }
     }
     
 }

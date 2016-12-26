@@ -22,6 +22,10 @@ class ProfilePage: UICollectionViewController, UICollectionViewDelegateFlowLayou
      *
      ********************************/
     
+    /* The user to use for displaying data on this profile page.*/
+    var useUser: User!;
+    
+    
     /* The image view that displays the profile picture. */
     let profilePicture: UIImageView = {
         let i = UIImageView();
@@ -84,9 +88,9 @@ class ProfilePage: UICollectionViewController, UICollectionViewDelegateFlowLayou
      *
      ********************************/
     
-    
     override func viewDidLoad() {
         super.viewDidLoad();
+        useUser = currentUser;
         view.backgroundColor = UIColor(red: 239/255, green: 255/255, blue:245/255, alpha: 1);
         navigationController?.navigationBar.isHidden = false;
         navigationItem.hidesBackButton = true;
@@ -131,28 +135,26 @@ class ProfilePage: UICollectionViewController, UICollectionViewDelegateFlowLayou
             maker.bottom.equalTo(view.snp.bottom);
         })
         
-        nameLabel.text = "\(currentUser.firstName) \(currentUser.lastName)";
-        followersLabel.text = "Followers: \(currentUser.followers.count)";
-        followingLabel.text = "Following: \(currentUser.following.count)";
-        
-        
         /* Add the pull to refresh function. */
         var options = PullToRefreshOption();
         options.fixedSectionHeader = false;
         collectionView?.addPullRefresh(options: options, refreshCompletion: { (Void) in
             self.collectionView?.reloadData();
-            self.debug(message: "Size: \(currentUser.posts.count)");
+            self.debug(message: "Size: \(self.useUser.posts.count)");
             self.collectionView?.stopPullRefreshEver();
         });
+        
         
     } // End of viewDidLoad().
     
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated);
-//        collectionView?.reloadData();
-//        debug(message: "Size: \(currentUser.posts.count)");
+        nameLabel.text = "\(useUser.firstName) \(useUser.lastName)";
+        followersLabel.text = "Followers: \(useUser.followers.count)";
+        followingLabel.text = "Following: \(useUser.following.count)";
     } // End of viewDidAppear().
+    
     
     
     
@@ -179,14 +181,14 @@ class ProfilePage: UICollectionViewController, UICollectionViewDelegateFlowLayou
     
     
     override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return currentUser.posts.count;
+        return useUser.posts.count;
     }
     
     
     override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
         let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! ProfilePageCell;
         
-        cell.imageView.image = currentUser.posts[indexPath.item].photo.image!;
+        cell.imageView.image = useUser.posts[indexPath.item].photo.image!;
         cell.setup();
     
         return cell;
@@ -212,7 +214,7 @@ class ProfilePage: UICollectionViewController, UICollectionViewDelegateFlowLayou
         }();
         
         let detailView = PostDetailPage();
-        detailView.setup(post: currentUser.posts[indexPath.item]);
+        detailView.setup(post: useUser.posts[indexPath.item]);
         
         customPresentViewController(presenter, viewController: detailView, animated: true, completion: nil);
     }

@@ -49,9 +49,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         let navContr = AUNavigationMenuController(rootViewController: landingPage);
         
         /* Add all of the views as menu items. */
-        navContr.addMenuItem(name: "Home", image: nil, destination: feedPage);
-        navContr.addMenuItem(name: "Explore", image: nil, destination: explorePage);
-        navContr.addMenuItem(name: "Profile", image: nil, destination: profilePage);
+        navContr.addMenuItem(name: "Home", image: nil, destination: feedPage, completion: nil);
+        navContr.addMenuItem(name: "Explore", image: nil, destination: explorePage, completion: nil);
+        navContr.addMenuItem(name: "Profile", image: nil, destination: profilePage, completion: { void in profilePage.useUser = currentUser; });
         
         /* Set the root view controller. */
         window?.rootViewController = navContr;

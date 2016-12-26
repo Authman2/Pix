@@ -169,6 +169,12 @@ class ExplorePage: UITableViewController, UISearchResultsUpdating {
         return cell;
     }
     
+    override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        profilePage.useUser = listOfUsers[indexPath.item];
+        navigationController?.pushViewController(profilePage, animated: true);
+    }
+    
+    /* Update the table view based on the search. */
     public func updateSearchResults(for searchController: UISearchController) {
         /* When the text changes, start looking up the users. */
         findUsers(lookup: searchController.searchBar.text!);
