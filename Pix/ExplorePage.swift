@@ -91,12 +91,13 @@ class ExplorePage: UITableViewController, UISearchResultsUpdating {
                     let em = user.value["email"] as? String ?? "";
                     let firstName = user.value["first_name"] as? String ?? "";
                     let lastName = user.value["last_name"] as? String ?? "";
+                    let fullName = firstName + lastName;
                     // Later on, get the follower/following data also.
                     
                     
                     // Compare
-                    if(lookup.length() <= em.length()) {
-                        if(em.substring(i: 0, j: lookup.length()) == lookup) {
+                    if(lookup.length() <= em.length() || lookup.length() <= fullName.length()) {
+                        if(em.substring(i: 0, j: lookup.length()) == lookup || fullName.substring(i: 0, j: lookup.length()) == lookup) {
                             self.debug(message: "Found: \(em)");
                             
                             // Create a user object.
@@ -110,7 +111,7 @@ class ExplorePage: UITableViewController, UISearchResultsUpdating {
                             self.tableView.reloadData();
                         }
                     } else {
-                        if(em.substring(i: 0, j: em.length()) == lookup) {
+                        if(em.substring(i: 0, j: em.length()) == lookup || fullName.substring(i: 0, j: fullName.length()) == lookup) {
                             self.debug(message: "Found: \(em)");
                             
                             // Create a user object.
