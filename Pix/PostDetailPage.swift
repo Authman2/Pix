@@ -85,7 +85,7 @@ class PostDetailPage: UIViewController {
         likesLabel.text = "Likes: \(post.likes)";
         uploaderLabel.text = "\(post.uploader.firstName) \(post.uploader.lastName)";
         
-        // Layout the components.
+        /* Layout the components. */
         view.addSubview(imageView);
         
         let bottomView = UIView();
@@ -95,11 +95,13 @@ class PostDetailPage: UIViewController {
         bottomView.addSubview(uploaderLabel);
         view.addSubview(bottomView);
         
-        // Layout with Neon
+        
+        /* Layout with Neon */
         imageView.anchorToEdge(.top, padding: 0, width: view.width, height: view.height / 1.25);
         bottomView.align(.underCentered, relativeTo: imageView, padding: 0, width: view.width, height: view.height - (view.height / 1.25));
         
-        // Layout with Snapkit
+        
+        /* Layout with Snapkit */
         likesLabel.snp.makeConstraints { (maker: ConstraintMaker) in
             maker.bottom.equalTo(view.snp.bottom);
             maker.height.equalTo(20);
