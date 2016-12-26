@@ -91,7 +91,7 @@ class ExplorePage: UITableViewController, UISearchResultsUpdating {
                     let em = user.value["email"] as? String ?? "";
                     let firstName = user.value["first_name"] as? String ?? "";
                     let lastName = user.value["last_name"] as? String ?? "";
-                    let fullName = firstName + lastName;
+                    let fullName = "\(firstName) \(lastName)";
                     // Later on, get the follower/following data also.
                     
                     
@@ -171,8 +171,13 @@ class ExplorePage: UITableViewController, UISearchResultsUpdating {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
+        // Tell the profile page which user to use.
         profilePage.useUser = listOfUsers[indexPath.row];
+        
+        // Load all of that user's photos.
         landingPage.loadUsersPhotos(user: listOfUsers[indexPath.row], completion: nil);
+        
+        // Go to the next page.
         navigationController?.pushViewController(profilePage, animated: true);
         profilePage.navigationItem.title = "\(listOfUsers[indexPath.row].firstName) \(listOfUsers[indexPath.row].lastName)";
     }

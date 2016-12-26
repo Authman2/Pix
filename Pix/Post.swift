@@ -44,6 +44,8 @@ public class Post: NSObject {
     var uploader: User!;
     
     
+    /* The id used to specify this particular Post object. */
+    var id: String!;
     
     
     
@@ -57,16 +59,19 @@ public class Post: NSObject {
      *
      ********************************/
     
-    init(photo: UIImage?, caption: String?, Uploader: User?) {
+    init(photo: UIImage?, caption: String?, Uploader: User?, ID: String?) {
         self.photo.image = photo;
         self.caption.text = caption;
         self.uploader = Uploader;
+        self.id = ID;
     }
     
     
     
-    func toDictionary(img: String) -> NSDictionary {
-        let dict = NSDictionary(dictionary: ["image" : img,
+    /* Turns the post object into a format that can be read by firebase. */
+    func toDictionary() -> NSDictionary {
+        let dict = NSDictionary(dictionary: ["image" : id+".jpg",
+                                             "id" : id,
                                              "caption" : caption.text!,
                                              "likes" : 0]);
         return dict;
@@ -75,7 +80,7 @@ public class Post: NSObject {
     
     
     func toString() -> String {
-        return "caption=\(caption.text!),likes=\(likes)";
+        return "id=\(id), caption=\(caption.text!),likes=\(likes)";
     }
     
     

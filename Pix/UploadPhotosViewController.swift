@@ -45,6 +45,10 @@ class UploadPhotosViewController: UIViewController {
     }();
     
     
+    /* The button used for uploading an image. */
+    var postButton: UIBarButtonItem = UIBarButtonItem();
+    
+    
     /* The reference to the firebase database. */
     let fireRef: FIRDatabaseReference = FIRDatabase.database().reference();
     
@@ -78,7 +82,7 @@ class UploadPhotosViewController: UIViewController {
         
         /* Bar buttons. */
         let cancelButton = UIBarButtonItem(barButtonSystemItem: .cancel, target: self, action: #selector(cancel));
-        let postButton = UIBarButtonItem(title: "Upload", style: .plain, target: self, action: #selector(uploadPost));
+        postButton = UIBarButtonItem(title: "Upload", style: .plain, target: self, action: #selector(uploadPost));
         cancelButton.tintColor = UIColor.white;
         postButton.tintColor = UIColor.white;
         navigationItem.leftBarButtonItem = cancelButton;
@@ -98,20 +102,24 @@ class UploadPhotosViewController: UIViewController {
     
     
     @objc func uploadPost() {
+        postButton.isEnabled = false;
         post.caption.text = textArea.text!;
         
+        // Get a random name (id) for the post.
         let randomName = self.randomName();
+        post.id = randomName;
+        
         let storageRef = FIRStorageReference().child("\(currentUser.email)/\(randomName).jpg");
         let data = UIImageJPEGRepresentation(self.post.photo.image!, 100) as NSData?;
         let emailTrimmed = currentUser.email.substring(i: 0, j: currentUser.email.indexOf(string: "@"));
-        let imageFileName = "\(randomName).jpg";
+        //let imageFileName = "\(randomName).jpg";
         
         let _ = storageRef.put(data! as Data, metadata: nil) { (metaData, error) in
             
             if (error == nil) {
                 
                 self.debug(message: "Photo Uploaded!");
-                let postObj = self.post.toDictionary(img: imageFileName);
+                let postObj = self.post.toDictionary();
                 self.fireRef.child("Photos").child("\(emailTrimmed)").child("\(randomName)").setValue(postObj);
                 self.cancel();
                 

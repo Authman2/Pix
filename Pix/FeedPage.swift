@@ -82,7 +82,7 @@ class FeedPage: UICollectionViewController, UIImagePickerControllerDelegate, UIN
         if let photo = info[UIImagePickerControllerOriginalImage] as? UIImage {
             
             let vc = UploadPhotosViewController();
-            let post = Post(photo: photo, caption: "", Uploader: currentUser);
+            let post = Post(photo: photo, caption: "", Uploader: currentUser, ID: nil);
             vc.post = post;
             vc.imageView.image = photo;
             navigationController?.pushViewController(vc, animated: true);

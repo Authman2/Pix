@@ -132,6 +132,21 @@ public extension Array {
     }
     
     
+    
+    /* Returns true or false if the array contains a Post object that has the id specified in the parameter. */
+    public func containsID(id: String) -> Bool {
+        
+        for itm in self {
+            let temp = itm as! Post;
+            
+            if temp.id == id {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+    
 }
 
 

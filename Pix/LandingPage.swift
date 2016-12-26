@@ -226,7 +226,7 @@ class LandingPage: UIViewController {
                     self.loadUsersPhotos(user: currentUser, completion: {
                         self.debug(message: "Loading all of the user's posts...");
                         self.goToApp();
-                    })
+                    });
                 });
                 self.debug(message: "Signed In!");
             }
@@ -266,10 +266,12 @@ class LandingPage: UIViewController {
         
         // Start from the beginning.
         user.posts.removeAll();
+        user.posts_fb.removeAllObjects();
+        
         
         // Load all of the photo objects from the database.
         let emailTrimmed = user.email.substring(i: 0, j: user.email.indexOf(string: "@"));
-        fireRef.child("Photos").child("\(emailTrimmed)").observe(FIRDataEventType.value, with: { (snapshot) in
+        fireRef.child("Photos").child("\(emailTrimmed)").queryOrderedByPriority().observe(FIRDataEventType.value, with: { (snapshot) in
             
             // First, make sure there is a value for the posts. If so, then load all of them.
             let postDictionary = snapshot.value as? [String : AnyObject] ?? [:];
@@ -296,14 +298,23 @@ class LandingPage: UIViewController {
                         let image = UIImage(data: data!);
                         let capt = aPost["caption"] as? String ?? "";
                         let likes = aPost["likes"] as? Int ?? 0;
+                        let id = aPost["id"] as? String ?? "";
                         
                         
-                        // Create a Post object and add it to the array.
-                        let actualPost = Post(photo: image, caption: capt, Uploader: user);
+                        // Create a Post object and add it to the array if it is not already there.
+                        let actualPost = Post(photo: image, caption: capt, Uploader: user, ID: id);
                         actualPost.likes = likes;
-                        user.posts.append(actualPost);
                         
-                        self.debug(message: "\(actualPost.toString())");
+                        
+                        // If this post (determined by the id variable) is not already in the array, add it.
+                        if(!user.posts.containsID(id: id)) {
+                            
+                            user.posts.append(actualPost);
+                            self.debug(message: "Added: \(actualPost.toString())");
+                            
+                        } else {
+                            self.debug(message: "Post \(id) was already in the array, so it was not added again.");
+                        }
                         
                     } else {
                         self.debug(message: "There was an error: \(error.debugDescription)");

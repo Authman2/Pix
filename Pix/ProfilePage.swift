@@ -89,7 +89,7 @@ class ProfilePage: UICollectionViewController, UICollectionViewDelegateFlowLayou
     
     override func viewDidLoad() {
         super.viewDidLoad();
-        useUser = currentUser;
+        //useUser = currentUser;
         view.backgroundColor = UIColor(red: 239/255, green: 255/255, blue:245/255, alpha: 1);
         navigationController?.navigationBar.isHidden = false;
         navigationItem.hidesBackButton = true;
@@ -154,7 +154,7 @@ class ProfilePage: UICollectionViewController, UICollectionViewDelegateFlowLayou
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated);
-        collectionView?.reloadData();
+        
         nameLabel.text = "\(useUser.firstName) \(useUser.lastName)";
         followersLabel.text = "Followers: \(useUser.followers.count)";
         followingLabel.text = "Following: \(useUser.following.count)";
