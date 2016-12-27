@@ -154,6 +154,7 @@ class ProfilePage: UICollectionViewController, UICollectionViewDelegateFlowLayou
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated);
+        collectionView?.reloadData();
         
         nameLabel.text = "\(useUser.firstName) \(useUser.lastName)";
         followersLabel.text = "Followers: \(useUser.followers.count)";

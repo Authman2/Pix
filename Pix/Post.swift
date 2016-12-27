@@ -80,7 +80,7 @@ public class Post: NSObject {
     
     
     func toString() -> String {
-        return "id=\(id), caption=\(caption.text!),likes=\(likes)";
+        return "id=\(id!), caption=\(caption.text!),likes=\(likes)";
     }
     
     
