@@ -174,8 +174,11 @@ class ExplorePage: UITableViewController, UISearchResultsUpdating {
         // Tell the profile page which user to use.
         profilePage.useUser = listOfUsers[indexPath.row];
         
+        
         // Load all of that user's photos.
         landingPage.loadUsersPhotos(user: listOfUsers[indexPath.row], completion: nil);
+        profilePage.canChangeProfilePic = false;
+        
         
         // Go to the next page.
         navigationController?.pushViewController(profilePage, animated: true);

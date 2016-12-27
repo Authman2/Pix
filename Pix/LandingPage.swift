@@ -299,18 +299,30 @@ class LandingPage: UIViewController {
                         let capt = aPost["caption"] as? String ?? "";
                         let likes = aPost["likes"] as? Int ?? 0;
                         let id = aPost["id"] as? String ?? "";
+                        let isProfilePic = aPost["is_profile_picture"] as? Bool ?? false;
                         
                         
                         // Create a Post object and add it to the array if it is not already there.
                         let actualPost = Post(photo: image, caption: capt, Uploader: user, ID: id);
                         actualPost.likes = likes;
+                        actualPost.isProfilePicture = isProfilePic;
                         
                         
                         // If this post (determined by the id variable) is not already in the array, add it.
                         if(!user.posts.containsID(id: id)) {
                             
-                            user.posts.append(actualPost);
-                            self.debug(message: "Added: \(actualPost.toString())");
+                            // Make sure it is not the profile picture. Otherwise just set that for the user here.
+                            if(actualPost.isProfilePicture == false) {
+                            
+                                user.posts.append(actualPost);
+                                self.debug(message: "Added: \(actualPost.toString())");
+                            
+                            } else {
+                                
+                                user.profilepic = image;
+                                user.profilePicName = id;
+                                
+                            }
                             
                         } else {
                             self.debug(message: "Post \(id) was already in the array, so it was not added again.");

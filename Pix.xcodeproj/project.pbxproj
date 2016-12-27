@@ -24,6 +24,7 @@
 		5AE3CCE41E0C89DC009F7816 /* SignUpPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AE3CCE31E0C89DC009F7816 /* SignUpPage.swift */; };
 		5AE3CCE71E0C9633009F7816 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AE3CCE61E0C9633009F7816 /* User.swift */; };
 		5AF346381E0AF2F5002FB896 /* LandingPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF346371E0AF2F5002FB896 /* LandingPage.swift */; };
+		5AFE5F6A1E12F6DF008BEA7E /* friends_icon@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5AFE5F691E12F6DF008BEA7E /* friends_icon@3x.png */; };
 		5AFF27511DDB60F4001CBF95 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AFF27501DDB60F4001CBF95 /* AppDelegate.swift */; };
 		5AFF27581DDB60F4001CBF95 /* Assets.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 5AFF27571DDB60F4001CBF95 /* Assets.xcassets */; };
 		5AFF275B1DDB60F4001CBF95 /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 5AFF27591DDB60F4001CBF95 /* LaunchScreen.storyboard */; };
@@ -48,6 +49,7 @@
 		5AE3CCE31E0C89DC009F7816 /* SignUpPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpPage.swift; sourceTree = "<group>"; };
 		5AE3CCE61E0C9633009F7816 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		5AF346371E0AF2F5002FB896 /* LandingPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LandingPage.swift; sourceTree = "<group>"; };
+		5AFE5F691E12F6DF008BEA7E /* friends_icon@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "friends_icon@3x.png"; sourceTree = "<group>"; };
 		5AFF274D1DDB60F4001CBF95 /* Pix.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = Pix.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		5AFF27501DDB60F4001CBF95 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		5AFF27571DDB60F4001CBF95 /* Assets.xcassets */ = {isa = PBXFileReference; lastKnownFileType = folder.assetcatalog; path = Assets.xcassets; sourceTree = "<group>"; };
@@ -139,6 +141,14 @@
 			name = Landing;
 			sourceTree = "<group>";
 		};
+		5AFE5F681E12F6D0008BEA7E /* Images */ = {
+			isa = PBXGroup;
+			children = (
+				5AFE5F691E12F6DF008BEA7E /* friends_icon@3x.png */,
+			);
+			name = Images;
+			sourceTree = "<group>";
+		};
 		5AFF27441DDB60F4001CBF95 = {
 			isa = PBXGroup;
 			children = (
@@ -168,6 +178,7 @@
 				5ABBC9021E1077FA0056CE16 /* Explore */,
 				5AD6455D1E0D818C00E5929C /* Profile */,
 				5AD645601E0DB58000E5929C /* Posts */,
+				5AFE5F681E12F6D0008BEA7E /* Images */,
 				5AFF27571DDB60F4001CBF95 /* Assets.xcassets */,
 				5AFF27591DDB60F4001CBF95 /* LaunchScreen.storyboard */,
 				5AFF275C1DDB60F4001CBF95 /* Info.plist */,
@@ -256,6 +267,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5AFE5F6A1E12F6DF008BEA7E /* friends_icon@3x.png in Resources */,
 				5AFF275B1DDB60F4001CBF95 /* LaunchScreen.storyboard in Resources */,
 				5AFF27581DDB60F4001CBF95 /* Assets.xcassets in Resources */,
 				5A756DCA1DE5E802003FD2C0 /* GoogleService-Info.plist in Resources */,

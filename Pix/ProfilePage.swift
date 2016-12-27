@@ -13,7 +13,7 @@ import Firebase
 import Presentr
 import PullToRefreshSwift
 
-class ProfilePage: UICollectionViewController, UICollectionViewDelegateFlowLayout {
+class ProfilePage: UICollectionViewController, UICollectionViewDelegateFlowLayout, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
     
     /********************************
@@ -81,6 +81,18 @@ class ProfilePage: UICollectionViewController, UICollectionViewDelegateFlowLayou
     var logoutButton: UIBarButtonItem!;
     
     
+    /* Image picker */
+    let imgPicker = UIImagePickerController();
+    var canChangeProfilePic = false;
+    var tap: UITapGestureRecognizer!;
+    
+    
+    /* Firebase reference. */
+    let fireRef: FIRDatabaseReference = FIRDatabase.database().reference();
+    
+    
+    
+    
     
     
     /********************************
@@ -91,7 +103,6 @@ class ProfilePage: UICollectionViewController, UICollectionViewDelegateFlowLayou
     
     override func viewDidLoad() {
         super.viewDidLoad();
-        //useUser = currentUser;
         view.backgroundColor = UIColor(red: 239/255, green: 255/255, blue:245/255, alpha: 1);
         navigationController?.navigationBar.isHidden = false;
         navigationItem.hidesBackButton = true;
@@ -147,9 +158,18 @@ class ProfilePage: UICollectionViewController, UICollectionViewDelegateFlowLayou
         });
         
         
+        /* Bar button item. */
         logoutButton = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(logout));
         logoutButton.tintColor = .white;
         navigationItem.leftBarButtonItem = logoutButton;
+        
+        
+        /* Profile pic image picker. */
+        imgPicker.delegate = self;
+        imgPicker.sourceType = .photoLibrary;
+        tap = UITapGestureRecognizer(target: self, action: #selector(uploadProfilePic));
+        profilePicture.addGestureRecognizer(tap);
+        
         
     } // End of viewDidLoad().
     
@@ -169,6 +189,14 @@ class ProfilePage: UICollectionViewController, UICollectionViewDelegateFlowLayou
         nameLabel.text = "\(useUser.firstName) \(useUser.lastName)";
         followersLabel.text = "Followers: \(useUser.followers.count)";
         followingLabel.text = "Following: \(useUser.following.count)";
+        profilePicture.image = useUser.profilepic;
+        
+        if canChangeProfilePic == false {
+            profilePicture.removeGestureRecognizer(tap);
+        } else {
+            profilePicture.addGestureRecognizer(tap);
+        }
+        
     } // End of viewDidAppear().
     
     
@@ -184,6 +212,82 @@ class ProfilePage: UICollectionViewController, UICollectionViewDelegateFlowLayou
             self.debug(message: "There was a problem signing out.");
         }
     }
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    /********************************
+     *
+     *       IMAGE PICKER
+     *
+     ********************************/
+    
+    @objc func uploadProfilePic() {
+        show(imgPicker, sender: self);
+    }
+    
+    func imagePickerController(_ picker: UIImagePickerController, didFinishPickingMediaWithInfo info: [String : Any]) {
+        
+        if let photo = info[UIImagePickerControllerOriginalImage] as? UIImage {
+                
+                // Set the picture on the image view and also on the actual user object.
+                profilePicture.image = photo;
+                let id = useUser.profilePicName;
+                useUser.profilepic = photo;
+                
+                
+                // Delete the old picture from firebase, and replace it with the new one, but keep the same id.
+                let storageRef = FIRStorageReference().child("\(useUser.email)/\(id!).jpg");
+                storageRef.delete { error in
+                    // If there's an error.
+                    if let error = error {
+                        self.debug(message: "There was an error deleting the image: \(error)");
+                    } else {
+                        
+                        // Save the new image.
+                        let data = UIImageJPEGRepresentation(photo, 100) as NSData?;
+                        let emailTrimmed = self.useUser.email.substring(i: 0, j: self.useUser.email.indexOf(string: "@"));
+                        
+                        let _ = storageRef.put(data! as Data, metadata: nil) { (metaData, error) in
+                            
+                            if (error == nil) {
+                                
+                                let post = Post(photo: photo, caption: "", Uploader: self.useUser, ID: id!);
+                                post.isProfilePicture = true;
+                                let postObj = post.toDictionary();
+                                self.fireRef.child("Photos").child("\(emailTrimmed)").child("\(id!)").setValue(postObj);
+                                self.debug(message: "Old profile picture was removed; replace with new one.");
+                                
+                            } else {
+                                print(error.debugDescription);
+                            }
+                        }
+                        
+                    }
+                }
+                
+                
+                // Dismiss view controller.
+                imgPicker.dismiss(animated: true, completion: nil);
+                
+            }
+    }
+
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
     
     
     

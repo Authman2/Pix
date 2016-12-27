@@ -48,6 +48,9 @@ public class Post: NSObject {
     var id: String!;
     
     
+    /* Whether or not this is the user's profile picture. */
+    var isProfilePicture = false;
+    
     
     
     
@@ -73,14 +76,15 @@ public class Post: NSObject {
         let dict = NSDictionary(dictionary: ["image" : id+".jpg",
                                              "id" : id,
                                              "caption" : caption.text!,
-                                             "likes" : 0]);
+                                             "likes" : 0,
+                                             "is_profile_picture" : isProfilePicture]);
         return dict;
     }
     
     
     
     func toString() -> String {
-        return "id=\(id!), caption=\(caption.text!),likes=\(likes)";
+        return "id=\(id!), caption=\(caption.text!), likes=\(likes), profile picture?: \(isProfilePicture)";
     }
     
     

@@ -7,7 +7,7 @@
 //
 
 import Foundation
-
+import UIKit
 
 
 
@@ -55,6 +55,10 @@ public class User: NSObject {
     var posts: [Post] = [Post]();
     
     
+    /* An image for the profile picture. */
+    var profilepic: UIImage!;
+    var profilePicName: String!;
+    
     
     
     
@@ -66,9 +70,12 @@ public class User: NSObject {
      ********************************/
     
     init(first: String, last: String, email: String) {
+        super.init();
         self.firstName = first;
         self.lastName = last;
         self.email = email;
+        self.profilePicName = self.randomName();
+        self.profilepic = UIImage(named: "friends_icon@3x.png");
     }
     
     
@@ -78,10 +85,24 @@ public class User: NSObject {
                                              "last_name" : lastName,
                                              "email" : email,
                                              "password" : password,
+                                             "profile_picture" : profilePicName,
                                              "followers" : followers,
                                              "following" : following]);
         return dict;
     }
     
+    
+    /* A random id for each post. */
+    private func randomName() -> String {
+        var id = "";
+        let arr: [String] = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z","1","2","3","4","5","6","7","8","9","0"];
+        
+        while id.length() < 15 {
+            let random = arc4random_uniform(UInt32(arr.count));
+            id += arr[Int(random)];
+        }
+        
+        return id;
+    }
         
 }

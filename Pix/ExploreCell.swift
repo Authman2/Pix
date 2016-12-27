@@ -8,6 +8,7 @@
 
 import UIKit
 import SnapKit
+import Firebase
 
 class ExploreCell: UITableViewCell {
 
@@ -67,8 +68,8 @@ class ExploreCell: UITableViewCell {
         user = u;
         
         // Get the data.
-        nameLabel.text = "\(user.firstName) \(user.lastName)";
-        // set the profile picture
+        nameLabel.text = "\(self.user.firstName) \(self.user.lastName)";
+        profilePicture.image = self.loadProfilePicture();
         
         
         // Setup the view
@@ -90,6 +91,62 @@ class ExploreCell: UITableViewCell {
         }
     }
     
+    
+    
+    
+    func loadProfilePicture() -> UIImage {
+        var returner = UIImage();
+        
+        // Load all of the photo objects from the database.
+        let emailTrimmed = self.user.email.substring(i: 0, j: self.user.email.indexOf(string: "@"));
+        let fireRef = FIRDatabase.database().reference();
+        fireRef.child("Photos").child("\(emailTrimmed)").queryOrderedByPriority().observe(FIRDataEventType.value, with: { (snapshot) in
+            
+            // First, make sure there is a value for the posts. If so, then load all of them.
+            let postDictionary = snapshot.value as? [String : AnyObject] ?? [:];
+            
+            
+            // Get each post from the database (in the form of json data).
+            for post in postDictionary {
+                
+                // Get each individual post as a dictionary of elements with the form [key : value].
+                let aPost = post.value as! [String : AnyObject];
+                
+                
+                // Get the name of the photo that is used to identify it.
+                let imgName = aPost["image"] as? String;
+                
+                
+                // Get a reference to the firebase media storage.
+                let imgRef = FIRStorage.storage().reference().child("\(self.user.email)/\(imgName!)");
+                imgRef.data(withMaxSize: 50 * 1024 * 1024, completion: { (data: Data?, error: Error?) in
+                    
+                    if error == nil {
+                        
+                        // Get the value of each important piece of information.
+                        let image = UIImage(data: data!);
+                        let isProfilePic = aPost["is_profile_picture"] as? Bool ?? false;
+                        
+                        
+                        // Make sure it is not the profile picture. Otherwise just set that for the user here.
+                        if(isProfilePic == true) {
+                            
+                            returner = image!;
+                        
+                        }
+                        
+                    } else {
+                        print("There was an error loading profile picture: \(error)");
+                    }
+                    
+                }); // End of access to media storage.
+                
+            } // End of for loop for each post.
+            
+        });
+
+        return returner;
+    } // End of method.
     
     
 }

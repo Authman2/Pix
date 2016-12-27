@@ -54,6 +54,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
         navContr.addMenuItem(name: "Profile", image: nil, destination: profilePage, completion: { void in
             profilePage.useUser = currentUser;
             profilePage.navigationItem.title = "Profile";
+            profilePage.canChangeProfilePic = true;
         });
         
         /* Set the root view controller. */

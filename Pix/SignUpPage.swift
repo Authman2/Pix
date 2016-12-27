@@ -158,7 +158,12 @@ class SignUpPage: UIViewController {
                             
                             self.fireRef.child("Users").child(em.substring(i: 0, j: em.indexOf(string: "@"))).setValue(user.toDictionary());
                             self.debug(message: "User created!");
+                            
+                            // Upload an image for the user's profile picture.
+                            self.uploadProfilePic(user: user, id: user.profilePicName!, profileImage: user.profilepic);
+                            
                             self.dismiss(animated: true, completion: nil);
+                            let _ = self.navigationController?.popViewController(animated: true);
                             
                         // Error.
                         } else {
@@ -169,6 +174,33 @@ class SignUpPage: UIViewController {
                 }
             }
         }
-    }
+    } // End of sign up method.
+    
+    
+    
+    func uploadProfilePic(user: User, id: String, profileImage: UIImage) {
+        let storageRef = FIRStorageReference().child("\(user.email)/\(id).jpg");
+        let data = UIImageJPEGRepresentation(profileImage, 100) as NSData?;
+        let emailTrimmed = user.email.substring(i: 0, j: user.email.indexOf(string: "@"));
+        
+        let _ = storageRef.put(data! as Data, metadata: nil) { (metaData, error) in
+            
+            if (error == nil) {
+                
+                self.debug(message: "Profile Picture Uploaded!");
+                
+                // Create a post for the database.
+                let post = Post(photo: profileImage, caption: "", Uploader: user, ID: id);
+                post.isProfilePicture = true;
+                
+                let postObj = post.toDictionary();
+                self.fireRef.child("Photos").child("\(emailTrimmed)").child("\(id)").setValue(postObj);
+                
+            } else {
+                print(error.debugDescription);
+            }
+        }
+        
+    } // End of upload method.
 
 }
