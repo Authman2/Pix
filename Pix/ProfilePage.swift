@@ -77,6 +77,8 @@ class ProfilePage: UICollectionViewController, UICollectionViewDelegateFlowLayou
     }();
     
     
+    /* The button for logging out. */
+    var logoutButton: UIBarButtonItem!;
     
     
     
@@ -145,7 +147,7 @@ class ProfilePage: UICollectionViewController, UICollectionViewDelegateFlowLayou
         });
         
         
-        let logoutButton = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(logout));
+        logoutButton = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(logout));
         logoutButton.tintColor = .white;
         navigationItem.leftBarButtonItem = logoutButton;
         
@@ -155,6 +157,14 @@ class ProfilePage: UICollectionViewController, UICollectionViewDelegateFlowLayou
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated);
         collectionView?.reloadData();
+        
+        if useUser !== currentUser {
+            logoutButton.isEnabled = false;
+            logoutButton.tintColor = navigationController?.navigationBar.barTintColor;
+        } else {
+            logoutButton.isEnabled = true;
+            logoutButton.tintColor = .white;
+        }
         
         nameLabel.text = "\(useUser.firstName) \(useUser.lastName)";
         followersLabel.text = "Followers: \(useUser.followers.count)";
