@@ -91,17 +91,18 @@ class ExplorePage: UITableViewController, UISearchResultsUpdating {
                     let em = user.value["email"] as? String ?? "";
                     let firstName = user.value["first_name"] as? String ?? "";
                     let lastName = user.value["last_name"] as? String ?? "";
+                    let username = user.value["username"] as? String ?? "";
                     let fullName = "\(firstName) \(lastName)";
                     // Later on, get the follower/following data also.
                     
                     
                     // Compare
-                    if(lookup.length() <= em.length() || lookup.length() <= fullName.length()) {
-                        if(em.substring(i: 0, j: lookup.length()) == lookup || fullName.substring(i: 0, j: lookup.length()) == lookup) {
-                            self.debug(message: "Found: \(em)");
+                    if(lookup.length() <= username.length() || lookup.length() <= fullName.length()) {
+                        if(username.substring(i: 0, j: lookup.length()) == lookup || fullName.substring(i: 0, j: lookup.length()) == lookup) {
+                            self.debug(message: "Found: \(username)");
                             
                             // Create a user object.
-                            let usr = User(first: firstName, last: lastName, email: em);
+                            let usr = User(first: firstName, last: lastName, username: username, email: em);
                             
                             // Add to the lists.
                             self.listOfUsers_fb.add(user);
@@ -111,11 +112,11 @@ class ExplorePage: UITableViewController, UISearchResultsUpdating {
                             self.tableView.reloadData();
                         }
                     } else {
-                        if(em.substring(i: 0, j: em.length()) == lookup || fullName.substring(i: 0, j: fullName.length()) == lookup) {
-                            self.debug(message: "Found: \(em)");
+                        if(username.substring(i: 0, j: username.length()) == lookup || fullName.substring(i: 0, j: fullName.length()) == lookup) {
+                            self.debug(message: "Found: \(username)");
                             
                             // Create a user object.
-                            let usr = User(first: firstName, last: lastName, email: em);
+                            let usr = User(first: firstName, last: lastName, username: username, email: em);
                             
                             // Add to the lists.
                             self.listOfUsers_fb.add(user);
@@ -171,18 +172,21 @@ class ExplorePage: UITableViewController, UISearchResultsUpdating {
     }
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
-        // Tell the profile page which user to use.
-        profilePage.useUser = listOfUsers[indexPath.row];
-        
-        
-        // Load all of that user's photos.
-        landingPage.loadUsersPhotos(user: listOfUsers[indexPath.row], completion: nil);
-        profilePage.canChangeProfilePic = false;
-        
-        
-        // Go to the next page.
-        navigationController?.pushViewController(profilePage, animated: true);
-        profilePage.navigationItem.title = "\(listOfUsers[indexPath.row].firstName) \(listOfUsers[indexPath.row].lastName)";
+        if listOfUsers.count > 0 {
+            // Tell the profile page which user to use.
+            profilePage.useUser = listOfUsers[indexPath.row];
+            profilePage.followButton.isHidden = false;
+            
+            
+            // Load all of that user's photos.
+            landingPage.loadUsersPhotos(user: listOfUsers[indexPath.row], completion: nil);
+            profilePage.canChangeProfilePic = false;
+            
+            
+            // Go to the next page.
+            navigationController?.pushViewController(profilePage, animated: true);
+            profilePage.navigationItem.title = "\(listOfUsers[indexPath.row].username)";
+        }
     }
     
     /* Update the table view based on the search. */

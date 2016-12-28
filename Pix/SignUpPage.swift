@@ -42,6 +42,17 @@ class SignUpPage: UIViewController {
     }();
     
     
+    /* A field to create a username. */
+    let usernameField: UITextField = {
+        let t = UITextField();
+        t.placeholder = "Username";
+        t.translatesAutoresizingMaskIntoConstraints = false;
+        t.backgroundColor = UIColor.white;
+        t.textAlignment = .center;
+        
+        return t;
+    }();
+    
     /* The email text field. */
     let emailField: UITextField = {
         let e = UITextField();
@@ -78,6 +89,19 @@ class SignUpPage: UIViewController {
     }();
     
     
+    /* Displays the status of loggin in. */
+    let statusLabel: UILabel = {
+        let s = UILabel();
+        s.translatesAutoresizingMaskIntoConstraints = false;
+        s.textColor = UIColor.red;
+        s.isHidden = true;
+        s.isUserInteractionEnabled = false;
+        s.textAlignment = .center;
+        
+        return s;
+    }();
+
+    
     /* The firebase database reference. */
     let fireRef: FIRDatabaseReference! = FIRDatabase.database().reference();
     
@@ -96,9 +120,11 @@ class SignUpPage: UIViewController {
         
         view.addSubview(titleLabel);
         view.addSubview(fullnameField);
+        view.addSubview(usernameField);
         view.addSubview(emailField);
         view.addSubview(passwordField);
         view.addSubview(signupButton);
+        view.addSubview(statusLabel);
         
         
         titleLabel.snp.makeConstraints { (maker: ConstraintMaker) in
@@ -111,19 +137,31 @@ class SignUpPage: UIViewController {
             maker.width.equalTo(view.width);
             maker.height.equalTo(30);
         }
+        usernameField.snp.makeConstraints { (maker: ConstraintMaker) in
+            maker.top.equalTo(fullnameField.snp.bottom).offset(10);
+            maker.centerX.equalTo(view.snp.centerX);
+            maker.width.equalTo(view.width);
+            maker.height.equalTo(30);
+        }
         emailField.snp.makeConstraints { (maker: ConstraintMaker) in
-            maker.top.equalTo(fullnameField.snp.bottom).offset(25);
+            maker.top.equalTo(usernameField.snp.bottom).offset(10);
             maker.width.equalTo(view.width);
             maker.height.equalTo(30);
         }
         passwordField.snp.makeConstraints { (maker: ConstraintMaker) in
-            maker.top.equalTo(emailField.snp.bottom).offset(25);
+            maker.top.equalTo(emailField.snp.bottom).offset(10);
             maker.width.equalTo(view.width);
             maker.height.equalTo(30);
         }
+        statusLabel.snp.makeConstraints { (maker: ConstraintMaker) in
+            maker.top.equalTo(passwordField.snp.bottom);
+            maker.width.equalTo(view.width);
+            maker.height.equalTo(30);
+            maker.centerX.equalTo(view.snp.centerX);
+        }
         signupButton.snp.makeConstraints { (maker: ConstraintMaker) in
             maker.centerX.equalTo(view.snp.centerX);
-            maker.top.equalTo(passwordField.snp.bottom).offset(25);
+            maker.top.equalTo(statusLabel.snp.bottom).offset(10);
             maker.width.equalTo(70);
             maker.height.equalTo(45);
         }
@@ -139,38 +177,29 @@ class SignUpPage: UIViewController {
         if (self.fullnameField.text?.length())! > 0 {
             if (self.emailField.text?.length())! > 0 {
                 if (self.passwordField.text?.length())! > 0 {
-                    
-                    // Get the variables needed to create a user.
-                    let name = self.fullnameField.text!;
-                    let em = self.emailField.text!;
-                    let pass = self.passwordField.text!;
-                    
-                    
-                    // Create a user and save it to the firebase database.
-                    let user = User(first: name.substring(i: 0, j: name.indexOf(string: " ")), last: name.substring(i: name.indexOf(string: " ") + 1, j: name.length()), email: em);
-                    user.password = pass;
-                    
-                    
-                    // Authenticate the user.
-                    FIRAuth.auth()?.createUser(withEmail: em, password: pass, completion: { (usr: FIRUser?, error: Error?) in
-                        // No errors creating the user.
-                        if error == nil {
+                    if ((self.usernameField.text?.length())! > 0) {
+                     
+                        fireRef.child("Users").observeSingleEvent(of: .value, with: { (snapshot: FIRDataSnapshot) in
                             
-                            self.fireRef.child("Users").child(em.substring(i: 0, j: em.indexOf(string: "@"))).setValue(user.toDictionary());
-                            self.debug(message: "User created!");
+                            let userDictionary = snapshot.value as? [String : AnyObject] ?? [:];
                             
-                            // Upload an image for the user's profile picture.
-                            self.uploadProfilePic(user: user, id: user.profilePicName!, profileImage: user.profilepic);
+                            for user in userDictionary {
+                                let aUser = user.value as! [String : AnyObject];
+                                let name = aUser["username"] as? String;
+                                
+                                if name == self.usernameField.text {
+                                    self.statusLabel.textColor = .red;
+                                    self.statusLabel.text = "Username already taken.";
+                                    self.statusLabel.isHidden = false;
+                                    return;
+                                }
+                            }
                             
-                            self.dismiss(animated: true, completion: nil);
-                            let _ = self.navigationController?.popViewController(animated: true);
-                            
-                        // Error.
-                        } else {
-                            print(error.debugDescription);
-                        }
-                    });
-                    
+                        }); // End of checking for existing username.
+                        
+                        self.createUser(username: self.usernameField.text!);
+                        
+                    }
                 }
             }
         }
@@ -178,10 +207,44 @@ class SignUpPage: UIViewController {
     
     
     
+    func createUser(username: String) {
+        // Get the variables needed to create a user.
+        let name = self.fullnameField.text!;
+        let em = self.emailField.text!;
+        let pass = self.passwordField.text!;
+        
+        
+        // Create a user and save it to the firebase database.
+        let user = User(first: name.substring(i: 0, j: name.indexOf(string: " ")), last: name.substring(i: name.indexOf(string: " ") + 1, j: name.length()), username: username, email: em);
+        user.password = pass;
+        
+        
+        // Authenticate the user.
+        FIRAuth.auth()?.createUser(withEmail: em, password: pass, completion: { (usr: FIRUser?, error: Error?) in
+            // No errors creating the user.
+            if error == nil {
+                
+                self.fireRef.child("Users").child(user.username).setValue(user.toDictionary());
+                self.debug(message: "User created!");
+                
+                // Upload an image for the user's profile picture.
+                self.uploadProfilePic(user: user, id: user.profilePicName!, profileImage: user.profilepic);
+                
+                self.dismiss(animated: true, completion: nil);
+                let _ = self.navigationController?.popViewController(animated: true);
+                
+                // Error.
+            } else {
+                print(error.debugDescription);
+            }
+        });
+    }
+    
+    
+    
     func uploadProfilePic(user: User, id: String, profileImage: UIImage) {
-        let storageRef = FIRStorageReference().child("\(user.email)/\(id).jpg");
+        let storageRef = FIRStorageReference().child("\(user.username)/\(id).jpg");
         let data = UIImageJPEGRepresentation(profileImage, 100) as NSData?;
-        let emailTrimmed = user.email.substring(i: 0, j: user.email.indexOf(string: "@"));
         
         let _ = storageRef.put(data! as Data, metadata: nil) { (metaData, error) in
             
@@ -194,7 +257,7 @@ class SignUpPage: UIViewController {
                 post.isProfilePicture = true;
                 
                 let postObj = post.toDictionary();
-                self.fireRef.child("Photos").child("\(emailTrimmed)").child("\(id)").setValue(postObj);
+                self.fireRef.child("Photos").child("\(user.username)").child("\(id)").setValue(postObj);
                 
             } else {
                 print(error.debugDescription);

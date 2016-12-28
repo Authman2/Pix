@@ -31,6 +31,10 @@ public class User: NSObject {
     var lastName: String = String();
     
     
+    /* The user's username. */
+    var username: String = String();
+    
+    
     /* The user's email. */
     var email: String = String();
     
@@ -69,10 +73,11 @@ public class User: NSObject {
      *
      ********************************/
     
-    init(first: String, last: String, email: String) {
+    init(first: String, last: String, username: String, email: String) {
         super.init();
         self.firstName = first;
         self.lastName = last;
+        self.username = username;
         self.email = email;
         self.profilePicName = self.randomName();
         self.profilepic = UIImage(named: "friends_icon@3x.png");
@@ -83,6 +88,7 @@ public class User: NSObject {
     func toDictionary() -> NSDictionary {
         let dict = NSDictionary(dictionary: ["first_name" : firstName,
                                              "last_name" : lastName,
+                                             "username" : username,
                                              "email" : email,
                                              "password" : password,
                                              "profile_picture" : profilePicName,
@@ -90,6 +96,12 @@ public class User: NSObject {
                                              "following" : following]);
         return dict;
     }
+    
+    
+    func toString() -> String {
+        return "Name: \(firstName) \(lastName), Username: \(username), Email: \(email), Password: \(password)";
+    }
+    
     
     
     /* A random id for each post. */

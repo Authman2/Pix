@@ -76,6 +76,19 @@ class ProfilePage: UICollectionViewController, UICollectionViewDelegateFlowLayou
     }();
     
     
+    /* A button to follow a user. */
+    let followButton: UIButton = {
+        let a = UIButton();
+        a.setTitle("Follow", for: .normal);
+        a.backgroundColor = UIColor(red: 21/255, green: 180/255, blue: 133/255, alpha: 1);
+        a.layer.cornerRadius = 25;
+        a.titleLabel?.font = UIFont(name: (a.titleLabel?.font.fontName)!, size: 15);
+        
+        return a;
+    }();
+    
+    
+    
     /* The button for logging out. */
     var logoutButton: UIBarButtonItem!;
     
@@ -114,6 +127,7 @@ class ProfilePage: UICollectionViewController, UICollectionViewDelegateFlowLayou
         view.addSubview(nameLabel);
         view.addSubview(followersLabel);
         view.addSubview(followingLabel);
+        view.addSubview(followButton);
         
         profilePicture.snp.makeConstraints { (maker: ConstraintMaker) in
             maker.centerX.equalTo(view.snp.centerX);
@@ -139,13 +153,18 @@ class ProfilePage: UICollectionViewController, UICollectionViewDelegateFlowLayou
             maker.height.equalTo(20);
             maker.top.equalTo(followersLabel.snp.bottom).offset(5);
         }
+        followButton.snp.makeConstraints { (maker: ConstraintMaker) in
+            maker.centerX.equalTo(view.snp.centerX);
+            maker.width.equalTo(view.width / 5);
+            maker.height.equalTo(35);
+            maker.top.equalTo(followingLabel.snp.bottom).offset(5);
+        }
         collectionView?.snp.makeConstraints({ (maker: ConstraintMaker) in
             maker.width.equalTo(view.frame.width);
             maker.centerX.equalTo(view);
-            maker.top.equalTo(followingLabel.snp.bottom).offset(10);
+            maker.top.equalTo(followButton.snp.bottom).offset(10);
             maker.bottom.equalTo(view.snp.bottom);
         })
-        
         
         /* Add the pull to refresh function. */
         var options = PullToRefreshOption();
@@ -166,6 +185,10 @@ class ProfilePage: UICollectionViewController, UICollectionViewDelegateFlowLayou
         logoutButton = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(logout));
         logoutButton.tintColor = .white;
         navigationItem.leftBarButtonItem = logoutButton;
+        
+        
+        /* Follow button. */
+        followButton.addTarget(self, action: #selector(followUser), for: .touchUpInside);
         
         
         /* Profile pic image picker. */
@@ -219,6 +242,23 @@ class ProfilePage: UICollectionViewController, UICollectionViewDelegateFlowLayou
     
     
     
+    /* Makes the current user follow the user on this profile page.
+     PRECONDITION: The user being displayed is NOT the current user.
+     POSTCONDITION: It is always the CURRENT USER who has this user added to their following, and the useUse who gets the CURRENT USER added to their followers.*/
+    @objc func followUser() {
+        
+        // First, set the values of the objects.
+        currentUser.following.append(useUser);
+        useUser.followers.append(currentUser);
+        
+        
+        
+        /* COME BACK TO THIS. */
+    }
+    
+    
+    
+    
     
     
     
@@ -246,7 +286,7 @@ class ProfilePage: UICollectionViewController, UICollectionViewDelegateFlowLayou
                 
                 
                 // Delete the old picture from firebase, and replace it with the new one, but keep the same id.
-                let storageRef = FIRStorageReference().child("\(useUser.email)/\(id!).jpg");
+                let storageRef = FIRStorageReference().child("\(useUser.username)/\(id!).jpg");
                 storageRef.delete { error in
                     // If there's an error.
                     if let error = error {
@@ -255,7 +295,6 @@ class ProfilePage: UICollectionViewController, UICollectionViewDelegateFlowLayou
                         
                         // Save the new image.
                         let data = UIImageJPEGRepresentation(photo, 100) as NSData?;
-                        let emailTrimmed = self.useUser.email.substring(i: 0, j: self.useUser.email.indexOf(string: "@"));
                         
                         let _ = storageRef.put(data! as Data, metadata: nil) { (metaData, error) in
                             
@@ -264,7 +303,7 @@ class ProfilePage: UICollectionViewController, UICollectionViewDelegateFlowLayou
                                 let post = Post(photo: photo, caption: "", Uploader: self.useUser, ID: id!);
                                 post.isProfilePicture = true;
                                 let postObj = post.toDictionary();
-                                self.fireRef.child("Photos").child("\(emailTrimmed)").child("\(id!)").setValue(postObj);
+                                self.fireRef.child("Photos").child("\(self.useUser.username)").child("\(id!)").setValue(postObj);
                                 self.debug(message: "Old profile picture was removed; replace with new one.");
                                 
                             } else {

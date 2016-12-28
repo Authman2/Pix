@@ -195,42 +195,62 @@ class LandingPage: UIViewController {
         // Sign in.
         if((self.emailField.text?.length())! > 0 && (self.passwordField.text?.length())! > 0) {
             FIRAuth.auth()?.signIn(withEmail: emailField.text!, password: passwordField.text!, completion: { (usr: FIRUser?, error: Error?) in
-            if error != nil {
+                if error != nil {
 
-                self.debug(message: "Wrong Password!");
-                self.statusLabel.textColor = UIColor.red;
-                self.statusLabel.isHidden = false;
-                self.statusLabel.text = "Incorrect password.";
-                
-            } else {
-                // Search in the database for the user with the email that has been entered.
-                let emailTrimmed = self.emailField.text!.substring(i: 0, j: self.emailField.text!.indexOf(string: "@"));
-                
-                self.fireRef.child("Users").child(emailTrimmed).observeSingleEvent(of: .value, with: { (snapshot) in
-                    let value = snapshot.value as? NSDictionary
-                    
-                    let first = value?["first_name"] as? String ?? "";
-                    let last = value?["last_name"] as? String ?? "";
-                    let pass = value?["password"] as? String ?? "";
-                    let em = value?["email"] as? String ?? "";
-                    
-                    let usr = User(first: first, last: last, email: em);
-                    usr.password = pass;
-                    currentUser = usr;
-                    
-                    self.debug(message: "Logged in!");
-                    self.statusLabel.textColor = UIColor.green;
+                    self.debug(message: "Wrong Password!");
+                    self.statusLabel.textColor = UIColor.red;
                     self.statusLabel.isHidden = false;
-                    self.statusLabel.text = "Logging In!";
+                    self.statusLabel.text = "Incorrect password.";
                     
-                    self.loadUsersPhotos(user: currentUser, completion: {
-                        self.debug(message: "Loading all of the user's posts...");
-                        self.goToApp();
+                } else {
+                    // Search in the database for the user.
+                    self.fireRef.child("Users").observeSingleEvent(of: .value, with: { (snapshot) in
+                        
+                        let userDictionary = snapshot.value as? [String : AnyObject] ?? [:];
+                    
+                        for user in userDictionary {
+                            let value = user.value as? NSDictionary
+                            
+                            let first = value?["first_name"] as? String ?? "";
+                            let last = value?["last_name"] as? String ?? "";
+                            let username = value?["username"] as? String ?? "";
+                            let pass = value?["password"] as? String ?? "";
+                            let em = value?["email"] as? String ?? "";
+                            
+                            
+                            // If there is a match with the emails, login.
+                            if(em == self.emailField.text!) {
+                                let usr = User(first: first, last: last, username: username, email: em);
+                                usr.password = pass;
+                                currentUser = usr;
+                                self.debug(message: "User: \(usr.toString())");
+                                
+                                self.debug(message: "Logged in!");
+                                self.statusLabel.textColor = UIColor.green;
+                                self.statusLabel.isHidden = false;
+                                self.statusLabel.text = "Logging In!";
+                                
+                                break;
+                            } else {
+                                
+                                self.statusLabel.textColor = UIColor.red;
+                                self.statusLabel.isHidden = false;
+                                self.statusLabel.text = "Could not find that user.";
+
+                                
+                            } // End of email check.
+                            
+                        } // End of for loop.
+                    
+                        self.loadUsersPhotos(user: currentUser, completion: {
+                            self.debug(message: "Loading all of the user's posts...");
+                            self.goToApp();
+                        });
+                        
+                        self.debug(message: "Signed In!");
                     });
-                });
-                self.debug(message: "Signed In!");
-            }
-        });
+                }
+            });
             
         } else {
             self.debug(message: "Invalid Credentials!");
@@ -270,8 +290,7 @@ class LandingPage: UIViewController {
         
         
         // Load all of the photo objects from the database.
-        let emailTrimmed = user.email.substring(i: 0, j: user.email.indexOf(string: "@"));
-        fireRef.child("Photos").child("\(emailTrimmed)").queryOrderedByPriority().observe(FIRDataEventType.value, with: { (snapshot) in
+        fireRef.child("Photos").child(user.username).queryOrderedByPriority().observe(FIRDataEventType.value, with: { (snapshot) in
             
             // First, make sure there is a value for the posts. If so, then load all of them.
             let postDictionary = snapshot.value as? [String : AnyObject] ?? [:];
@@ -289,7 +308,7 @@ class LandingPage: UIViewController {
                 
                 
                 // Get a reference to the firebase media storage.
-                let imgRef = FIRStorage.storage().reference().child("\(user.email)/\(imgName!)");
+                let imgRef = FIRStorage.storage().reference().child("\(user.username)/\(imgName!)");
                 imgRef.data(withMaxSize: 50 * 1024 * 1024, completion: { (data: Data?, error: Error?) in
                     
                     if error == nil {

@@ -55,6 +55,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             profilePage.useUser = currentUser;
             profilePage.navigationItem.title = "Profile";
             profilePage.canChangeProfilePic = true;
+            profilePage.followButton.isHidden = true;
             profilePage.viewDidAppear(true);
         });
         

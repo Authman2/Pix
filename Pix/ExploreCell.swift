@@ -38,11 +38,10 @@ class ExploreCell: UITableViewCell {
     
     
     /* The image view that displays that user's profile picture. */
-    let profilePicture: UIImageView = {
-        let a = UIImageView();
+    let profilePicture: CircleImageView = {
+        let a = CircleImageView();
         a.translatesAutoresizingMaskIntoConstraints = false;
         a.backgroundColor = .gray;
-        a.layer.cornerRadius = 15;
         
         return a;
     }();
@@ -68,7 +67,7 @@ class ExploreCell: UITableViewCell {
         user = u;
         
         // Get the data.
-        nameLabel.text = "\(self.user.firstName) \(self.user.lastName)";
+        nameLabel.text = "\(self.user.username)";
         profilePicture.image = self.loadProfilePicture();
         
         
