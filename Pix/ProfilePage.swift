@@ -27,10 +27,9 @@ class ProfilePage: UICollectionViewController, UICollectionViewDelegateFlowLayou
     
     
     /* The image view that displays the profile picture. */
-    let profilePicture: UIImageView = {
-        let i = UIImageView();
+    let profilePicture: CircleImageView = {
+        let i = CircleImageView();
         i.translatesAutoresizingMaskIntoConstraints = false;
-        i.layer.cornerRadius = 45;
         i.isUserInteractionEnabled = true;
         i.backgroundColor = UIColor.gray;
         
@@ -153,7 +152,12 @@ class ProfilePage: UICollectionViewController, UICollectionViewDelegateFlowLayou
         options.fixedSectionHeader = false;
         collectionView?.addPullRefresh(options: options, refreshCompletion: { (Void) in
             self.collectionView?.reloadData();
+            self.nameLabel.text = "\(self.useUser.firstName) \(self.useUser.lastName)";
+            self.followersLabel.text = "Followers: \(self.useUser.followers.count)";
+            self.followingLabel.text = "Following: \(self.useUser.following.count)";
+            self.profilePicture.image = self.useUser.profilepic;
             self.debug(message: "Size: \(self.useUser.posts.count)");
+            
             self.collectionView?.stopPullRefreshEver();
         });
         

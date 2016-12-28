@@ -55,6 +55,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate {
             profilePage.useUser = currentUser;
             profilePage.navigationItem.title = "Profile";
             profilePage.canChangeProfilePic = true;
+            profilePage.viewDidAppear(true);
         });
         
         /* Set the root view controller. */
