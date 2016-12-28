@@ -216,14 +216,18 @@ class LandingPage: UIViewController {
                             let username = value?["username"] as? String ?? "";
                             let pass = value?["password"] as? String ?? "";
                             let em = value?["email"] as? String ?? "";
+                            let followers = value?["followers"] as? [String] ?? [];
+                            let following = value?["following"] as? [String] ?? [];
                             
                             
                             // If there is a match with the emails, login.
                             if(em == self.emailField.text!) {
                                 let usr = User(first: first, last: last, username: username, email: em);
                                 usr.password = pass;
+                                usr.followers = followers;
+                                usr.following = following;
                                 currentUser = usr;
-                                self.debug(message: "User: \(usr.toString())");
+                                
                                 
                                 self.debug(message: "Logged in!");
                                 self.statusLabel.textColor = UIColor.green;
@@ -364,4 +368,7 @@ class LandingPage: UIViewController {
     } // End of the loadUsersPhotos() method.
     
 
+    
+    
+    
 }

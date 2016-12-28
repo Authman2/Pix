@@ -247,14 +247,20 @@ class ProfilePage: UICollectionViewController, UICollectionViewDelegateFlowLayou
      POSTCONDITION: It is always the CURRENT USER who has this user added to their following, and the useUse who gets the CURRENT USER added to their followers.*/
     @objc func followUser() {
         
-        // First, set the values of the objects.
-        currentUser.following.append(useUser);
-        useUser.followers.append(currentUser);
+        // First, check if the follower/following connection is already there. If not, continue...
+        if(!currentUser.following.containsUsername(username: useUser.username) && !useUser.followers.containsUsername(username: currentUser.username)) {
+            
+            // Set the values of the objects.
+            currentUser.following.append(useUser.username);
+            useUser.followers.append(currentUser.username);
+            
+            
+            // Update both users in firebase.
+            fireRef.child("Users").child(currentUser.username).setValue(currentUser.toDictionary());
+            fireRef.child("Users").child(useUser.username).setValue(useUser.toDictionary());
+        }
         
-        
-        
-        /* COME BACK TO THIS. */
-    }
+    } // End of followUser() method.
     
     
     

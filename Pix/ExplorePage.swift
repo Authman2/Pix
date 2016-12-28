@@ -93,7 +93,8 @@ class ExplorePage: UITableViewController, UISearchResultsUpdating {
                     let lastName = user.value["last_name"] as? String ?? "";
                     let username = user.value["username"] as? String ?? "";
                     let fullName = "\(firstName) \(lastName)";
-                    // Later on, get the follower/following data also.
+                    let followers = user.value["followers"] as? [String] ?? [];
+                    let following = user.value["following"] as? [String] ?? [];
                     
                     
                     // Compare
@@ -103,6 +104,8 @@ class ExplorePage: UITableViewController, UISearchResultsUpdating {
                             
                             // Create a user object.
                             let usr = User(first: firstName, last: lastName, username: username, email: em);
+                            usr.followers = followers;
+                            usr.following = following;
                             
                             // Add to the lists.
                             self.listOfUsers_fb.add(user);
@@ -117,6 +120,8 @@ class ExplorePage: UITableViewController, UISearchResultsUpdating {
                             
                             // Create a user object.
                             let usr = User(first: firstName, last: lastName, username: username, email: em);
+                            usr.followers = followers;
+                            usr.following = following;
                             
                             // Add to the lists.
                             self.listOfUsers_fb.add(user);

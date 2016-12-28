@@ -44,11 +44,11 @@ public class User: NSObject {
     
     
     /* All of the user's followers. */
-    var followers: [User] = [User]();
+    var followers: [String] = [String]();
     
     
     /* All of the people this user is following. */
-    var following: [User] = [User]();
+    var following: [String] = [String]();
     
     
     /* All of the user's posts (in the form of firebase data). */
