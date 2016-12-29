@@ -43,6 +43,7 @@ class LandingPage: UIViewController {
         e.textAlignment = .center;
         e.autocorrectionType = .no;
         e.autocapitalizationType = .none;
+        e.keyboardType = .emailAddress;
         
         return e;
     }();
@@ -253,8 +254,8 @@ class LandingPage: UIViewController {
                     
                         self.loadUsersPhotos(user: currentUser, completion: {
                             self.debug(message: "Loading all of the user's posts...");
-                            feedPage.viewDidLoad();
                             feedPage.loadPhotos();
+                            feedPage.copyOver();
                             self.goToApp();
                         });
                         

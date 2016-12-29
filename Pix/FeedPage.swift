@@ -52,8 +52,7 @@ class FeedPage: UICollectionViewController, UICollectionViewDelegateFlowLayout, 
         navigationItem.hidesBackButton = true;
         navigationItem.title = "Feed";
         setupCollectionView();
-        self.loadPhotos();
-        self.copyOver();
+        
         
         // Image Picker.
         imgPicker.delegate = self;
@@ -84,8 +83,6 @@ class FeedPage: UICollectionViewController, UICollectionViewDelegateFlowLayout, 
         navigationItem.hidesBackButton = true;
         navigationItem.title = "Feed";
         
-        self.loadPhotos();
-        self.copyOver();
         self.collectionView?.reloadData();
     } // End of viewDidAppear().
     
@@ -155,15 +152,15 @@ class FeedPage: UICollectionViewController, UICollectionViewDelegateFlowLayout, 
                 
             } // End of user for loop.
             
+            
+            // Observe the photos.
+            for user in self.users {
+            
+                landingPage.loadUsersPhotos(user: user, completion: nil);
+            
+            } // End of getting users' photos for loop.
+            
         }) // End of observe.
-        
-        
-        // Observe the photos.
-        for user in users {
-            
-            landingPage.loadUsersPhotos(user: user, completion: nil);
-            
-        } // End of getting users' photos for loop.
         
     } // End of load photos method.
     
@@ -177,9 +174,12 @@ class FeedPage: UICollectionViewController, UICollectionViewDelegateFlowLayout, 
             // Go through each post.
             for post in user.posts {
                 
+                // If the post is not already in the array, add it. 
                 if !self.postFeed.containsID(id: post.id) {
+                    
                     self.postFeed.append(post);
                     self.debug(message: "Loaded \(user.username)'s photo: \(post.toString())");
+                    
                 }
             }
         }

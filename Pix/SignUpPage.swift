@@ -64,6 +64,7 @@ class SignUpPage: UIViewController {
         e.textAlignment = .center;
         e.autocapitalizationType = .none;
         e.autocorrectionType = .no;
+        e.keyboardType = .emailAddress;
         
         return e;
     }();
