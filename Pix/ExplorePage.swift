@@ -93,6 +93,7 @@ class ExplorePage: UITableViewController, UISearchResultsUpdating {
                     let lastName = user.value["last_name"] as? String ?? "";
                     let username = user.value["username"] as? String ?? "";
                     let fullName = "\(firstName) \(lastName)";
+                    let pass = user.value["password"] as? String ?? "";
                     let followers = user.value["followers"] as? [String] ?? [];
                     let following = user.value["following"] as? [String] ?? [];
                     
@@ -104,6 +105,7 @@ class ExplorePage: UITableViewController, UISearchResultsUpdating {
                             
                             // Create a user object.
                             let usr = User(first: firstName, last: lastName, username: username, email: em);
+                            usr.password = pass;
                             usr.followers = followers;
                             usr.following = following;
                             
@@ -120,6 +122,7 @@ class ExplorePage: UITableViewController, UISearchResultsUpdating {
                             
                             // Create a user object.
                             let usr = User(first: firstName, last: lastName, username: username, email: em);
+                            usr.password = pass;
                             usr.followers = followers;
                             usr.following = following;
                             
@@ -181,6 +184,12 @@ class ExplorePage: UITableViewController, UISearchResultsUpdating {
             // Tell the profile page which user to use.
             profilePage.useUser = listOfUsers[indexPath.row];
             profilePage.followButton.isHidden = false;
+            
+            if(currentUser.following.containsUsername(username: listOfUsers[indexPath.row].username)) {
+                profilePage.followButton.setTitle("Unfollow", for: .normal);
+            } else {
+                profilePage.followButton.setTitle("Follow", for: .normal);
+            }
             
             
             // Load all of that user's photos.

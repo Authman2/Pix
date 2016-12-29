@@ -135,12 +135,14 @@ class FeedPage: UICollectionViewController, UICollectionViewDelegateFlowLayout, 
                     let em = user.value["email"] as? String ?? "";
                     let firstName = user.value["first_name"] as? String ?? "";
                     let lastName = user.value["last_name"] as? String ?? "";
+                    let pass = user.value["password"] as? String ?? "";
                     let followers = user.value["followers"] as? [String] ?? [];
                     let following = user.value["following"] as? [String] ?? [];
                     
                     
                     // Create a user and add it to the array.
                     let usr = User(first: firstName, last: lastName, username: username, email: em);
+                    usr.password = pass;
                     usr.followers = followers;
                     usr.following = following;
                     
@@ -178,7 +180,6 @@ class FeedPage: UICollectionViewController, UICollectionViewDelegateFlowLayout, 
                 if !self.postFeed.containsID(id: post.id) {
                     
                     self.postFeed.append(post);
-                    self.debug(message: "Loaded \(user.username)'s photo: \(post.toString())");
                     
                 }
             }
@@ -252,4 +253,5 @@ class FeedPage: UICollectionViewController, UICollectionViewDelegateFlowLayout, 
     func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
         return UIEdgeInsets(top: 20, left: 0, bottom: 20, right: 0);
     }
+    
 }

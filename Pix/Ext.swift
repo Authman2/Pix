@@ -114,6 +114,42 @@ public extension NSObject {
 
 public extension Array {
     
+    public mutating func removeItem(item: String) {
+        
+        var i: Int = 0;
+        for itm in self {
+            
+            i += 1;
+            let s = itm as! String;
+            
+            if s == item {
+                break;
+            }
+        }
+        i -= 1;
+        
+        remove(at: i);
+    }
+    
+    
+    public mutating func removeItem(item: Post) {
+        var i: Int = 0;
+        for itm in self {
+            
+            i += 1;
+            let s = itm as! Post;
+            
+            if s.id == item.id {
+                break;
+            }
+        }
+        i -= 1;
+        
+        remove(at: i);
+    }
+    
+    
+    
     /// Returns whether or not the array contains the given object.
     public func contains(item: NSObject) -> Bool {
         var b = false;
@@ -130,8 +166,6 @@ public extension Array {
         
         return b;
     }
-    
-    
     
     /* Returns true or false if the array contains a Post object that has the id specified in the parameter. */
     public func containsID(id: String) -> Bool {

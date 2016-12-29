@@ -116,7 +116,6 @@ class FeedCell: UICollectionViewCell {
             maker.bottom.equalTo(snp.bottom);
             maker.height.equalTo(20);
             maker.left.equalTo(snp.left);
-            maker.right.equalTo(likesLabel.snp.left);
         }
         captionLabel.snp.makeConstraints { (maker: ConstraintMaker) in
             maker.bottom.equalTo(uploaderLabel.snp.top);

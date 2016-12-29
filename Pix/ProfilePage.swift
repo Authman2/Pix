@@ -81,7 +81,7 @@ class ProfilePage: UICollectionViewController, UICollectionViewDelegateFlowLayou
         let a = UIButton();
         a.setTitle("Follow", for: .normal);
         a.backgroundColor = UIColor(red: 21/255, green: 180/255, blue: 133/255, alpha: 1);
-        a.layer.cornerRadius = 25;
+        a.layer.cornerRadius = 20;
         a.titleLabel?.font = UIFont(name: (a.titleLabel?.font.fontName)!, size: 15);
         
         return a;
@@ -155,7 +155,7 @@ class ProfilePage: UICollectionViewController, UICollectionViewDelegateFlowLayou
         }
         followButton.snp.makeConstraints { (maker: ConstraintMaker) in
             maker.centerX.equalTo(view.snp.centerX);
-            maker.width.equalTo(view.width / 5);
+            maker.width.equalTo(view.width / 4.5);
             maker.height.equalTo(35);
             maker.top.equalTo(followingLabel.snp.bottom).offset(5);
         }
@@ -213,10 +213,7 @@ class ProfilePage: UICollectionViewController, UICollectionViewDelegateFlowLayou
             logoutButton.tintColor = .white;
         }
         
-        nameLabel.text = "\(useUser.firstName) \(useUser.lastName)";
-        followersLabel.text = "Followers: \(useUser.followers.count)";
-        followingLabel.text = "Following: \(useUser.following.count)";
-        profilePicture.image = useUser.profilepic;
+        self.reloadLabels();
         
         if canChangeProfilePic == false {
             profilePicture.removeGestureRecognizer(tap);
@@ -225,6 +222,14 @@ class ProfilePage: UICollectionViewController, UICollectionViewDelegateFlowLayou
         }
         
     } // End of viewDidAppear().
+    
+    
+    func reloadLabels() {
+        nameLabel.text = "\(useUser.firstName) \(useUser.lastName)";
+        followersLabel.text = "Followers: \(useUser.followers.count)";
+        followingLabel.text = "Following: \(useUser.following.count)";
+        profilePicture.image = useUser.profilepic;
+    }
     
     
     
@@ -261,11 +266,37 @@ class ProfilePage: UICollectionViewController, UICollectionViewDelegateFlowLayou
             currentUser.following.append(useUser.username);
             useUser.followers.append(currentUser.username);
             
+            // Update the button.
+            self.followButton.setTitle("Unfollow", for: .normal);
             
             // Update both users in firebase.
             fireRef.child("Users").child(currentUser.username).setValue(currentUser.toDictionary());
             fireRef.child("Users").child(useUser.username).setValue(useUser.toDictionary());
+        } else {
+            
+            // Set the values of the objects.
+            currentUser.following.removeItem(item: useUser.username);
+            useUser.followers.removeItem(item: currentUser.username);
+            
+            // Update the button.
+            self.followButton.setTitle("Follow", for: .normal);
+            
+            // Update both users in firebase.
+            fireRef.child("Users").child(currentUser.username).setValue(currentUser.toDictionary());
+            fireRef.child("Users").child(useUser.username).setValue(useUser.toDictionary());
+            
+            // Remove all of the photos from the feed page that belong to this user.
+            if feedPage.postFeed.count > 0 {
+                for post in useUser.posts {
+                    feedPage.postFeed.removeItem(item: post);
+                }
+            }
+            
+            feedPage.loadPhotos();
         }
+        
+        // Reload the labels.
+        self.reloadLabels();
         
     } // End of followUser() method.
     
