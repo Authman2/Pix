@@ -161,6 +161,20 @@ public extension Array {
         
         return false;
     }
+    
+    /* Returns whether or not this array contains a user with this username. */
+    public func containsUser(username: String) -> Bool {
+        
+        for itm in self {
+            let temp = itm as! User;
+            
+            if temp.username == username {
+                return true;
+            }
+        }
+        
+        return false;
+    }
 }
 
 

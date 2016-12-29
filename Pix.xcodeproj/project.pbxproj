@@ -10,6 +10,7 @@
 		19E466EE712F77175523C79E /* Pods_Pix.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F2E2AED695C23906B91EBD7 /* Pods_Pix.framework */; };
 		5A25ADD51DEB483500301468 /* DZNEmptyDataSet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A25ADD41DEB483500301468 /* DZNEmptyDataSet.framework */; };
 		5A28BE4A1E1459C900DD0396 /* CircleImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A28BE491E1459C900DD0396 /* CircleImageView.swift */; };
+		5A28BE4C1E1492CF00DD0396 /* FeedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A28BE4B1E1492CF00DD0396 /* FeedCell.swift */; };
 		5A6229CB1DE5720A002510AA /* Spring.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A6229CA1DE5720A002510AA /* Spring.framework */; };
 		5A6229CD1DE5720D002510AA /* ChameleonFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A6229CC1DE5720D002510AA /* ChameleonFramework.framework */; };
 		5A756DCA1DE5E802003FD2C0 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5A756DC91DE5E802003FD2C0 /* GoogleService-Info.plist */; };
@@ -36,6 +37,7 @@
 		563268E86F8F81BF23A9236C /* Pods-Pix.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-Pix.release.xcconfig"; path = "Pods/Target Support Files/Pods-Pix/Pods-Pix.release.xcconfig"; sourceTree = "<group>"; };
 		5A25ADD41DEB483500301468 /* DZNEmptyDataSet.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DZNEmptyDataSet.framework; path = "../../../../Library/Developer/Xcode/DerivedData/Pix-ctukwtofcongdnezqcfllkcuomcc/Build/Products/Debug-iphoneos/DZNEmptyDataSet/DZNEmptyDataSet.framework"; sourceTree = "<group>"; };
 		5A28BE491E1459C900DD0396 /* CircleImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleImageView.swift; sourceTree = "<group>"; };
+		5A28BE4B1E1492CF00DD0396 /* FeedCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedCell.swift; sourceTree = "<group>"; };
 		5A6229CA1DE5720A002510AA /* Spring.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Spring.framework; path = "../../../../Library/Developer/Xcode/DerivedData/Pix-ctukwtofcongdnezqcfllkcuomcc/Build/Products/Debug-iphonesimulator/Spring/Spring.framework"; sourceTree = "<group>"; };
 		5A6229CC1DE5720D002510AA /* ChameleonFramework.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ChameleonFramework.framework; path = "../../../../Library/Developer/Xcode/DerivedData/Pix-ctukwtofcongdnezqcfllkcuomcc/Build/Products/Debug-iphonesimulator/ChameleonFramework/ChameleonFramework.framework"; sourceTree = "<group>"; };
 		5A756DC91DE5E802003FD2C0 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -114,6 +116,7 @@
 				5AD645631E0DEFE600E5929C /* Post.swift */,
 				5AD645681E0DFEF800E5929C /* UploadPhotosViewController.swift */,
 				5A93F8EE1E0F0F72008C7154 /* PostDetailPage.swift */,
+				5A28BE4B1E1492CF00DD0396 /* FeedCell.swift */,
 			);
 			name = Posts;
 			sourceTree = "<group>";
@@ -237,7 +240,7 @@
 			isa = PBXProject;
 			attributes = {
 				LastSwiftUpdateCheck = 0810;
-				LastUpgradeCheck = 0810;
+				LastUpgradeCheck = 0820;
 				ORGANIZATIONNAME = "Adeola Uthman";
 				TargetAttributes = {
 					5AFF274C1DDB60F4001CBF95 = {
@@ -343,6 +346,7 @@
 				5A93F8EF1E0F0F72008C7154 /* PostDetailPage.swift in Sources */,
 				5AE3CCE41E0C89DC009F7816 /* SignUpPage.swift in Sources */,
 				5ABBC9041E10781C0056CE16 /* ExplorePage.swift in Sources */,
+				5A28BE4C1E1492CF00DD0396 /* FeedCell.swift in Sources */,
 				5AE3CCE71E0C9633009F7816 /* User.swift in Sources */,
 				5AFF27511DDB60F4001CBF95 /* AppDelegate.swift in Sources */,
 				5AF346381E0AF2F5002FB896 /* LandingPage.swift in Sources */,

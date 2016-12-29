@@ -232,6 +232,13 @@ class ProfilePage: UICollectionViewController, UICollectionViewDelegateFlowLayou
         do {
             try FIRAuth.auth()?.signOut();
             currentUser = nil;
+            feedPage.users.removeAll();
+            feedPage.usernames.removeAll();
+            feedPage.postFeed.removeAll();
+            explorePage.listOfUsers.removeAll();
+            explorePage.listOfUsers_fb.removeAllObjects();
+            self.useUser = nil;
+            
             let _ = navigationController?.popToRootViewController(animated: true);
             self.debug(message: "Signed out!");
             self.debug(message: "Logged out!");

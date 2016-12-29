@@ -41,6 +41,8 @@ class LandingPage: UIViewController {
         e.placeholder = "Email";
         e.backgroundColor = UIColor.white;
         e.textAlignment = .center;
+        e.autocorrectionType = .no;
+        e.autocapitalizationType = .none;
         
         return e;
     }();
@@ -53,6 +55,9 @@ class LandingPage: UIViewController {
         p.placeholder = "Password";
         p.backgroundColor = UIColor.white;
         p.textAlignment = .center;
+        p.isSecureTextEntry = true;
+        p.autocorrectionType = .no;
+        p.autocapitalizationType = .none;
         
         return p;
     }();
@@ -248,6 +253,8 @@ class LandingPage: UIViewController {
                     
                         self.loadUsersPhotos(user: currentUser, completion: {
                             self.debug(message: "Loading all of the user's posts...");
+                            feedPage.viewDidLoad();
+                            feedPage.loadPhotos();
                             self.goToApp();
                         });
                         

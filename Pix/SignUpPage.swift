@@ -49,6 +49,8 @@ class SignUpPage: UIViewController {
         t.translatesAutoresizingMaskIntoConstraints = false;
         t.backgroundColor = UIColor.white;
         t.textAlignment = .center;
+        t.autocapitalizationType = .none;
+        t.autocorrectionType = .no;
         
         return t;
     }();
@@ -60,6 +62,8 @@ class SignUpPage: UIViewController {
         e.placeholder = "Email";
         e.backgroundColor = UIColor.white;
         e.textAlignment = .center;
+        e.autocapitalizationType = .none;
+        e.autocorrectionType = .no;
         
         return e;
     }();
@@ -72,6 +76,9 @@ class SignUpPage: UIViewController {
         p.placeholder = "Password";
         p.backgroundColor = UIColor.white;
         p.textAlignment = .center;
+        p.isSecureTextEntry = true;
+        p.autocapitalizationType = .none;
+        p.autocorrectionType = .no;
         
         return p;
     }();
