@@ -287,7 +287,7 @@ class LandingPage: UIViewController {
                         self.loadUsersPhotos(user: currentUser, completion: {
                             self.debug(message: "Loading all of the user's posts...");
                             feedPage.loadPhotos();
-                            feedPage.copyOver();
+                            feedPage.copyOverAndReload();
                             self.goToApp();
                         });
                         
@@ -412,13 +412,9 @@ class LandingPage: UIViewController {
     
     public func loadUsedIDs() {
         
-        fireRef.observeSingleEvent(of: .value) { (snapshot: FIRDataSnapshot) in
+        fireRef.child("UsedIDs").observeSingleEvent(of: .value) { (snapshot: FIRDataSnapshot) in
             let array = snapshot.value as? [String] ?? [];
             usedIds.append(contentsOf: array);
-        }
-        
-        for itm in usedIds {
-            self.debug(message: "\(itm)");
         }
         
     } // End of loading ids method.

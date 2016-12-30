@@ -69,8 +69,7 @@ class FeedPage: UICollectionViewController, UICollectionViewDelegateFlowLayout, 
         var options = PullToRefreshOption();
         options.fixedSectionHeader = false;
         collectionView?.addPullRefresh(options: options, refreshCompletion: { (Void) in
-            self.copyOver();
-            self.collectionView?.reloadData();
+            self.copyOverAndReload();
             self.collectionView?.stopPullRefreshEver();
         });
         
@@ -83,7 +82,7 @@ class FeedPage: UICollectionViewController, UICollectionViewDelegateFlowLayout, 
         navigationItem.hidesBackButton = true;
         navigationItem.title = "Feed";
         
-        self.collectionView?.reloadData();
+        self.copyOverAndReload();
     } // End of viewDidAppear().
     
     
@@ -159,8 +158,10 @@ class FeedPage: UICollectionViewController, UICollectionViewDelegateFlowLayout, 
             for user in self.users {
             
                 landingPage.loadUsersPhotos(user: user, completion: nil);
+                self.copyOverAndReload();
             
             } // End of getting users' photos for loop.
+            
             
         }) // End of observe.
         
@@ -169,7 +170,7 @@ class FeedPage: UICollectionViewController, UICollectionViewDelegateFlowLayout, 
     
     
     /* Puts all of the photos from each user into the overall array. */
-    public func copyOver() {
+    public func copyOverAndReload() {
         // Load all of the photos.
         for user in users {
             
@@ -184,6 +185,7 @@ class FeedPage: UICollectionViewController, UICollectionViewDelegateFlowLayout, 
                 }
             }
         }
+        self.collectionView?.reloadData();
     }
     
     
