@@ -15,6 +15,13 @@ import UIKit
 import Spring
 import DynamicColor
 
+
+
+/* IDs that have already been used. */
+var usedIds: [String] = [String]();
+
+
+
 public extension String {
     
     /* Returns the length of the string. */

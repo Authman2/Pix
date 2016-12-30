@@ -179,6 +179,8 @@ class LandingPage: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated);
+        self.loadUsedIDs();
+
         navigationController?.navigationBar.isHidden = true;
         statusLabel.isHidden = true;
     }
@@ -378,5 +380,17 @@ class LandingPage: UIViewController {
 
     
     
+    public func loadUsedIDs() {
+        
+        fireRef.observeSingleEvent(of: .value) { (snapshot: FIRDataSnapshot) in
+            let array = snapshot.value as? [String] ?? [];
+            usedIds.append(contentsOf: array);
+        }
+        
+        for itm in usedIds {
+            self.debug(message: "\(itm)");
+        }
+        
+    } // End of loading ids method.
     
 }

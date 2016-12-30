@@ -130,7 +130,7 @@ class UploadPhotosViewController: UIViewController {
     
     
     /* A random id for each post. */
-    private func randomName() -> String {
+    public func randomName() -> String {
         var id = "";
         let arr: [String] = ["a","b","c","d","e","f","g","h","i","j","k","l","m","n","o","p","q","r","s","t","u","v","w","x","y","z","1","2","3","4","5","6","7","8","9","0"];
         
@@ -138,6 +138,19 @@ class UploadPhotosViewController: UIViewController {
             let random = arc4random_uniform(UInt32(arr.count));
             id += arr[Int(random)];
         }
+        
+        
+        if !usedIds.containsUsername(username: id) {
+        
+            usedIds.append(id);
+            self.fireRef.child("UsedIDs").setValue(usedIds);
+        
+        } else {
+            
+            id = "";
+            id = self.randomName();
+        }
+ 
         
         return id;
     }

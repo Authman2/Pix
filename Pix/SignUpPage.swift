@@ -227,6 +227,14 @@ class SignUpPage: UIViewController {
         user.password = pass;
         
         
+        while usedIds.containsUsername(username: user.profilePicName) {
+            user.profilePicName = "";
+            user.profilePicName = user.randomName();
+        }
+        
+        usedIds.append(user.profilePicName);
+        let _ = FIRDatabase.database().reference().child("UsedIDs").setValue(usedIds);
+            
         // Authenticate the user.
         FIRAuth.auth()?.createUser(withEmail: em, password: pass, completion: { (usr: FIRUser?, error: Error?) in
             // No errors creating the user.
