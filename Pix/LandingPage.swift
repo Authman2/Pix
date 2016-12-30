@@ -175,6 +175,10 @@ class LandingPage: UIViewController {
         
         signupButton.addTarget(self, action: #selector(signUp), for: .touchUpInside);
         loginButton.addTarget(self, action: #selector(login), for: .touchUpInside);
+        
+        
+        /* Automatic login. */
+        self.checkAutoLogin();
     }
     
     override func viewDidAppear(_ animated: Bool) {
@@ -186,6 +190,32 @@ class LandingPage: UIViewController {
     }
     
     
+    
+    // Checks if a user is already logged in and automatically signs them in.
+    func checkAutoLogin() {
+        if let cUser = FIRAuth.auth()?.currentUser {
+            
+            fireRef.child("Users").observeSingleEvent(of: .value, with: { (snapshot: FIRDataSnapshot) in
+                let dictionary = snapshot.value as? [String: AnyObject] ?? [:];
+                
+                for user in dictionary {
+                    let em = user.value["email"] as? String ?? "";
+                    
+                    if em == cUser.email! {
+                        
+                        let pass = user.value["password"] as? String ?? "";
+                        
+                        self.emailField.text = em;
+                        self.passwordField.text = pass;
+                        break;
+                    }
+                }
+                
+                self.login();
+            })
+            
+        }
+    }
     
     
     /* Goes to the sign up page. */
