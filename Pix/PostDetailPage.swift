@@ -9,6 +9,7 @@
 import UIKit
 import SnapKit
 import Neon
+import Firebase
 
 class PostDetailPage: UIViewController {
 
@@ -17,6 +18,9 @@ class PostDetailPage: UIViewController {
      *          VARIABLES
      *
      ********************************/
+    
+    /* A Post object for data grabbing. */
+    var post: Post!
     
     
     /* Displays the photo on the post. */
@@ -65,6 +69,9 @@ class PostDetailPage: UIViewController {
     }();
 
 
+    /* Firebase database reference. */
+    let fireRef: FIRDatabaseReference = FIRDatabase.database().reference();
+    
 
 
 
@@ -78,6 +85,14 @@ class PostDetailPage: UIViewController {
     /* Setup the look of the view. In other words, arrange the components. 
      @param post -- The Post object that all of the information is grabbed from. */
     public func setup(post: Post) {
+        self.post = post;
+        
+        // Tap gesture
+        let tap = UITapGestureRecognizer(target: self, action: #selector(likePhoto));
+        tap.numberOfTapsRequired = 2;
+        imageView.addGestureRecognizer(tap);
+        view.addGestureRecognizer(tap);
+
         
         // Get the important info.
         imageView.image = post.photo.image!;
@@ -134,6 +149,28 @@ class PostDetailPage: UIViewController {
     
     
     
-    
+    @objc func likePhoto() {
+        
+        // If the id for this photo is not already in the current user's list of liked photos, then add it and update firebase.
+        // Otherwise, unlike it.
+        if !currentUser.likedPhotos.containsUsername(username: self.post.id!) {
+            
+            currentUser.likedPhotos.append(self.post.id!);
+            post.likes += 1;
+            fireRef.child("Users").child(currentUser.username).setValue(currentUser.toDictionary());
+            fireRef.child("Photos").child(post.uploader.username).child(post.id!).setValue(post.toDictionary());
+            
+        } else {
+            
+            if currentUser.likedPhotos.count > 0 {
+                currentUser.likedPhotos.removeItem(item: self.post.id!);
+                post.likes -= 1;
+                fireRef.child("Users").child(currentUser.username).setValue(currentUser.toDictionary());
+                fireRef.child("Photos").child(post.uploader.username).child(post.id!).setValue(post.toDictionary());
+            }
+        }
+        
+        likesLabel.text = "Likes: \(post.likes)";
+    }
 
 }

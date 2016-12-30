@@ -256,6 +256,7 @@ class LandingPage: UIViewController {
                             let em = value?["email"] as? String ?? "";
                             let followers = value?["followers"] as? [String] ?? [];
                             let following = value?["following"] as? [String] ?? [];
+                            let likedPhotos = value?["liked_photos"] as? [String] ?? [];
                             
                             
                             // If there is a match with the emails, login.
@@ -264,6 +265,7 @@ class LandingPage: UIViewController {
                                 usr.password = pass;
                                 usr.followers = followers;
                                 usr.following = following;
+                                usr.likedPhotos = likedPhotos;
                                 currentUser = usr;
                                 
                                 
@@ -330,7 +332,6 @@ class LandingPage: UIViewController {
         
         // Start from the beginning.
         user.posts.removeAll();
-        user.posts_fb.removeAllObjects();
         
         
         // Load all of the photo objects from the database.

@@ -436,6 +436,7 @@ class ProfilePage: UICollectionViewController, UICollectionViewDelegateFlowLayou
         let detailView = PostDetailPage();
         detailView.setup(post: useUser.posts[indexPath.item]);
         
+        
         customPresentViewController(presenter, viewController: detailView, animated: true, completion: nil);
     }
     

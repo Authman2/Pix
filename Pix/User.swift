@@ -51,8 +51,8 @@ public class User: NSObject {
     var following: [String] = [String]();
     
     
-    /* All of the user's posts (in the form of firebase data). */
-    let posts_fb: NSMutableArray! = NSMutableArray();
+    /* An array of all of the photos that this user has liked (by photo url). */
+    var likedPhotos: [String] = [String]();
     
     
     /* All of the user's posts (in the form of a Post object). */
@@ -93,7 +93,8 @@ public class User: NSObject {
                                              "password" : password,
                                              "profile_picture" : profilePicName,
                                              "followers" : followers,
-                                             "following" : following]);
+                                             "following" : following,
+                                             "liked_photos" : likedPhotos]);
         return dict;
     }
     

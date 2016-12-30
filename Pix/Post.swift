@@ -76,7 +76,7 @@ public class Post: NSObject {
         let dict = NSDictionary(dictionary: ["image" : id+".jpg",
                                              "id" : id,
                                              "caption" : caption.text!,
-                                             "likes" : 0,
+                                             "likes" : likes,
                                              "is_profile_picture" : isProfilePicture]);
         return dict;
     }

@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 import SnapKit
 import Neon
+import Firebase
 
 class FeedCell: UICollectionViewCell {
     
@@ -69,7 +70,8 @@ class FeedCell: UICollectionViewCell {
     }();
 
     
-    
+    /* Firebase database reference. */
+    let fireRef: FIRDatabaseReference = FIRDatabase.database().reference();
     
     
     
@@ -84,6 +86,14 @@ class FeedCell: UICollectionViewCell {
      ********************************/
     
     public func setup() {
+        
+        // Tap gesture
+        let tap = UITapGestureRecognizer(target: self, action: #selector(likePhoto));
+        tap.numberOfTapsRequired = 2;
+        imageView.addGestureRecognizer(tap);
+        addGestureRecognizer(tap);
+        
+        
         // Get the important info.
         imageView.image = post.photo.image!;
         captionLabel.text = "\(post.caption.text!)";
@@ -137,7 +147,29 @@ class FeedCell: UICollectionViewCell {
     
     
     
-    
+    @objc public func likePhoto() {
+        
+        // If the id for this photo is not already in the current user's list of liked photos, then add it and update firebase.
+        // Otherwise, unlike it.
+        if !currentUser.likedPhotos.containsUsername(username: self.post.id!) {
+            
+            currentUser.likedPhotos.append(self.post.id!);
+            post.likes += 1;
+            fireRef.child("Users").child(currentUser.username).setValue(currentUser.toDictionary());
+            fireRef.child("Photos").child(post.uploader.username).child(post.id!).setValue(post.toDictionary());
+            
+        } else {
+            
+            if currentUser.likedPhotos.count > 0 {
+                currentUser.likedPhotos.removeItem(item: self.post.id!);
+                post.likes -= 1;
+                fireRef.child("Users").child(currentUser.username).setValue(currentUser.toDictionary());
+                fireRef.child("Photos").child(post.uploader.username).child(post.id!).setValue(post.toDictionary());
+            }
+        }
+        
+        likesLabel.text = "Likes: \(post.likes)";
+    }
     
     
     
