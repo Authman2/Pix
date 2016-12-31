@@ -28,8 +28,8 @@ class FeedCell: UICollectionViewCell {
     let imageView: UIImageView = {
         let a = UIImageView();
         a.translatesAutoresizingMaskIntoConstraints = false;
-        a.backgroundColor = UIColor.gray;
-        a.contentMode = .scaleToFill;
+        a.backgroundColor = .white;
+        a.contentMode = .scaleAspectFit;
         
         return a;
     }();

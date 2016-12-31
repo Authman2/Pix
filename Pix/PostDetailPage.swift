@@ -11,7 +11,7 @@ import SnapKit
 import Neon
 import Firebase
 
-class PostDetailPage: UIViewController {
+class PostDetailPage: UIViewController, UIScrollViewDelegate {
 
     /********************************
      *
@@ -23,14 +23,29 @@ class PostDetailPage: UIViewController {
     var post: Post!
     
     
-    /* Displays the photo on the post. */
+    /* The image view. */
     let imageView: UIImageView = {
-        let a = UIImageView();
-        a.translatesAutoresizingMaskIntoConstraints = false;
-        a.backgroundColor = UIColor.gray;
-        a.contentMode = .scaleToFill;
+        var imageView = UIImageView();
+        imageView.translatesAutoresizingMaskIntoConstraints = false;
+        imageView.backgroundColor = UIColor(red: 239/255, green: 255/255, blue:245/255, alpha: 1);
+        imageView.contentMode = .scaleAspectFit;
+        imageView.clipsToBounds = false;
         
-        return a;
+        return imageView;
+    }();
+    
+    
+    /* The scroll view. */
+    let scrollView: UIScrollView = {
+        let s = UIScrollView();
+        s.backgroundColor = .white;
+        s.alwaysBounceVertical = false;
+        s.alwaysBounceHorizontal = false;
+        s.flashScrollIndicators();
+        s.minimumZoomScale = 1.0;
+        s.maximumZoomScale = 6.0;
+        
+        return s;
     }();
 
 
@@ -86,6 +101,8 @@ class PostDetailPage: UIViewController {
      @param post -- The Post object that all of the information is grabbed from. */
     public func setup(post: Post) {
         self.post = post;
+        scrollView.delegate = self;
+        
         
         // Tap gesture
         let tap = UITapGestureRecognizer(target: self, action: #selector(likePhoto));
@@ -101,7 +118,8 @@ class PostDetailPage: UIViewController {
         uploaderLabel.text = "\(post.uploader.firstName) \(post.uploader.lastName)";
         
         /* Layout the components. */
-        view.addSubview(imageView);
+        scrollView.addSubview(imageView);
+        view.addSubview(scrollView);
         
         let bottomView = UIView();
         bottomView.backgroundColor = UIColor(red: 239/255, green: 255/255, blue:245/255, alpha: 1);
@@ -112,8 +130,8 @@ class PostDetailPage: UIViewController {
         
         
         /* Layout with Neon */
-        imageView.anchorToEdge(.top, padding: 0, width: view.width, height: view.height / 1.25);
-        bottomView.align(.underCentered, relativeTo: imageView, padding: 0, width: view.width, height: view.height - (view.height / 1.25));
+        scrollView.anchorToEdge(.top, padding: 0, width: view.width, height: view.height / 1.25);
+        bottomView.align(.underCentered, relativeTo: scrollView, padding: 0, width: view.width, height: view.height - (view.height / 1.25));
         
         
         /* Layout with Snapkit */
@@ -146,6 +164,10 @@ class PostDetailPage: UIViewController {
     } // End of setup method.
     
     
+    
+    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
+        return self.imageView;
+    }
     
     
     

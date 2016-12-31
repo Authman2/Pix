@@ -256,4 +256,7 @@ class FeedPage: UICollectionViewController, UICollectionViewDelegateFlowLayout, 
         return UIEdgeInsets(top: 20, left: 0, bottom: 20, right: 0);
     }
     
+    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
+        return 20;
+    }
 }

@@ -335,7 +335,7 @@ class LandingPage: UIViewController {
         
         
         // Load all of the photo objects from the database.
-        fireRef.child("Photos").child(user.username).queryOrderedByPriority().observe(FIRDataEventType.value, with: { (snapshot) in
+        fireRef.child("Photos").child(user.username).queryOrderedByPriority().observeSingleEvent(of: .value) { (snapshot: FIRDataSnapshot) in
             
             // First, make sure there is a value for the posts. If so, then load all of them.
             let postDictionary = snapshot.value as? [String : AnyObject] ?? [:];
@@ -400,7 +400,7 @@ class LandingPage: UIViewController {
                 
             } // End of for loop for each post.
             
-        });
+        };
         
         if let comp = completion {
             comp();
