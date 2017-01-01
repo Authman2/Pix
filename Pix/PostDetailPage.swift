@@ -39,8 +39,8 @@ class PostDetailPage: UIViewController, UIScrollViewDelegate {
     let scrollView: UIScrollView = {
         let s = UIScrollView();
         s.backgroundColor = .white;
-        s.alwaysBounceVertical = false;
-        s.alwaysBounceHorizontal = false;
+        s.alwaysBounceVertical = true;
+        s.alwaysBounceHorizontal = true;
         s.flashScrollIndicators();
         s.minimumZoomScale = 1.0;
         s.maximumZoomScale = 6.0;

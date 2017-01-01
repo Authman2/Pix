@@ -12,7 +12,7 @@ import SnapKit
 import Neon
 import Firebase
 
-class FeedCell: UICollectionViewCell {
+class FeedCell: UICollectionViewCell, UIScrollViewDelegate {
     
     /********************************
      *
@@ -32,6 +32,20 @@ class FeedCell: UICollectionViewCell {
         a.contentMode = .scaleAspectFit;
         
         return a;
+    }();
+    
+    
+    /* The scroll view. */
+    let scrollView: UIScrollView = {
+        let s = UIScrollView();
+        s.backgroundColor = .white;
+        s.alwaysBounceVertical = true;
+        s.alwaysBounceHorizontal = true;
+        s.flashScrollIndicators();
+        s.minimumZoomScale = 1.0;
+        s.maximumZoomScale = 6.0;
+        
+        return s;
     }();
     
     
@@ -86,6 +100,7 @@ class FeedCell: UICollectionViewCell {
      ********************************/
     
     public func setup() {
+        scrollView.delegate = self;
         
         // Tap gesture
         let tap = UITapGestureRecognizer(target: self, action: #selector(likePhoto));
@@ -102,7 +117,8 @@ class FeedCell: UICollectionViewCell {
         
         
         /* Layout the components. */
-        addSubview(imageView);
+        scrollView.addSubview(imageView);
+        addSubview(scrollView);
         let bottomView = UIView();
         bottomView.backgroundColor = .white;
         bottomView.addSubview(captionLabel);
@@ -112,8 +128,8 @@ class FeedCell: UICollectionViewCell {
         
         
         /* Layout with Neon */
-        imageView.anchorToEdge(.top, padding: 0, width: width, height: height / 1.25);
-        bottomView.align(.underCentered, relativeTo: imageView, padding: 0, width: width, height: height - (height / 1.25));
+        scrollView.anchorToEdge(.top, padding: 0, width: width, height: height / 1.25);
+        bottomView.align(.underCentered, relativeTo: scrollView, padding: 0, width: width, height: height - (height / 1.25));
         
         
         /* Layout with Snapkit */
