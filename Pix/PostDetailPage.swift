@@ -128,15 +128,15 @@ class PostDetailPage: UIViewController, UIScrollViewDelegate {
         
         let bottomView = UIView();
         bottomView.backgroundColor = UIColor(red: 239/255, green: 255/255, blue:245/255, alpha: 1);
-        bottomView.addSubview(captionLabel);
-        bottomView.addSubview(likesLabel);
-        bottomView.addSubview(uploaderLabel);
-        view.addSubview(bottomView);
+        view.addSubview(captionLabel);
+        view.addSubview(likesLabel);
+        view.addSubview(uploaderLabel);
+        //view.addSubview(bottomView);
         
         
         /* Layout with Neon */
         //scrollView.anchorToEdge(.top, padding: 0, width: view.width, height: view.height / 1.25);
-        bottomView.align(.underCentered, relativeTo: scrollView, padding: 0, width: view.width, height: view.height - (view.height / 1.25));
+        //bottomView.align(.underCentered, relativeTo: scrollView, padding: 0, width: view.width, height: view.height - (view.height / 1.25));
         
         
         /* Layout with Snapkit */
@@ -162,7 +162,7 @@ class PostDetailPage: UIViewController, UIScrollViewDelegate {
             maker.left.equalTo(0);
             maker.right.equalTo(view.snp.right);
             maker.top.equalTo(0);
-            maker.bottom.equalTo(bottomView.snp.top);
+            maker.height.equalTo(view.height / 1.25);
         }
         
     } // End of setup method.

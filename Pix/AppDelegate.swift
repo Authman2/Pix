@@ -227,20 +227,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         
         // Set message title, body, and icon. Here, we're overriding the default warning
         view.configureContent(title: "Pix", body: "\(messageID)", iconImage: nil, iconText: nil, buttonImage: nil, buttonTitle: nil, buttonTapHandler: nil);
-        view.configureTheme(backgroundColor: UIColor(red: 41/255, green: 200/255, blue: 173/255, alpha: 1), foregroundColor: .black);
-        view.button?.backgroundColor = UIColor(red: 41/255, green: 200/255, blue: 173/255, alpha: 1);
+        view.configureTheme(backgroundColor: UIColor(red: 41/255, green: 230/255, blue: 153/255, alpha: 1), foregroundColor: .black);
+        view.button?.backgroundColor = UIColor(red: 41/255, green: 230/255, blue: 153/255, alpha: 1);
 
         
-        var config = SwiftMessages.Config()
+        var config = SwiftMessages.Config();
         config.presentationStyle = .top;
+        config.presentationContext = .window(windowLevel: UIWindowLevelStatusBar);
         config.duration = .seconds(seconds: 3);
-        config.preferredStatusBarStyle = .lightContent
-        config.eventListeners.append() { event in
-            if case .didHide = event { print("yep") }
-        }
+        config.preferredStatusBarStyle = .lightContent;
+        
         
         // Show the message.
-        SwiftMessages.show(view: view)
+        SwiftMessages.show(config: config, view: view);
     }
     
     
