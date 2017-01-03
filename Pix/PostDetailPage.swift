@@ -38,6 +38,7 @@ class PostDetailPage: UIViewController, UIScrollViewDelegate {
     /* The scroll view. */
     let scrollView: UIScrollView = {
         let s = UIScrollView();
+        s.translatesAutoresizingMaskIntoConstraints = false;
         s.backgroundColor = .white;
         s.alwaysBounceVertical = true;
         s.alwaysBounceHorizontal = true;
@@ -101,6 +102,9 @@ class PostDetailPage: UIViewController, UIScrollViewDelegate {
      @param post -- The Post object that all of the information is grabbed from. */
     public func setup(post: Post) {
         self.post = post;
+        scrollView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height);
+        imageView.frame = scrollView.frame;
+        scrollView.contentSize = imageView.frame.size;
         scrollView.delegate = self;
         
         
@@ -130,7 +134,7 @@ class PostDetailPage: UIViewController, UIScrollViewDelegate {
         
         
         /* Layout with Neon */
-        scrollView.anchorToEdge(.top, padding: 0, width: view.width, height: view.height / 1.25);
+        //scrollView.anchorToEdge(.top, padding: 0, width: view.width, height: view.height / 1.25);
         bottomView.align(.underCentered, relativeTo: scrollView, padding: 0, width: view.width, height: view.height - (view.height / 1.25));
         
         
@@ -153,12 +157,11 @@ class PostDetailPage: UIViewController, UIScrollViewDelegate {
             maker.left.equalTo(view.snp.left);
             maker.right.equalTo(view.snp.right);
         }
-        imageView.snp.makeConstraints { (maker: ConstraintMaker) in
-            maker.width.equalTo(view.frame.width);
-            maker.left.equalTo(view.snp.left);
+        scrollView.snp.makeConstraints { (maker: ConstraintMaker) in
+            maker.left.equalTo(0);
             maker.right.equalTo(view.snp.right);
-            maker.top.equalTo(view.snp.top);
-            maker.bottom.equalTo(uploaderLabel.snp.top);
+            maker.top.equalTo(0);
+            maker.bottom.equalTo(bottomView.snp.top);
         }
         
     } // End of setup method.

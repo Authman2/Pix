@@ -13,6 +13,7 @@ target 'Pix' do
     pod 'Spring', :git => 'https://github.com/MengTo/Spring.git', :branch => 'swift3'
     pod 'Firebase/Core'
     pod 'Firebase/Auth'
+    pod 'Firebase/Messaging'
     pod 'Firebase/Database'
     pod 'AUNavigationMenuController'
     pod 'DynamicColor', '~> 3.1.0'
@@ -21,5 +22,6 @@ target 'Pix' do
     pod 'SnapKit', '~> 3.0.2'
     pod 'Presentr'
     pod 'PullToRefreshSwift'
+    pod 'SwiftMessages'
   
 end

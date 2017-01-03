@@ -11,6 +11,8 @@
 		5A25ADD51DEB483500301468 /* DZNEmptyDataSet.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A25ADD41DEB483500301468 /* DZNEmptyDataSet.framework */; };
 		5A28BE4A1E1459C900DD0396 /* CircleImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A28BE491E1459C900DD0396 /* CircleImageView.swift */; };
 		5A28BE4C1E1492CF00DD0396 /* FeedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A28BE4B1E1492CF00DD0396 /* FeedCell.swift */; };
+		5A5D97771E19747600689F3B /* Test.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A5D97761E19747600689F3B /* Test.swift */; };
+		5A5D97791E197E9500689F3B /* trolltunga.jpeg in Resources */ = {isa = PBXBuildFile; fileRef = 5A5D97781E197E9500689F3B /* trolltunga.jpeg */; };
 		5A6229CB1DE5720A002510AA /* Spring.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A6229CA1DE5720A002510AA /* Spring.framework */; };
 		5A6229CD1DE5720D002510AA /* ChameleonFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A6229CC1DE5720D002510AA /* ChameleonFramework.framework */; };
 		5A756DCA1DE5E802003FD2C0 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5A756DC91DE5E802003FD2C0 /* GoogleService-Info.plist */; };
@@ -38,10 +40,13 @@
 		5A25ADD41DEB483500301468 /* DZNEmptyDataSet.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = DZNEmptyDataSet.framework; path = "../../../../Library/Developer/Xcode/DerivedData/Pix-ctukwtofcongdnezqcfllkcuomcc/Build/Products/Debug-iphoneos/DZNEmptyDataSet/DZNEmptyDataSet.framework"; sourceTree = "<group>"; };
 		5A28BE491E1459C900DD0396 /* CircleImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleImageView.swift; sourceTree = "<group>"; };
 		5A28BE4B1E1492CF00DD0396 /* FeedCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedCell.swift; sourceTree = "<group>"; };
+		5A5D97761E19747600689F3B /* Test.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Test.swift; sourceTree = "<group>"; };
+		5A5D97781E197E9500689F3B /* trolltunga.jpeg */ = {isa = PBXFileReference; lastKnownFileType = image.jpeg; path = trolltunga.jpeg; sourceTree = "<group>"; };
 		5A6229CA1DE5720A002510AA /* Spring.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Spring.framework; path = "../../../../Library/Developer/Xcode/DerivedData/Pix-ctukwtofcongdnezqcfllkcuomcc/Build/Products/Debug-iphonesimulator/Spring/Spring.framework"; sourceTree = "<group>"; };
 		5A6229CC1DE5720D002510AA /* ChameleonFramework.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ChameleonFramework.framework; path = "../../../../Library/Developer/Xcode/DerivedData/Pix-ctukwtofcongdnezqcfllkcuomcc/Build/Products/Debug-iphonesimulator/ChameleonFramework/ChameleonFramework.framework"; sourceTree = "<group>"; };
 		5A756DC91DE5E802003FD2C0 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		5A93F8EE1E0F0F72008C7154 /* PostDetailPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostDetailPage.swift; sourceTree = "<group>"; };
+		5AA766F61E1B542600765C7A /* Pix.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Pix.entitlements; sourceTree = "<group>"; };
 		5AAB2DB61DE5628C0007A726 /* Neon.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Neon.framework; path = "../../../../Library/Developer/Xcode/DerivedData/Pix-ctukwtofcongdnezqcfllkcuomcc/Build/Products/Debug-iphonesimulator/Neon/Neon.framework"; sourceTree = "<group>"; };
 		5ABBC9031E10781C0056CE16 /* ExplorePage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExplorePage.swift; sourceTree = "<group>"; };
 		5ABBC9051E1083E70056CE16 /* ExploreCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreCell.swift; sourceTree = "<group>"; };
@@ -149,6 +154,7 @@
 		5AFE5F681E12F6D0008BEA7E /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				5A5D97781E197E9500689F3B /* trolltunga.jpeg */,
 				5AFE5F691E12F6DF008BEA7E /* friends_icon@3x.png */,
 			);
 			name = Images;
@@ -175,6 +181,7 @@
 		5AFF274F1DDB60F4001CBF95 /* Pix */ = {
 			isa = PBXGroup;
 			children = (
+				5AA766F61E1B542600765C7A /* Pix.entitlements */,
 				5AFF27501DDB60F4001CBF95 /* AppDelegate.swift */,
 				5AFF276D1DDB6FE6001CBF95 /* Extras */,
 				5AE3CCE51E0C9622009F7816 /* User */,
@@ -197,6 +204,7 @@
 			children = (
 				5AFF276E1DDB6FF7001CBF95 /* Ext.swift */,
 				5A28BE491E1459C900DD0396 /* CircleImageView.swift */,
+				5A5D97761E19747600689F3B /* Test.swift */,
 			);
 			name = Extras;
 			sourceTree = "<group>";
@@ -246,7 +254,12 @@
 					5AFF274C1DDB60F4001CBF95 = {
 						CreatedOnToolsVersion = 8.1;
 						DevelopmentTeam = ZNAXL37NHX;
-						ProvisioningStyle = Automatic;
+						ProvisioningStyle = Manual;
+						SystemCapabilities = {
+							com.apple.Push = {
+								enabled = 1;
+							};
+						};
 					};
 				};
 			};
@@ -276,6 +289,7 @@
 				5AFE5F6A1E12F6DF008BEA7E /* friends_icon@3x.png in Resources */,
 				5AFF275B1DDB60F4001CBF95 /* LaunchScreen.storyboard in Resources */,
 				5AFF27581DDB60F4001CBF95 /* Assets.xcassets in Resources */,
+				5A5D97791E197E9500689F3B /* trolltunga.jpeg in Resources */,
 				5A756DCA1DE5E802003FD2C0 /* GoogleService-Info.plist in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
@@ -340,6 +354,7 @@
 				5AD645621E0DB5A400E5929C /* ProfilePageCell.swift in Sources */,
 				5ABBC9061E1083E70056CE16 /* ExploreCell.swift in Sources */,
 				5A28BE4A1E1459C900DD0396 /* CircleImageView.swift in Sources */,
+				5A5D97771E19747600689F3B /* Test.swift in Sources */,
 				5AD645671E0DF63100E5929C /* FeedPage.swift in Sources */,
 				5AFF276F1DDB6FF7001CBF95 /* Ext.swift in Sources */,
 				5AD645641E0DEFE600E5929C /* Post.swift in Sources */,
@@ -468,6 +483,9 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Pix/Pix.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Adeola Uthman (ZNAXL37NHX)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Developer";
 				DEVELOPMENT_TEAM = ZNAXL37NHX;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -477,8 +495,10 @@
 				INFOPLIST_FILE = Pix/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.adeolauthman.Pix;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Pix.ios;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "8548908d-987e-43d8-ac27-e77249c43c51";
+				PROVISIONING_PROFILE_SPECIFIER = PixPP;
 				SWIFT_VERSION = 3.0;
 			};
 			name = Debug;
@@ -489,6 +509,9 @@
 			buildSettings = {
 				ALWAYS_EMBED_SWIFT_STANDARD_LIBRARIES = YES;
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
+				CODE_SIGN_ENTITLEMENTS = Pix/Pix.entitlements;
+				CODE_SIGN_IDENTITY = "iPhone Distribution: Adeola Uthman (ZNAXL37NHX)";
+				"CODE_SIGN_IDENTITY[sdk=iphoneos*]" = "iPhone Distribution";
 				DEVELOPMENT_TEAM = ZNAXL37NHX;
 				FRAMEWORK_SEARCH_PATHS = (
 					"$(inherited)",
@@ -498,8 +521,10 @@
 				INFOPLIST_FILE = Pix/Info.plist;
 				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
-				PRODUCT_BUNDLE_IDENTIFIER = com.adeolauthman.Pix;
+				PRODUCT_BUNDLE_IDENTIFIER = com.Pix.ios;
 				PRODUCT_NAME = "$(TARGET_NAME)";
+				PROVISIONING_PROFILE = "a5d90b48-8533-464c-bfaf-ed46270a40d7";
+				PROVISIONING_PROFILE_SPECIFIER = PixPPDist;
 				SWIFT_VERSION = 3.0;
 			};
 			name = Release;

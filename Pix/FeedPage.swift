@@ -52,7 +52,8 @@ class FeedPage: UICollectionViewController, UICollectionViewDelegateFlowLayout, 
         navigationItem.hidesBackButton = true;
         navigationItem.title = "Feed";
         setupCollectionView();
-        
+        print("----------> \(FIRInstanceID.instanceID().token())");
+        print("----------> \(FIRAuth.auth()?.currentUser?.refreshToken)");
         
         // Image Picker.
         imgPicker.delegate = self;
