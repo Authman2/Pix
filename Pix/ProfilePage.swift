@@ -12,6 +12,7 @@ import SnapKit
 import Firebase
 import Presentr
 import PullToRefreshSwift
+import OneSignal
 
 class ProfilePage: UICollectionViewController, UICollectionViewDelegateFlowLayout, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
@@ -272,6 +273,18 @@ class ProfilePage: UICollectionViewController, UICollectionViewDelegateFlowLayou
             // Update both users in firebase.
             fireRef.child("Users").child(currentUser.username).setValue(currentUser.toDictionary());
             fireRef.child("Users").child(useUser.username).setValue(useUser.toDictionary());
+            
+            // Send notification.
+            if(useUser.notification_ID != currentUser.notification_ID) {
+                OneSignal.postNotification(["contents": ["en": "\(currentUser.username) started following you!"], "include_player_ids": ["\(useUser.notification_ID)"]], onSuccess: { (dict: [AnyHashable : Any]?) in
+                    
+                    self.debug(message: "Follow notification was sent!");
+                    
+                }, onFailure: { (error: Error?) in
+                    self.debug(message: "There was an error sending the notification.");
+                })
+            }
+            
         } else {
             
             // Set the values of the objects.

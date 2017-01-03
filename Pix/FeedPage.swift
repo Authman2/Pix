@@ -52,8 +52,7 @@ class FeedPage: UICollectionViewController, UICollectionViewDelegateFlowLayout, 
         navigationItem.hidesBackButton = true;
         navigationItem.title = "Feed";
         setupCollectionView();
-        print("----------> \(FIRInstanceID.instanceID().token())");
-        print("----------> \(FIRAuth.auth()?.currentUser?.refreshToken)");
+        
         
         // Image Picker.
         imgPicker.delegate = self;
@@ -138,6 +137,8 @@ class FeedPage: UICollectionViewController, UICollectionViewDelegateFlowLayout, 
                     let pass = user.value["password"] as? String ?? "";
                     let followers = user.value["followers"] as? [String] ?? [];
                     let following = user.value["following"] as? [String] ?? [];
+                    let likedPhotos = user.value["liked_photos"] as? [String] ?? [];
+                    let notifID = user.value["notification_id"] as? String ?? "";
                     
                     
                     // Create a user and add it to the array.
@@ -145,6 +146,8 @@ class FeedPage: UICollectionViewController, UICollectionViewDelegateFlowLayout, 
                     usr.password = pass;
                     usr.followers = followers;
                     usr.following = following;
+                    usr.likedPhotos = likedPhotos;
+                    usr.notification_ID = notifID;
                     
                     if !self.users.containsUser(username: usr.username) {
                         self.users.append(usr);

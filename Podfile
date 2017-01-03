@@ -23,5 +23,6 @@ target 'Pix' do
     pod 'Presentr'
     pod 'PullToRefreshSwift'
     pod 'SwiftMessages'
+    pod 'OneSignal'
   
 end

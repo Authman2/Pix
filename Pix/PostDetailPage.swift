@@ -10,6 +10,7 @@ import UIKit
 import SnapKit
 import Neon
 import Firebase
+import OneSignal
 
 class PostDetailPage: UIViewController, UIScrollViewDelegate {
 
@@ -184,6 +185,17 @@ class PostDetailPage: UIViewController, UIScrollViewDelegate {
             post.likes += 1;
             fireRef.child("Users").child(currentUser.username).setValue(currentUser.toDictionary());
             fireRef.child("Photos").child(post.uploader.username).child(post.id!).setValue(post.toDictionary());
+            
+            // Send notification.
+            if(self.post.uploader.notification_ID != currentUser.notification_ID) {
+                OneSignal.postNotification(["contents": ["en": "\(currentUser.username) liked your photo!"], "include_player_ids": ["\(self.post.uploader.notification_ID)"]], onSuccess: { (dict: [AnyHashable : Any]?) in
+                    
+                    self.debug(message: "Follow notification was sent!");
+                    
+                }, onFailure: { (error: Error?) in
+                    self.debug(message: "There was an error sending the notification.");
+                });
+            }
             
         } else {
             

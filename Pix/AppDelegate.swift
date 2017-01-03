@@ -11,6 +11,7 @@ import Firebase
 import UserNotifications
 import AUNavigationMenuController
 import SwiftMessages
+import OneSignal
 
 
 /* The different pages are global for easy access. */
@@ -30,6 +31,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        
+        // OneSignal notifications.
+        //Add this line. Replace '5eb5a37e-b458-11e3-ac11-000c2940e62c' with your OneSignal App ID.
+        OneSignal.initWithLaunchOptions(launchOptions, appId: "fb3565b9-e3a5-4f4a-b372-b8d528072c3c", handleNotificationReceived: { (notification: OSNotification?) in
+            
+        }, handleNotificationAction: { (result: OSNotificationOpenedResult?) in
+            
+        }, settings: [kOSSettingsKeyInFocusDisplayOption : OSNotificationDisplayType.none.rawValue]);
+        OneSignal.registerForPushNotifications();
+        
         
         // Notifications
         if #available(iOS 10.0, *) {
@@ -51,10 +62,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         FIRApp.configure();
         
         // Add observer for InstanceID token refresh callback.
-        NotificationCenter.default.addObserver(self,
-                                               selector: #selector(self.tokenRefreshNotification),
-                                               name: .firInstanceIDTokenRefresh,
-                                               object: nil)
+        NotificationCenter.default.addObserver(self, selector: #selector(self.tokenRefreshNotification), name: .firInstanceIDTokenRefresh, object: nil)
         
         
         
@@ -178,7 +186,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     
     // [START refresh_token]
     func tokenRefreshNotification(_ notification: Notification) {
-        if let refreshedToken = FIRInstanceID.instanceID().token() {
+        if FIRInstanceID.instanceID().token() != nil {
             //print("InstanceID token: \(refreshedToken)")
         }
         
@@ -198,9 +206,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         
         FIRMessaging.messaging().connect { (error) in
             if error != nil {
-                print("Unable to connect with FCM. \(error)")
+                //print("Unable to connect with FCM. \(error)")
             } else {
-                print("Connected to FCM.")
+                //print("Connected to FCM.")
             }
         }
     }
@@ -212,14 +220,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         let view = MessageView.viewFromNib(layout: .CardView);
         
         // Theme message elements with the warning style.
-        view.configureTheme(.info);
+        view.configureTheme(.warning);
         
         // Add a drop shadow.
         view.configureDropShadow();
         
         // Set message title, body, and icon. Here, we're overriding the default warning
-        // image with an emoji character.
-        view.configureContent(title: "Pix", body: "\(messageID)", iconText: "");
+        view.configureContent(title: "Pix", body: "\(messageID)", iconImage: nil, iconText: nil, buttonImage: nil, buttonTitle: nil, buttonTapHandler: nil);
+        view.configureTheme(backgroundColor: UIColor(red: 41/255, green: 200/255, blue: 173/255, alpha: 1), foregroundColor: .black);
+        view.button?.backgroundColor = UIColor(red: 41/255, green: 200/255, blue: 173/255, alpha: 1);
+
         
         var config = SwiftMessages.Config()
         config.presentationStyle = .top;
@@ -231,6 +241,26 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         
         // Show the message.
         SwiftMessages.show(view: view)
+    }
+    
+    
+    // Called when APNs has assigned the device a unique token
+    func application(_ application: UIApplication, didRegisterForRemoteNotificationsWithDeviceToken deviceToken: Data) {
+        // Convert token to string
+        let deviceTokenString = deviceToken.reduce("", {$0 + String(format: "%02X", $1)})
+        
+        // Print it to console
+        //print("----------> APNs device token: \(deviceTokenString)")
+        
+        // Persist it in your backend in case it's new
+        let defaults = UserDefaults.standard;
+        defaults.setValue(deviceTokenString, forKey: "deviceToken");
+    }
+    
+    // Called when APNs failed to register the device for push notifications
+    func application(_ application: UIApplication, didFailToRegisterForRemoteNotificationsWithError error: Error) {
+        // Print the error to console (you should alert the user that registration failed)
+        //print("----------> APNs registration failed: \(error)")
     }
 }
 

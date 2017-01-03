@@ -64,6 +64,10 @@ public class User: NSObject {
     var profilePicName: String!;
     
     
+    /* An id for each user so that they can receive notifications. */
+    var notification_ID: String = String();
+    
+    
     
     
     
@@ -94,7 +98,8 @@ public class User: NSObject {
                                              "profile_picture" : profilePicName,
                                              "followers" : followers,
                                              "following" : following,
-                                             "liked_photos" : likedPhotos]);
+                                             "liked_photos" : likedPhotos,
+                                             "notification_id" : notification_ID]);
         return dict;
     }
     

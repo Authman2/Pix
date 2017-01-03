@@ -9,6 +9,7 @@
 import UIKit
 import SnapKit
 import Firebase
+import OneSignal
 
 class SignUpPage: UIViewController {
 
@@ -225,6 +226,10 @@ class SignUpPage: UIViewController {
         // Create a user and save it to the firebase database.
         let user = User(first: name.substring(i: 0, j: name.indexOf(string: " ")), last: name.substring(i: name.indexOf(string: " ") + 1, j: name.length()), username: username, email: em);
         user.password = pass;
+        OneSignal.syncHashedEmail(em);
+        OneSignal.idsAvailable { (userId, pushToken) in
+            user.notification_ID = userId!;
+        }
         
         
         while usedIds.containsUsername(username: user.profilePicName) {

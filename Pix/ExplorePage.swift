@@ -96,6 +96,8 @@ class ExplorePage: UITableViewController, UISearchResultsUpdating {
                     let pass = user.value["password"] as? String ?? "";
                     let followers = user.value["followers"] as? [String] ?? [];
                     let following = user.value["following"] as? [String] ?? [];
+                    let likedPhotos = user.value["liked_photos"] as? [String] ?? [];
+                    let notifID = user.value["notification_id"] as? String ?? "";
                     
                     
                     // Compare
@@ -108,6 +110,8 @@ class ExplorePage: UITableViewController, UISearchResultsUpdating {
                             usr.password = pass;
                             usr.followers = followers;
                             usr.following = following;
+                            usr.likedPhotos = likedPhotos;
+                            usr.notification_ID = notifID;
                             
                             // Add to the lists.
                             self.listOfUsers_fb.add(user);
@@ -125,6 +129,8 @@ class ExplorePage: UITableViewController, UISearchResultsUpdating {
                             usr.password = pass;
                             usr.followers = followers;
                             usr.following = following;
+                            usr.likedPhotos = likedPhotos;
+                            usr.notification_ID = notifID;
                             
                             // Add to the lists.
                             self.listOfUsers_fb.add(user);

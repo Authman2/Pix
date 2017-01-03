@@ -257,6 +257,7 @@ class LandingPage: UIViewController {
                             let followers = value?["followers"] as? [String] ?? [];
                             let following = value?["following"] as? [String] ?? [];
                             let likedPhotos = value?["liked_photos"] as? [String] ?? [];
+                            let notifID = value?["notification_id"] as? String ?? "";
                             
                             
                             // If there is a match with the emails, login.
@@ -266,6 +267,7 @@ class LandingPage: UIViewController {
                                 usr.followers = followers;
                                 usr.following = following;
                                 usr.likedPhotos = likedPhotos;
+                                usr.notification_ID = notifID;
                                 currentUser = usr;
                                 
                                 

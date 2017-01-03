@@ -63,6 +63,7 @@ PODS:
   - GoogleToolboxForMac/NSString+URLArguments (2.1.0)
   - GTMSessionFetcher/Core (1.1.7)
   - Neon (0.4.0)
+  - OneSignal (2.3.4)
   - Presentr (1.0.5)
   - PullToRefreshSwift (3.0.3)
   - SnapKit (3.0.2)
@@ -80,6 +81,7 @@ DEPENDENCIES:
   - Firebase/Messaging
   - Firebase/Storage
   - Neon
+  - OneSignal
   - Presentr
   - PullToRefreshSwift
   - SnapKit (~> 3.0.2)
@@ -119,12 +121,13 @@ SPEC CHECKSUMS:
   GoogleToolboxForMac: 2b2596cbb7186865e98cadf2b1e262d851c2b168
   GTMSessionFetcher: a1f8ed39e4fe21c68957daed472c7afbcdf29166
   Neon: 7fb5a9327e7e57911843f608e08f4893a74deaf9
+  OneSignal: c8f0d08ffa30fcf751c97a29639725877027e788
   Presentr: a9ef4a5dad01da4ef320b117e1150df35c2be416
   PullToRefreshSwift: 0743b818072bfd7c9464addc2d1b987b131057ca
   SnapKit: 2e456761aa92d4d4067a7a5594c18769d451a8ad
   Spring: 3f02b5dc3308572ef177b3cad0fa7bbc4b0706f7
   SwiftMessages: 87816be9b0b6dc37ff0e84ce3ff4555144554c32
 
-PODFILE CHECKSUM: 4c6a236c28f665932bebbce3286741dd7f616189
+PODFILE CHECKSUM: bf189ac889c26445d5ca1b4df63dd82199e6f68d
 
 COCOAPODS: 1.1.1
