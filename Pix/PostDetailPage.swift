@@ -12,7 +12,7 @@ import Neon
 import Firebase
 import OneSignal
 
-class PostDetailPage: UIViewController, UIScrollViewDelegate {
+class PostDetailPage: UIViewController {
 
     /********************************
      *
@@ -36,21 +36,6 @@ class PostDetailPage: UIViewController, UIScrollViewDelegate {
     }();
     
     
-    /* The scroll view. */
-    let scrollView: UIScrollView = {
-        let s = UIScrollView();
-        s.translatesAutoresizingMaskIntoConstraints = false;
-        s.backgroundColor = .white;
-        s.alwaysBounceVertical = true;
-        s.alwaysBounceHorizontal = true;
-        s.flashScrollIndicators();
-        s.minimumZoomScale = 1.0;
-        s.maximumZoomScale = 6.0;
-        
-        return s;
-    }();
-
-
     /* The label that displays the caption. */
     let captionLabel: UILabel = {
         let c = UILabel();
@@ -103,11 +88,6 @@ class PostDetailPage: UIViewController, UIScrollViewDelegate {
      @param post -- The Post object that all of the information is grabbed from. */
     public func setup(post: Post) {
         self.post = post;
-        scrollView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: view.frame.height);
-        imageView.frame = scrollView.frame;
-        scrollView.contentSize = imageView.frame.size;
-        scrollView.delegate = self;
-        
         
         // Tap gesture
         let tap = UITapGestureRecognizer(target: self, action: #selector(likePhoto));
@@ -123,20 +103,11 @@ class PostDetailPage: UIViewController, UIScrollViewDelegate {
         uploaderLabel.text = "\(post.uploader.firstName) \(post.uploader.lastName)";
         
         /* Layout the components. */
-        scrollView.addSubview(imageView);
-        view.addSubview(scrollView);
+        view.addSubview(imageView);
         
-        let bottomView = UIView();
-        bottomView.backgroundColor = UIColor(red: 239/255, green: 255/255, blue:245/255, alpha: 1);
         view.addSubview(captionLabel);
         view.addSubview(likesLabel);
         view.addSubview(uploaderLabel);
-        //view.addSubview(bottomView);
-        
-        
-        /* Layout with Neon */
-        //scrollView.anchorToEdge(.top, padding: 0, width: view.width, height: view.height / 1.25);
-        //bottomView.align(.underCentered, relativeTo: scrollView, padding: 0, width: view.width, height: view.height - (view.height / 1.25));
         
         
         /* Layout with Snapkit */
@@ -158,20 +129,14 @@ class PostDetailPage: UIViewController, UIScrollViewDelegate {
             maker.left.equalTo(view.snp.left);
             maker.right.equalTo(view.snp.right);
         }
-        scrollView.snp.makeConstraints { (maker: ConstraintMaker) in
+        imageView.snp.makeConstraints { (maker: ConstraintMaker) in
             maker.left.equalTo(0);
             maker.right.equalTo(view.snp.right);
             maker.top.equalTo(0);
-            maker.height.equalTo(view.height / 1.25);
+            maker.bottom.equalTo(captionLabel.snp.top);
         }
         
     } // End of setup method.
-    
-    
-    
-    func viewForZooming(in scrollView: UIScrollView) -> UIView? {
-        return self.imageView;
-    }
     
     
     
