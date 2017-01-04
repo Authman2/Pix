@@ -292,6 +292,7 @@ class LandingPage: UIViewController {
                             self.debug(message: "Loading all of the user's posts...");
                             feedPage.loadPhotos();
                             feedPage.copyOverAndReload();
+                            self.loadActivity();
                             self.goToApp();
                         });
                         
@@ -421,5 +422,20 @@ class LandingPage: UIViewController {
         }
         
     } // End of loading ids method.
+    
+    
+    
+    public func loadActivity() {
+//        UserDefaults.standard.removeObject(forKey: "\(currentUser.username)_activity_log");
+//        UserDefaults.standard.removeObject(forKey: "\(currentUser.username)_activity_log_profile_pictures")
+        
+        // Load up all of the current user's activity.
+        if let defVal = UserDefaults.standard.array(forKey: "\(currentUser.username)_activity_log") {
+            notificationActivityLog = defVal as! [String];
+        }
+        if let defValProfPics = UserDefaults.standard.array(forKey: "\(currentUser.username)_activity_log_profile_pictures") {
+            profilePicturesActivityLog = defValProfPics as! [Data];
+        }
+    }
     
 }

@@ -20,6 +20,10 @@ import DynamicColor
 /* IDs that have already been used. */
 var usedIds: [String] = [String]();
 
+/* An array for displaying the user's activity. */
+var notificationActivityLog: [String] = [String]();
+var profilePicturesActivityLog: [Data] = [Data]();
+
 
 
 public extension String {

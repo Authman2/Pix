@@ -18,6 +18,7 @@ import OneSignal
 var landingPage: LandingPage!;
 var feedPage: FeedPage!;
 var explorePage: ExplorePage!;
+var activityPage: ActivityPage!;
 var profilePage: ProfilePage!;
 
 
@@ -81,6 +82,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         landingPage = LandingPage();
         feedPage = FeedPage(collectionViewLayout: createCollectionViewLayout());
         explorePage = ExplorePage(style: .plain);
+        activityPage = ActivityPage(style: .plain);
         profilePage = ProfilePage(collectionViewLayout: createCollectionViewLayout());
         
         let navContr = AUNavigationMenuController(rootViewController: landingPage);
@@ -88,6 +90,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         /* Add all of the views as menu items. */
         navContr.addMenuItem(name: "Home", image: nil, destination: feedPage, completion: nil);
         navContr.addMenuItem(name: "Explore", image: nil, destination: explorePage, completion: nil);
+        navContr.addMenuItem(name: "Activity", image: nil, destination: activityPage, completion: nil);
         navContr.addMenuItem(name: "Profile", image: nil, destination: profilePage, completion: { void in
             profilePage.useUser = currentUser;
             profilePage.navigationItem.title = "Profile";
@@ -96,10 +99,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             profilePage.viewDidAppear(true);
         });
         
+        
         /* Set the root view controller. */
         window?.rootViewController = navContr;
-        
-        
         
         // Override point for customization after application launch.
         return true
@@ -240,6 +242,34 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         
         // Show the message.
         SwiftMessages.show(config: config, view: view);
+        
+        
+        // Add to the activity log.
+        let idString = messageID as! String;
+        let fireRef = FIRDatabase.database().reference();
+        fireRef.child("Users").child("\(idString.substring(i: 0, j: idString.indexOf(string: " ")))").observeSingleEvent(of: .value) { (snapshot: FIRDataSnapshot) in
+            
+            let val = snapshot.value as? [String: Any] ?? [:];
+            
+            let imgName = val["profile_picture"] as? String ?? "";
+            
+            // Get a reference to the firebase media storage.
+            let imgRef = FIRStorage.storage().reference().child("\(idString.substring(i: 0, j: idString.indexOf(string: " ")))/\(imgName).jpg");
+            imgRef.data(withMaxSize: 50 * 1024 * 1024, completion: { (data: Data?, error: Error?) in
+                
+                if error == nil {
+                    profilePicturesActivityLog.append(data!);
+                    UserDefaults.standard.setValue(profilePicturesActivityLog, forKey: "\(currentUser.username)_activity_log_profile_pictures");
+                    print("----------> Got profile picture of notification.");
+                } else {
+                    print("----------> There was an error loading the activity user's profile pictures.");
+                    print("----------> \(error.debugDescription)");
+                }
+            });
+        }
+        
+        notificationActivityLog.append("\(messageID as! String)");
+        UserDefaults.standard.setValue(notificationActivityLog, forKey: "\(currentUser.username)_activity_log");
     }
     
     

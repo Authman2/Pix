@@ -169,6 +169,7 @@ class PostDetailPage: UIViewController {
                 post.likes -= 1;
                 fireRef.child("Users").child(currentUser.username).setValue(currentUser.toDictionary());
                 fireRef.child("Photos").child(post.uploader.username).child(post.id!).setValue(post.toDictionary());
+                
             }
         }
         
