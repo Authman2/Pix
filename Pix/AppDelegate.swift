@@ -102,6 +102,8 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             profilePage.navigationItem.title = "Profile";
             profilePage.canChangeProfilePic = true;
             profilePage.followButton.isHidden = true;
+            profilePage.privateLabel.isHidden = true;
+            profilePage.collectionView?.isHidden = false;
             profilePage.viewDidAppear(true);
         });
         

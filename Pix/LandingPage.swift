@@ -259,12 +259,14 @@ class LandingPage: UIViewController {
                             let following = value?["following"] as? [String] ?? [];
                             let likedPhotos = value?["liked_photos"] as? [String] ?? [];
                             let notifID = value?["notification_id"] as? String ?? "";
+                            let privateAcc = value?["is_private"] as? Bool ?? false;
                             
                             
                             // If there is a match with the emails, login.
                             if(em == self.emailField.text!) {
                                 let usr = User(first: first, last: last, username: username, email: em);
                                 usr.uid = uid;
+                                usr.isPrivate = privateAcc;
                                 usr.password = pass;
                                 usr.followers = followers;
                                 usr.following = following;

@@ -226,6 +226,7 @@ class SignUpPage: UIViewController {
         // Create a user and save it to the firebase database.
         let user = User(first: name.substring(i: 0, j: name.indexOf(string: " ")), last: name.substring(i: name.indexOf(string: " ") + 1, j: name.length()), username: username, email: em);
         user.password = pass;
+        user.isPrivate = false;
         OneSignal.syncHashedEmail(em);
         OneSignal.idsAvailable { (userId, pushToken) in
             user.notification_ID = userId!;

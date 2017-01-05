@@ -38,6 +38,21 @@ class ProfilePage: UICollectionViewController, UICollectionViewDelegateFlowLayou
     }();
     
     
+    /* A label to display whether or not this user is private. */
+    let privateLabel: UILabel = {
+        let a = UILabel();
+        a.translatesAutoresizingMaskIntoConstraints = false;
+        a.isUserInteractionEnabled = false;
+        a.font = UIFont(name: a.font.fontName, size: 15);
+        a.numberOfLines = 0;
+        a.textColor = UIColor(red: 21/255, green: 180/255, blue: 133/255, alpha: 1).lighter();
+        a.textAlignment = .center;
+        a.isHidden = true;
+        
+        return a;
+    }();
+    
+    
     /* Label that shows the user's name. */
     let nameLabel: UILabel = {
         let n = UILabel();
@@ -128,6 +143,7 @@ class ProfilePage: UICollectionViewController, UICollectionViewDelegateFlowLayou
         
         
         /* Setup/Layout the view. */
+        view.addSubview(privateLabel);
         view.addSubview(profilePicture);
         view.addSubview(nameLabel);
         view.addSubview(followersLabel);
@@ -139,6 +155,12 @@ class ProfilePage: UICollectionViewController, UICollectionViewDelegateFlowLayou
             maker.bottom.equalTo(view.snp.centerY).offset(-100);
             maker.width.equalTo(90);
             maker.height.equalTo(90);
+        }
+        privateLabel.snp.makeConstraints { (maker: ConstraintMaker) in
+            maker.centerX.equalTo(view.snp.centerX);
+            maker.bottom.equalTo(profilePicture.snp.top).offset(-10);
+            maker.width.equalTo(view.width);
+            maker.height.equalTo(50);
         }
         nameLabel.snp.makeConstraints { (maker: ConstraintMaker) in
             maker.centerX.equalTo(view.snp.centerX);
@@ -176,10 +198,7 @@ class ProfilePage: UICollectionViewController, UICollectionViewDelegateFlowLayou
         options.fixedSectionHeader = false;
         collectionView?.addPullRefresh(options: options, refreshCompletion: { (Void) in
             self.collectionView?.reloadData();
-            self.nameLabel.text = "\(self.useUser.firstName) \(self.useUser.lastName)";
-            self.followersLabel.text = "Followers: \(self.useUser.followers.count)";
-            self.followingLabel.text = "Following: \(self.useUser.following.count)";
-            self.profilePicture.image = self.useUser.profilepic;
+            self.reloadLabels();
             self.debug(message: "Size: \(self.useUser.posts.count)");
             
             self.collectionView?.stopPullRefreshEver();
@@ -240,6 +259,21 @@ class ProfilePage: UICollectionViewController, UICollectionViewDelegateFlowLayou
         nameLabel.text = "\(useUser.firstName) \(useUser.lastName)";
         followersLabel.text = "Followers: \(useUser.followers.count)";
         followingLabel.text = "Following: \(useUser.following.count)";
+        
+        privateLabel.text = "\(useUser.username) is private. Send a follow request to see their photos.";
+        if useUser !== currentUser {
+            if useUser.isPrivate == false || (useUser.isPrivate == true && currentUser.following.containsUsername(username: profilePage.useUser.uid)) {
+                privateLabel.isHidden = true;
+                collectionView?.isHidden = false;
+                if useUser.posts.count == 0 {
+                    landingPage.loadUsersPhotos(user: useUser, completion: nil);
+                }
+            } else {
+                privateLabel.isHidden = false;
+                collectionView?.isHidden = true;
+            }
+        }
+        
         profilePicture.image = useUser.profilepic;
     }
     

@@ -132,6 +132,7 @@ class FeedPage: UICollectionViewController, UICollectionViewDelegateFlowLayout, 
                 if(self.usernames.containsUsername(username: uid)) {
                     
                     let uid = user.value["userid"] as? String ?? "";
+                    let privateAcc = user.value["is_private"] as? Bool ?? false;
                     let username = user.value["username"] as? String ?? "";
                     let em = user.value["email"] as? String ?? "";
                     let firstName = user.value["first_name"] as? String ?? "";
@@ -146,6 +147,7 @@ class FeedPage: UICollectionViewController, UICollectionViewDelegateFlowLayout, 
                     // Create a user and add it to the array.
                     let usr = User(first: firstName, last: lastName, username: username, email: em);
                     usr.uid = uid;
+                    usr.isPrivate = privateAcc;
                     usr.password = pass;
                     usr.followers = followers;
                     usr.following = following;

@@ -72,6 +72,10 @@ public class User: NSObject {
     var notification_ID: String = String();
     
     
+    /* Whether or not this user is private. */
+    var isPrivate: Bool = false;
+    
+    
     
     
     
@@ -104,13 +108,14 @@ public class User: NSObject {
                                              "followers" : followers,
                                              "following" : following,
                                              "liked_photos" : likedPhotos,
-                                             "notification_id" : notification_ID]);
+                                             "notification_id" : notification_ID,
+                                             "is_private" : isPrivate]);
         return dict;
     }
     
     
     func toString() -> String {
-        return "Name: \(firstName) \(lastName), Username: \(username), Email: \(email), Password: \(password)";
+        return "Name: \(firstName) \(lastName), Username: \(username), Email: \(email), Password: \(password), UID: \(uid)";
     }
     
     

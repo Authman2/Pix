@@ -67,8 +67,18 @@ class EditProfilePage: FormViewController {
                 row.title = "Password";
                 row.placeholder = "Enter new password.";
             }
-            +++ Section("")
-        
+            +++ Section("Privacy")
+            <<< SwitchRow() { row in
+                row.title = "Private Account"
+                row.value = currentUser.isPrivate;
+                }.onChange { row in
+                    currentUser.isPrivate = (row.value ?? false) ? true : false;
+                    row.updateCell()
+                }.cellSetup { cell, row in
+                    cell.backgroundColor = .white
+                }.cellUpdate { cell, row in
+                    cell.textLabel?.font = cell.textLabel?.font;
+            }
         
         
         let updateButton = UIBarButtonItem(title: "Update", style: .plain, target: self, action: #selector(updateProfile));
@@ -129,6 +139,7 @@ class EditProfilePage: FormViewController {
             self.debug(message: "There was an issue updating the password: \(error.debugDescription)");
         })
         
+        self.fireRef.child("Users").child(currentUser.uid).updateChildValues(currentUser.toDictionary() as! [AnyHashable : Any]);
         
         self.close();
     }

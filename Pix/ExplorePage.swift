@@ -99,6 +99,7 @@ class ExplorePage: UITableViewController, UISearchResultsUpdating {
                     let following = user.value["following"] as? [String] ?? [];
                     let likedPhotos = user.value["liked_photos"] as? [String] ?? [];
                     let notifID = user.value["notification_id"] as? String ?? "";
+                    let privateAcc = user.value["is_private"] as? Bool ?? false;
                     
                     
                     // Compare
@@ -109,6 +110,7 @@ class ExplorePage: UITableViewController, UISearchResultsUpdating {
                             // Create a user object.
                             let usr = User(first: firstName, last: lastName, username: username, email: em);
                             usr.uid = uid;
+                            usr.isPrivate = privateAcc;
                             usr.password = pass;
                             usr.followers = followers;
                             usr.following = following;
@@ -129,6 +131,7 @@ class ExplorePage: UITableViewController, UISearchResultsUpdating {
                             // Create a user object.
                             let usr = User(first: firstName, last: lastName, username: username, email: em);
                             usr.uid = uid;
+                            usr.isPrivate = privateAcc;
                             usr.password = pass;
                             usr.followers = followers;
                             usr.following = following;
@@ -194,17 +197,32 @@ class ExplorePage: UITableViewController, UISearchResultsUpdating {
             profilePage.useUser = listOfUsers[indexPath.row];
             profilePage.followButton.isHidden = false;
             
-            if(currentUser.following.containsUsername(username: listOfUsers[indexPath.row].username)) {
+            if(currentUser.following.containsUsername(username: listOfUsers[indexPath.row].uid)) {
                 profilePage.followButton.setTitle("Unfollow", for: .normal);
             } else {
                 profilePage.followButton.setTitle("Follow", for: .normal);
             }
             
+            if listOfUsers[indexPath.row].uid == currentUser.uid {
+                profilePage.followButton.isHidden = true;
+            } else {
+                profilePage.followButton.isHidden = false;
+            }
             
             // Load all of that user's photos.
-            landingPage.loadUsersPhotos(user: listOfUsers[indexPath.row], completion: nil);
-            profilePage.canChangeProfilePic = false;
             
+            /* CHECK IF PRIVATE ACCOUNT. */
+            if profilePage.useUser.isPrivate == false || (profilePage.useUser.isPrivate == true && currentUser.following.containsUsername(username: profilePage.useUser.uid)) {
+                
+                landingPage.loadUsersPhotos(user: listOfUsers[indexPath.row], completion: nil);
+                profilePage.canChangeProfilePic = false;
+                profilePage.privateLabel.isHidden = true;
+                
+            } else {
+                
+                profilePage.privateLabel.isHidden = false;
+                
+            }
             
             // Go to the next page.
             navigationController?.pushViewController(profilePage, animated: true);
