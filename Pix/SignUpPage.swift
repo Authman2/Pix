@@ -245,7 +245,8 @@ class SignUpPage: UIViewController {
             // No errors creating the user.
             if error == nil {
                 
-                self.fireRef.child("Users").child(user.username).setValue(user.toDictionary());
+                user.uid = (usr?.uid)!;
+                self.fireRef.child("Users").child(user.uid).setValue(user.toDictionary());
                 self.debug(message: "User created!");
                 
                 // Upload an image for the user's profile picture.
@@ -264,7 +265,7 @@ class SignUpPage: UIViewController {
     
     
     func uploadProfilePic(user: User, id: String, profileImage: UIImage) {
-        let storageRef = FIRStorageReference().child("\(user.username)/\(id).jpg");
+        let storageRef = FIRStorageReference().child("\(user.uid)/\(id).jpg");
         let data = UIImageJPEGRepresentation(profileImage, 100) as NSData?;
         
         let _ = storageRef.put(data! as Data, metadata: nil) { (metaData, error) in
@@ -278,7 +279,7 @@ class SignUpPage: UIViewController {
                 post.isProfilePicture = true;
                 
                 let postObj = post.toDictionary();
-                self.fireRef.child("Photos").child("\(user.username)").child("\(id)").setValue(postObj);
+                self.fireRef.child("Photos").child("\(user.uid)").child("\(id)").setValue(postObj);
                 
             } else {
                 print(error.debugDescription);

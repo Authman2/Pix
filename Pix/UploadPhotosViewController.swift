@@ -109,7 +109,7 @@ class UploadPhotosViewController: UIViewController {
         let randomName = self.randomName();
         post.id = randomName;
         
-        let storageRef = FIRStorageReference().child("\(currentUser.username)/\(randomName).jpg");
+        let storageRef = FIRStorageReference().child("\(currentUser.uid)/\(randomName).jpg");
         let data = UIImageJPEGRepresentation(self.post.photo.image!, 100) as NSData?;
         
         let _ = storageRef.put(data! as Data, metadata: nil) { (metaData, error) in
@@ -118,7 +118,7 @@ class UploadPhotosViewController: UIViewController {
                 
                 self.debug(message: "Photo Uploaded!");
                 let postObj = self.post.toDictionary();
-                self.fireRef.child("Photos").child("\(currentUser.username)").child("\(randomName)").setValue(postObj);
+                self.fireRef.child("Photos").child("\(currentUser.uid)").child("\(randomName)").setValue(postObj);
                 self.cancel();
                 
             } else {

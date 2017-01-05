@@ -24,5 +24,6 @@ target 'Pix' do
     pod 'PullToRefreshSwift'
     pod 'SwiftMessages'
     pod 'OneSignal'
+    pod 'Eureka', '~> 2.0.0-beta.1'
   
 end

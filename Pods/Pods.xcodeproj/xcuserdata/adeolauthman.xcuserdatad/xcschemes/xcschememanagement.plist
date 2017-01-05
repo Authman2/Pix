@@ -24,6 +24,11 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>Eureka.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>GTMSessionFetcher.xcscheme</key>
 		<dict>
 			<key>isShown</key>
@@ -77,22 +82,27 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>1166CCFF9C6D9EF7DE5C72F44BD3FF9C</key>
+		<key>140F6041DE8B273A7CC41D95458FD480</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>2256F88C632196B63839416887D39B5D</key>
+		<key>15EB2201B73884A48CCE0FEE602FEFBC</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>28550D2B0C33C0342B043F7028E5D9AB</key>
+		<key>2F377932497C6049B09F8F862C11DF1B</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>32C8F6AD269EA2C8CAB37B74B1BF065A</key>
+		<key>644CB7279EB266F8F8AB97031D07F985</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>652ABD8EE2597F00673DD5014EEE3072</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -112,17 +122,17 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>96E0AC96B6DB80464ABB2F9068DBA528</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>97C8D745D9DDE45C94C12367B6B5A4B9</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
 		<key>9C9289CC5B9AB0909F9BB5F62F56E179</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>AA3BDF5B46349239803FDBA856A5EC82</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>B35C48A03CF025F82A616193CC585513</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -142,7 +152,7 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>E4E84343C6187085BDBBAA4EDE525A9D</key>
+		<key>EE774F234E810C0DD8263855D7A1A166</key>
 		<dict>
 			<key>primary</key>
 			<true/>

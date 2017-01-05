@@ -20,7 +20,7 @@ var feedPage: FeedPage!;
 var explorePage: ExplorePage!;
 var activityPage: ActivityPage!;
 var profilePage: ProfilePage!;
-
+var navContr: AUNavigationMenuController!;
 
 
 
@@ -87,7 +87,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         
         
         // Create the navigation controller with options.
-        let navContr = AUNavigationMenuController(rootViewController: landingPage);
+        navContr = AUNavigationMenuController(rootViewController: landingPage);
         let auNavOptions = AUNavigationMenuOptions();
         auNavOptions.itemTextColor = .white;
         navContr.configureOptions(options: auNavOptions);
@@ -124,12 +124,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
     func applicationWillResignActive(_ application: UIApplication) {
         // Sent when the application is about to move from active to inactive state. This can occur for certain types of temporary interruptions (such as an incoming phone call or SMS message) or when the user quits the application and it begins the transition to the background state.
         // Use this method to pause ongoing tasks, disable timers, and invalidate graphics rendering callbacks. Games should use this method to pause the game.
+        if navContr.open == true {
+            navContr.togglePulldownMenu();
+        }
     }
 
     func applicationDidEnterBackground(_ application: UIApplication) {
         // Use this method to release shared resources, save user data, invalidate timers, and store enough application state information to restore your application to its current state in case it is terminated later.
         // If your application supports background execution, this method is called instead of applicationWillTerminate: when the user quits.
         FIRMessaging.messaging().disconnect();
+        
+        if navContr.open == true {
+            navContr.togglePulldownMenu();
+        }
     }
 
     func applicationWillEnterForeground(_ application: UIApplication) {

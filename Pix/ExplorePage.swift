@@ -88,6 +88,7 @@ class ExplorePage: UITableViewController, UISearchResultsUpdating {
                 for user in userDictionary {
                     
                     // Get the email (and other info about the user).
+                    let uid = user.value["userid"] as? String ?? "";
                     let em = user.value["email"] as? String ?? "";
                     let firstName = user.value["first_name"] as? String ?? "";
                     let lastName = user.value["last_name"] as? String ?? "";
@@ -107,6 +108,7 @@ class ExplorePage: UITableViewController, UISearchResultsUpdating {
                             
                             // Create a user object.
                             let usr = User(first: firstName, last: lastName, username: username, email: em);
+                            usr.uid = uid;
                             usr.password = pass;
                             usr.followers = followers;
                             usr.following = following;
@@ -126,6 +128,7 @@ class ExplorePage: UITableViewController, UISearchResultsUpdating {
                             
                             // Create a user object.
                             let usr = User(first: firstName, last: lastName, username: username, email: em);
+                            usr.uid = uid;
                             usr.password = pass;
                             usr.followers = followers;
                             usr.following = following;

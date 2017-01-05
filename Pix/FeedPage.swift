@@ -102,7 +102,7 @@ class FeedPage: UICollectionViewController, UICollectionViewDelegateFlowLayout, 
     public func loadPhotos() {
        
         // Observe the users.
-        fireRef.child("Users").child(currentUser.username).observeSingleEvent(of: .value) { (snapshot: FIRDataSnapshot) in
+        fireRef.child("Users").child(currentUser.uid).observeSingleEvent(of: .value) { (snapshot: FIRDataSnapshot) in
             
             let value = snapshot.value as? [String : AnyObject] ?? [:];
             let following = value["following"] as? [String] ?? [];
@@ -126,11 +126,13 @@ class FeedPage: UICollectionViewController, UICollectionViewDelegateFlowLayout, 
             for user in userDictionary {
                 
                 // Get the username.
-                let username = user.value["username"] as? String ?? "";
+                let uid = user.value["uid"] as? String ?? "";
                 
                 // Make sure that this is a user we need to be looking at.
-                if(self.usernames.containsUsername(username: username)) {
+                if(self.usernames.containsUsername(username: uid)) {
                     
+                    let uid = user.value["userid"] as? String ?? "";
+                    let username = user.value["username"] as? String ?? "";
                     let em = user.value["email"] as? String ?? "";
                     let firstName = user.value["first_name"] as? String ?? "";
                     let lastName = user.value["last_name"] as? String ?? "";
@@ -143,13 +145,14 @@ class FeedPage: UICollectionViewController, UICollectionViewDelegateFlowLayout, 
                     
                     // Create a user and add it to the array.
                     let usr = User(first: firstName, last: lastName, username: username, email: em);
+                    usr.uid = uid;
                     usr.password = pass;
                     usr.followers = followers;
                     usr.following = following;
                     usr.likedPhotos = likedPhotos;
                     usr.notification_ID = notifID;
                     
-                    if !self.users.containsUser(username: usr.username) {
+                    if !self.users.containsUser(username: usr.uid) {
                         self.users.append(usr);
                     }
                     

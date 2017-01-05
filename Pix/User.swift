@@ -23,6 +23,10 @@ public class User: NSObject {
      *
      ********************************/
     
+    /* A user's user id. */
+    var uid: String = String();
+    
+    
     /* The user's first name. */
     var firstName: String = String();
     
@@ -90,7 +94,8 @@ public class User: NSObject {
     
     
     func toDictionary() -> NSDictionary {
-        let dict = NSDictionary(dictionary: ["first_name" : firstName,
+        let dict = NSDictionary(dictionary: ["userid" : uid,
+                                             "first_name" : firstName,
                                              "last_name" : lastName,
                                              "username" : username,
                                              "email" : email,

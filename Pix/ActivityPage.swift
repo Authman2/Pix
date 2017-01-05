@@ -30,7 +30,7 @@ class ActivityPage: UITableViewController {
         
         // Pull To Refresh
         var options = PullToRefreshOption();
-        options.backgroundColor = UIColor.lightGray.lighter(amount: 40);
+        options.backgroundColor = UIColor.lightGray.lighter(amount: 20);
         tableView.addPullRefresh(options: options) { (Void) in
             self.tableView.reloadData();
             self.tableView.stopPullRefreshEver();

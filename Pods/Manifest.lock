@@ -6,6 +6,7 @@ PODS:
     - ChameleonFramework/Default
   - DynamicColor (3.1.0)
   - DZNEmptyDataSet (1.8.1)
+  - Eureka (2.0.0-beta.1)
   - Firebase/Auth (3.11.0):
     - Firebase/Core
     - FirebaseAuth (= 3.1.0)
@@ -75,6 +76,7 @@ DEPENDENCIES:
   - ChameleonFramework/Swift (from `https://github.com/ViccAlexander/Chameleon.git`)
   - DynamicColor (~> 3.1.0)
   - DZNEmptyDataSet
+  - Eureka (~> 2.0.0-beta.1)
   - Firebase/Auth
   - Firebase/Core
   - Firebase/Database
@@ -108,6 +110,7 @@ SPEC CHECKSUMS:
   ChameleonFramework: d21a3cc247abfe5e37609a283a8238b03575cf64
   DynamicColor: 4dec283a881f7f9d9f3bc88fb5f306724242575f
   DZNEmptyDataSet: 9525833b9e68ac21c30253e1d3d7076cc828eaa7
+  Eureka: d014adf16406745e1a78d5790ea37ed130a0a8e5
   Firebase: b8134e285eb33201115bc688bc5d7f112923bc1f
   FirebaseAnalytics: 9c67af0ebeb8d2146c9b4ea2616439affa947b58
   FirebaseAuth: b436e4ecebe068bf8e8c6e4e29de5756ffe7ee24
@@ -128,6 +131,6 @@ SPEC CHECKSUMS:
   Spring: 3f02b5dc3308572ef177b3cad0fa7bbc4b0706f7
   SwiftMessages: 9d03bb95d394ac60f9c20335e2305dfea9cac70a
 
-PODFILE CHECKSUM: bf189ac889c26445d5ca1b4df63dd82199e6f68d
+PODFILE CHECKSUM: d5e459889a0e7e72ae20f6fbe1908bd7b7924723
 
 COCOAPODS: 1.1.1

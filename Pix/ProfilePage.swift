@@ -94,6 +94,10 @@ class ProfilePage: UICollectionViewController, UICollectionViewDelegateFlowLayou
     var logoutButton: UIBarButtonItem!;
     
     
+    /* The button used for editing the profile. */
+    var editProfileButton: UIBarButtonItem!;
+    
+    
     /* Image picker */
     let imgPicker = UIImagePickerController();
     var canChangeProfilePic = false;
@@ -186,6 +190,9 @@ class ProfilePage: UICollectionViewController, UICollectionViewDelegateFlowLayou
         logoutButton = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(logout));
         logoutButton.tintColor = .white;
         navigationItem.leftBarButtonItem = logoutButton;
+        editProfileButton = UIBarButtonItem(title: "Edit", style: .plain, target: self, action: #selector(editProfile));
+        editProfileButton.tintColor = .white;
+        navigationItem.rightBarButtonItem = editProfileButton;
         
         
         /* Follow button. */
@@ -209,9 +216,13 @@ class ProfilePage: UICollectionViewController, UICollectionViewDelegateFlowLayou
         if useUser !== currentUser {
             logoutButton.isEnabled = false;
             logoutButton.tintColor = navigationController?.navigationBar.barTintColor;
+            editProfileButton.isEnabled = false;
+            editProfileButton.tintColor = navigationController?.navigationBar.barTintColor;
         } else {
             logoutButton.isEnabled = true;
             logoutButton.tintColor = .white;
+            editProfileButton.isEnabled = true;
+            editProfileButton.tintColor = .white;
         }
         
         self.reloadLabels();
@@ -254,6 +265,11 @@ class ProfilePage: UICollectionViewController, UICollectionViewDelegateFlowLayou
     }
     
     
+    @objc func editProfile() {
+        navigationController?.pushViewController(EditProfilePage(), animated: true);
+    }
+    
+    
     
     /* Makes the current user follow the user on this profile page.
      PRECONDITION: The user being displayed is NOT the current user.
@@ -261,18 +277,18 @@ class ProfilePage: UICollectionViewController, UICollectionViewDelegateFlowLayou
     @objc func followUser() {
         
         // First, check if the follower/following connection is already there. If not, continue...
-        if(!currentUser.following.containsUsername(username: useUser.username) && !useUser.followers.containsUsername(username: currentUser.username)) {
+        if(!currentUser.following.containsUsername(username: useUser.uid) && !useUser.followers.containsUsername(username: currentUser.uid)) {
             
             // Set the values of the objects.
-            currentUser.following.append(useUser.username);
-            useUser.followers.append(currentUser.username);
+            currentUser.following.append(useUser.uid);
+            useUser.followers.append(currentUser.uid);
             
             // Update the button.
             self.followButton.setTitle("Unfollow", for: .normal);
             
             // Update both users in firebase.
-            fireRef.child("Users").child(currentUser.username).setValue(currentUser.toDictionary());
-            fireRef.child("Users").child(useUser.username).setValue(useUser.toDictionary());
+            fireRef.child("Users").child(currentUser.uid).setValue(currentUser.toDictionary());
+            fireRef.child("Users").child(useUser.uid).setValue(useUser.toDictionary());
             
             // Send notification.
             if(useUser.notification_ID != currentUser.notification_ID) {
@@ -288,15 +304,15 @@ class ProfilePage: UICollectionViewController, UICollectionViewDelegateFlowLayou
         } else {
             
             // Set the values of the objects.
-            currentUser.following.removeItem(item: useUser.username);
-            useUser.followers.removeItem(item: currentUser.username);
+            currentUser.following.removeItem(item: useUser.uid);
+            useUser.followers.removeItem(item: currentUser.uid);
             
             // Update the button.
             self.followButton.setTitle("Follow", for: .normal);
             
             // Update both users in firebase.
-            fireRef.child("Users").child(currentUser.username).setValue(currentUser.toDictionary());
-            fireRef.child("Users").child(useUser.username).setValue(useUser.toDictionary());
+            fireRef.child("Users").child(currentUser.uid).setValue(currentUser.toDictionary());
+            fireRef.child("Users").child(useUser.uid).setValue(useUser.toDictionary());
             
             // Remove all of the photos from the feed page that belong to this user.
             if feedPage.postFeed.count > 0 {
@@ -343,7 +359,7 @@ class ProfilePage: UICollectionViewController, UICollectionViewDelegateFlowLayou
                 
                 
                 // Delete the old picture from firebase, and replace it with the new one, but keep the same id.
-                let storageRef = FIRStorageReference().child("\(useUser.username)/\(id!).jpg");
+                let storageRef = FIRStorageReference().child("\(useUser.uid)/\(id!).jpg");
                 storageRef.delete { error in
                     // If there's an error.
                     if let error = error {
@@ -360,7 +376,7 @@ class ProfilePage: UICollectionViewController, UICollectionViewDelegateFlowLayou
                                 let post = Post(photo: photo, caption: "", Uploader: self.useUser, ID: id!);
                                 post.isProfilePicture = true;
                                 let postObj = post.toDictionary();
-                                self.fireRef.child("Photos").child("\(self.useUser.username)").child("\(id!)").setValue(postObj);
+                                self.fireRef.child("Photos").child("\(self.useUser.uid)").child("\(id!)").setValue(postObj);
                                 self.debug(message: "Old profile picture was removed; replace with new one.");
                                 
                             } else {

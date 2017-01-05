@@ -249,6 +249,7 @@ class LandingPage: UIViewController {
                         for user in userDictionary {
                             let value = user.value as? NSDictionary
                             
+                            let uid = value?["userid"] as? String ?? "";
                             let first = value?["first_name"] as? String ?? "";
                             let last = value?["last_name"] as? String ?? "";
                             let username = value?["username"] as? String ?? "";
@@ -263,6 +264,7 @@ class LandingPage: UIViewController {
                             // If there is a match with the emails, login.
                             if(em == self.emailField.text!) {
                                 let usr = User(first: first, last: last, username: username, email: em);
+                                usr.uid = uid;
                                 usr.password = pass;
                                 usr.followers = followers;
                                 usr.following = following;
@@ -338,7 +340,7 @@ class LandingPage: UIViewController {
         
         
         // Load all of the photo objects from the database.
-        fireRef.child("Photos").child(user.username).queryOrderedByPriority().observeSingleEvent(of: .value) { (snapshot: FIRDataSnapshot) in
+        fireRef.child("Photos").child(user.uid).queryOrderedByPriority().observeSingleEvent(of: .value) { (snapshot: FIRDataSnapshot) in
             
             // First, make sure there is a value for the posts. If so, then load all of them.
             let postDictionary = snapshot.value as? [String : AnyObject] ?? [:];
@@ -356,7 +358,7 @@ class LandingPage: UIViewController {
                 
                 
                 // Get a reference to the firebase media storage.
-                let imgRef = FIRStorage.storage().reference().child("\(user.username)/\(imgName!)");
+                let imgRef = FIRStorage.storage().reference().child("\(user.uid)/\(imgName!)");
                 imgRef.data(withMaxSize: 50 * 1024 * 1024, completion: { (data: Data?, error: Error?) in
                     
                     if error == nil {
@@ -430,10 +432,10 @@ class LandingPage: UIViewController {
 //        UserDefaults.standard.removeObject(forKey: "\(currentUser.username)_activity_log_profile_pictures")
         
         // Load up all of the current user's activity.
-        if let defVal = UserDefaults.standard.array(forKey: "\(currentUser.username)_activity_log") {
+        if let defVal = UserDefaults.standard.array(forKey: "\(currentUser.uid)_activity_log") {
             notificationActivityLog = defVal as! [String];
         }
-        if let defValProfPics = UserDefaults.standard.array(forKey: "\(currentUser.username)_activity_log_profile_pictures") {
+        if let defValProfPics = UserDefaults.standard.array(forKey: "\(currentUser.uid)_activity_log_profile_pictures") {
             profilePicturesActivityLog = defValProfPics as! [Data];
         }
     }
