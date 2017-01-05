@@ -85,13 +85,19 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         activityPage = ActivityPage(style: .plain);
         profilePage = ProfilePage(collectionViewLayout: createCollectionViewLayout());
         
+        
+        // Create the navigation controller with options.
         let navContr = AUNavigationMenuController(rootViewController: landingPage);
+        let auNavOptions = AUNavigationMenuOptions();
+        auNavOptions.itemTextColor = .white;
+        navContr.configureOptions(options: auNavOptions);
+        
         
         /* Add all of the views as menu items. */
-        navContr.addMenuItem(name: "Home", image: nil, destination: feedPage, completion: nil);
-        navContr.addMenuItem(name: "Explore", image: nil, destination: explorePage, completion: nil);
-        navContr.addMenuItem(name: "Activity", image: nil, destination: activityPage, completion: nil);
-        navContr.addMenuItem(name: "Profile", image: nil, destination: profilePage, completion: { void in
+        navContr.addMenuItem(name: "Home", image: UIImage(named: "HomeIcon.png"), destination: feedPage, completion: nil);
+        navContr.addMenuItem(name: "Explore", image: UIImage(named: "ExploreIcon.png"), destination: explorePage, completion: nil);
+        navContr.addMenuItem(name: "Activity", image: UIImage(named: "ActivityIcon.png"), destination: activityPage, completion: nil);
+        navContr.addMenuItem(name: "Profile", image: UIImage(named: "ProfileIcon.png"), destination: profilePage, completion: { void in
             profilePage.useUser = currentUser;
             profilePage.navigationItem.title = "Profile";
             profilePage.canChangeProfilePic = true;

@@ -14,7 +14,7 @@ public class AUNavigationMenuController: UINavigationController, UICollectionVie
     
     
     // Whether or not the menu is open.
-    public var open: Bool = Bool();
+    public var open: Bool! = false;
     
     
     // The amount to pull the menu down by.
@@ -22,12 +22,27 @@ public class AUNavigationMenuController: UINavigationController, UICollectionVie
     
     
     // The collection view with all of the menu pages.
-    var collectionView: UICollectionView!;
+    private var collectionView: UICollectionView!;
     
     
     // The menu pages that take the user to different view controllers.
     public var menuItems = [NavigationMenuItem]();
     
+    
+    // Color of the text. Black by default.
+    private var itemTextColor: UIColor = .black;
+    
+    
+    // The spacing between items.
+    private var spacing: CGFloat = 10;
+    
+    
+    // The size of the menu items.
+    private var itemSize: CGSize!;
+    
+    
+    // The options so that variables can be changed.
+    private var options: AUNavigationMenuOptions?;
     
     
     
@@ -43,7 +58,6 @@ public class AUNavigationMenuController: UINavigationController, UICollectionVie
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil);
         setupCollectionView();
         setupTapGesture();
-        // Creates a menu view and adds it behind everything.
         addMenuView();
     }
     
@@ -51,7 +65,6 @@ public class AUNavigationMenuController: UINavigationController, UICollectionVie
         super.init(rootViewController: rootViewController);
         setupCollectionView();
         setupTapGesture();
-        // Creates a menu view and adds it behind everything.
         addMenuView();
     }
     
@@ -63,14 +76,12 @@ public class AUNavigationMenuController: UINavigationController, UICollectionVie
         super.viewDidLoad();
         setupCollectionView();
         setupTapGesture();
-        // Creates a menu view and adds it behind everything.
         addMenuView();
     }
     
     public override func didMove(toParentViewController parent: UIViewController?) {
         setupCollectionView();
         setupTapGesture();
-        // Creates a menu view and adds it behind everything.
         addMenuView();
     }
     
@@ -97,6 +108,24 @@ public class AUNavigationMenuController: UINavigationController, UICollectionVie
     }
     
     
+    /* Sets up the options. */
+    public func configureOptions(options: AUNavigationMenuOptions) {
+        self.options = options;
+        
+        if let color = options.itemTextColor {
+            itemTextColor = color;
+        }
+        if let space = options.itemSpacing {
+            spacing = space;
+        }
+        if let size = options.itemSize {
+            itemSize = size;
+        }
+        
+        self.collectionView.reloadData();
+    }
+    
+    
     /* Setup what's needed for the collection view. */
     private func setupCollectionView() {
         pullAmount = UIScreen.main.bounds.height / 4 + 10;
@@ -106,7 +135,7 @@ public class AUNavigationMenuController: UINavigationController, UICollectionVie
         layout.sectionInset = UIEdgeInsets(top: 25, left: 0, bottom: 0, right: 0);
         
         collectionView = UICollectionView(frame: CGRect(x: 0, y: 0, width: view.frame.width, height: pullAmount), collectionViewLayout: layout);
-        collectionView!.register(AUNavigationMenuCell.self, forCellWithReuseIdentifier: "Cell");
+        collectionView!.register(AUNavigationMenuCell.self, forCellWithReuseIdentifier: "AUMenuCell");
         collectionView.alwaysBounceHorizontal = true;
         collectionView.showsHorizontalScrollIndicator = false;
         collectionView.showsVerticalScrollIndicator = false;
@@ -177,6 +206,23 @@ public class AUNavigationMenuController: UINavigationController, UICollectionVie
         
         collectionView.delegate = self;
         collectionView.dataSource = self;
+        
+        
+        if options == nil {
+            itemSize = CGSize(width: 115, height: pullAmount - 35);
+            spacing = 10;
+            itemTextColor = .black;
+        } else {
+            if let color = self.options?.itemTextColor {
+                itemTextColor = color;
+            }
+            if let space = self.options?.itemSpacing {
+                spacing = space;
+            }
+            if let size = self.options?.itemSize {
+                itemSize = size;
+            }
+        }
     }
     
     
@@ -224,9 +270,10 @@ public class AUNavigationMenuController: UINavigationController, UICollectionVie
     
     
     public func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! AUNavigationMenuCell;
+        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "AUMenuCell", for: indexPath) as! AUNavigationMenuCell;
         
         cell.navMenuItem = menuItems[indexPath.item];
+        cell.textLabel.textColor = itemTextColor;
         cell.setupLayout();
         
         return cell;
@@ -234,12 +281,20 @@ public class AUNavigationMenuController: UINavigationController, UICollectionVie
     
     
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 115, height: pullAmount - 35);
+        if let _ = options?.itemSize {
+            return (options?.itemSize)!;
+        } else {
+            return CGSize(width: 115, height: pullAmount - 35);
+        }
     }
     
     
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return 10;
+        if let _ = options?.itemSpacing {
+            return (options?.itemSpacing)!;
+        } else {
+            return 10;
+        }
     }
     
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {

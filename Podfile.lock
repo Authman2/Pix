@@ -1,5 +1,5 @@
 PODS:
-  - AUNavigationMenuController (1.0.0):
+  - AUNavigationMenuController (1.1.1):
     - Neon (~> 0.4.0)
   - ChameleonFramework/Default (2.1.0)
   - ChameleonFramework/Swift (2.1.0):
@@ -64,11 +64,11 @@ PODS:
   - GTMSessionFetcher/Core (1.1.7)
   - Neon (0.4.0)
   - OneSignal (2.3.4)
-  - Presentr (1.0.5)
+  - Presentr (1.1.0)
   - PullToRefreshSwift (3.0.3)
   - SnapKit (3.0.2)
   - Spring (1.0.3)
-  - SwiftMessages (3.1.2)
+  - SwiftMessages (3.1.3)
 
 DEPENDENCIES:
   - AUNavigationMenuController
@@ -104,7 +104,7 @@ CHECKOUT OPTIONS:
     :git: https://github.com/MengTo/Spring.git
 
 SPEC CHECKSUMS:
-  AUNavigationMenuController: 82f738be9570016e08a2b6fdd2c01dbc62757eeb
+  AUNavigationMenuController: c0a6fcfe51e12c217ddff0a8849304320bc4c797
   ChameleonFramework: d21a3cc247abfe5e37609a283a8238b03575cf64
   DynamicColor: 4dec283a881f7f9d9f3bc88fb5f306724242575f
   DZNEmptyDataSet: 9525833b9e68ac21c30253e1d3d7076cc828eaa7
@@ -122,11 +122,11 @@ SPEC CHECKSUMS:
   GTMSessionFetcher: a1f8ed39e4fe21c68957daed472c7afbcdf29166
   Neon: 7fb5a9327e7e57911843f608e08f4893a74deaf9
   OneSignal: c8f0d08ffa30fcf751c97a29639725877027e788
-  Presentr: a9ef4a5dad01da4ef320b117e1150df35c2be416
+  Presentr: e73439be1cba3ad0651b18c58d77238bbacce59c
   PullToRefreshSwift: 0743b818072bfd7c9464addc2d1b987b131057ca
   SnapKit: 2e456761aa92d4d4067a7a5594c18769d451a8ad
   Spring: 3f02b5dc3308572ef177b3cad0fa7bbc4b0706f7
-  SwiftMessages: 87816be9b0b6dc37ff0e84ce3ff4555144554c32
+  SwiftMessages: 9d03bb95d394ac60f9c20335e2305dfea9cac70a
 
 PODFILE CHECKSUM: bf189ac889c26445d5ca1b4df63dd82199e6f68d
 

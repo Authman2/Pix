@@ -10,7 +10,7 @@ import Foundation
 import UIKit
 
 
-public class NavigationMenuItem {
+public class NavigationMenuItem: NSObject {
     
     // The name of the menu item.
     public var name: String!;
