@@ -38,13 +38,17 @@ class ActivityPage: UITableViewController {
         
         
         // Auto sizing cells.
-        tableView.rowHeight = UITableViewAutomaticDimension;
         tableView.estimatedRowHeight = 140;
+        tableView.rowHeight = UITableViewAutomaticDimension;
     }
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated);
         tableView.reloadData();
+        
+        // Auto sizing cells.
+        tableView.estimatedRowHeight = 140;
+        tableView.rowHeight = UITableViewAutomaticDimension;
     }
     
     
@@ -71,14 +75,30 @@ class ActivityPage: UITableViewController {
     
     
     override func tableView(_ tableView: UITableView, cellForRowAt indexPath: IndexPath) -> UITableViewCell {
-        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! ActivityCell;
         
+        let cell = tableView.dequeueReusableCell(withIdentifier: "Cell", for: indexPath) as! ActivityCell;
         cell.profileView.image = UIImage(data: profilePicturesActivityLog[profilePicturesActivityLog.count - indexPath.row - 1]);
         cell.titleLabel.text = notificationActivityLog[notificationActivityLog.count - indexPath.row - 1];
+        
+        if notificationActivityLog[notificationActivityLog.count - indexPath.row - 1].contains("wants to follow you") {
+            cell.acceptButton.isHidden = false;
+            cell.declineButton.isHidden = false;
+        } else {
+            cell.acceptButton.isHidden = true;
+            cell.declineButton.isHidden = true;
+        }
+        
         cell.setup();
         
         return cell;
     }
     
     
+    override func tableView(_ tableView: UITableView, heightForRowAt indexPath: IndexPath) -> CGFloat {
+        if notificationActivityLog[notificationActivityLog.count - indexPath.row - 1].contains("wants to follow you") {
+            return 55;
+        } else {
+            return 50;
+        }
+    }
 }

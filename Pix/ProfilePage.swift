@@ -182,7 +182,7 @@ class ProfilePage: UICollectionViewController, UICollectionViewDelegateFlowLayou
         }
         followButton.snp.makeConstraints { (maker: ConstraintMaker) in
             maker.centerX.equalTo(view.snp.centerX);
-            maker.width.equalTo(view.width / 4.5);
+            maker.width.equalTo(view.width / 4.2);
             maker.height.equalTo(35);
             maker.top.equalTo(followingLabel.snp.bottom).offset(5);
         }
@@ -313,26 +313,21 @@ class ProfilePage: UICollectionViewController, UICollectionViewDelegateFlowLayou
         // First, check if the follower/following connection is already there. If not, continue...
         if(!currentUser.following.containsUsername(username: useUser.uid) && !useUser.followers.containsUsername(username: currentUser.uid)) {
             
-            // Set the values of the objects.
-            currentUser.following.append(useUser.uid);
-            useUser.followers.append(currentUser.uid);
             
-            // Update the button.
-            self.followButton.setTitle("Unfollow", for: .normal);
-            
-            // Update both users in firebase.
-            fireRef.child("Users").child(currentUser.uid).setValue(currentUser.toDictionary());
-            fireRef.child("Users").child(useUser.uid).setValue(useUser.toDictionary());
-            
-            // Send notification.
-            if(useUser.notification_ID != currentUser.notification_ID) {
-                OneSignal.postNotification(["contents": ["en": "\(currentUser.username) started following you!"], "include_player_ids": ["\(useUser.notification_ID)"]], onSuccess: { (dict: [AnyHashable : Any]?) in
-                    
-                    self.debug(message: "Follow notification was sent!");
-                    
-                }, onFailure: { (error: Error?) in
-                    self.debug(message: "There was an error sending the notification.");
-                })
+            if followButton.titleLabel?.text != "Requested" && followButton.titleLabel?.text != "Unfollow" {
+                // Update the button.
+                self.followButton.setTitle("Requested", for: .normal);
+                
+                // Send a follow request.
+                if(useUser.notification_ID != currentUser.notification_ID) {
+                    OneSignal.postNotification(["contents": ["en": "\(currentUser.username) wants to follow you!"], "include_player_ids": ["\(useUser.notification_ID)"]], onSuccess: { (dict: [AnyHashable : Any]?) in
+                        
+                        self.debug(message: "Follow request notification was sent!");
+                        
+                    }, onFailure: { (error: Error?) in
+                        self.debug(message: "There was an error sending the notification.");
+                    })
+                }
             }
             
         } else {
@@ -362,6 +357,36 @@ class ProfilePage: UICollectionViewController, UICollectionViewDelegateFlowLayou
         self.reloadLabels();
         
     } // End of followUser() method.
+    
+    
+    
+    public func acceptFollowRequest() {
+        // First, check if the follower/following connection is already there. If not, continue...
+        if(!currentUser.following.containsUsername(username: useUser.uid) && !useUser.followers.containsUsername(username: currentUser.uid)) {
+            
+            // Set the values of the objects.
+            currentUser.following.append(useUser.uid);
+            useUser.followers.append(currentUser.uid);
+            
+            // Update the button.
+            self.followButton.setTitle("Unfollow", for: .normal);
+            
+            // Update both users in firebase.
+            fireRef.child("Users").child(currentUser.uid).setValue(currentUser.toDictionary());
+            fireRef.child("Users").child(useUser.uid).setValue(useUser.toDictionary());
+            
+            // Send notification.
+            if(useUser.notification_ID != currentUser.notification_ID) {
+                OneSignal.postNotification(["contents": ["en": "\(currentUser.username) started following you!"], "include_player_ids": ["\(useUser.notification_ID)"]], onSuccess: { (dict: [AnyHashable : Any]?) in
+                    
+                    self.debug(message: "Follow notification was sent!");
+                    
+                }, onFailure: { (error: Error?) in
+                    self.debug(message: "There was an error sending the notification.");
+                })
+            }
+        }
+    }
     
     
     

@@ -245,8 +245,13 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         // Set message title, body, and icon. Here, we're overriding the default warning
         view.configureContent(title: "Pix", body: "\(messageID)", iconImage: nil, iconText: nil, buttonImage: nil, buttonTitle: nil, buttonTapHandler: nil);
         view.configureTheme(backgroundColor: UIColor(red: 41/255, green: 230/255, blue: 153/255, alpha: 1), foregroundColor: .black);
-        view.button?.backgroundColor = UIColor(red: 41/255, green: 230/255, blue: 153/255, alpha: 1);
-
+        
+        if (messageID as! String).contains("wants to follow you!") {
+            view.button?.backgroundColor = .white;
+            view.button?.setTitle("Accept", for: .normal);
+        } else {
+            view.button?.backgroundColor = UIColor(red: 41/255, green: 230/255, blue: 153/255, alpha: 1);
+        }
         
         var config = SwiftMessages.Config();
         config.presentationStyle = .top;
@@ -260,31 +265,39 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         
         
         // Add to the activity log.
-        let idString = messageID as! String;
         let fireRef = FIRDatabase.database().reference();
-        fireRef.child("Users").child("\(idString.substring(i: 0, j: idString.indexOf(string: " ")))").observeSingleEvent(of: .value) { (snapshot: FIRDataSnapshot) in
+        fireRef.child("Users").observeSingleEvent(of: .value) { (snapshot: FIRDataSnapshot) in
+            let users = snapshot.value as? [String: AnyObject] ?? [:];
             
-            let val = snapshot.value as? [String: Any] ?? [:];
-            
-            let imgName = val["profile_picture"] as? String ?? "";
-            
-            // Get a reference to the firebase media storage.
-            let imgRef = FIRStorage.storage().reference().child("\(idString.substring(i: 0, j: idString.indexOf(string: " ")))/\(imgName).jpg");
-            imgRef.data(withMaxSize: 50 * 1024 * 1024, completion: { (data: Data?, error: Error?) in
+            for user in users {
                 
-                if error == nil {
-                    profilePicturesActivityLog.append(data!);
-                    UserDefaults.standard.setValue(profilePicturesActivityLog, forKey: "\(currentUser.username)_activity_log_profile_pictures");
-                    print("----------> Got profile picture of notification.");
-                } else {
-                    print("----------> There was an error loading the activity user's profile pictures.");
-                    print("----------> \(error.debugDescription)");
+                let uid = user.value["userid"] as? String ?? "";
+                let imgName = user.value["profile_picture"] as? String ?? "";
+                let username = user.value["username"] as? String ?? "";
+                
+                if username == (messageID as! String).substring(i: 0, j: (messageID as! String).indexOf(string: " ")) {
+                    
+                    // Get a reference to the firebase media storage.
+                    let imgRef = FIRStorage.storage().reference().child("\(uid)/\(imgName).jpg");
+                    imgRef.data(withMaxSize: 50 * 1024 * 1024, completion: { (data: Data?, error: Error?) in
+                    
+                        if error == nil {
+                            profilePicturesActivityLog.append(data!);
+                            UserDefaults.standard.setValue(profilePicturesActivityLog, forKey: "\(currentUser.uid)_activity_log_profile_pictures");
+                            print("----------> Got profile picture of notification.");
+                        } else {
+                            print("----------> There was an error loading the activity user's profile pictures.");
+                            print("----------> \(error.debugDescription)");
+                        }
+                    });
+                    
+                    break;
                 }
-            });
+            }
         }
         
         notificationActivityLog.append("\(messageID as! String)");
-        UserDefaults.standard.setValue(notificationActivityLog, forKey: "\(currentUser.username)_activity_log");
+        UserDefaults.standard.setValue(notificationActivityLog, forKey: "\(currentUser.uid)_activity_log");
     }
     
     

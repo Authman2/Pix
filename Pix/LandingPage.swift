@@ -430,8 +430,11 @@ class LandingPage: UIViewController {
     
     
     public func loadActivity() {
-//        UserDefaults.standard.removeObject(forKey: "\(currentUser.username)_activity_log");
-//        UserDefaults.standard.removeObject(forKey: "\(currentUser.username)_activity_log_profile_pictures")
+        notificationActivityLog.removeAll();
+        profilePicturesActivityLog.removeAll();
+        
+//        UserDefaults.standard.removeObject(forKey: "\(currentUser.uid)_activity_log");
+//        UserDefaults.standard.removeObject(forKey: "\(currentUser.uid)_activity_log_profile_pictures")
         
         // Load up all of the current user's activity.
         if let defVal = UserDefaults.standard.array(forKey: "\(currentUser.uid)_activity_log") {

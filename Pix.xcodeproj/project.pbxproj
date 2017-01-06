@@ -12,7 +12,6 @@
 		5A28BE4A1E1459C900DD0396 /* CircleImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A28BE491E1459C900DD0396 /* CircleImageView.swift */; };
 		5A28BE4C1E1492CF00DD0396 /* FeedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A28BE4B1E1492CF00DD0396 /* FeedCell.swift */; };
 		5A44AB461E1C7ACB0029A480 /* ActivityPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A44AB451E1C7ACB0029A480 /* ActivityPage.swift */; };
-		5A44AB481E1C7F110029A480 /* ActivityCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A44AB471E1C7F110029A480 /* ActivityCell.swift */; };
 		5A6229CB1DE5720A002510AA /* Spring.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A6229CA1DE5720A002510AA /* Spring.framework */; };
 		5A6229CD1DE5720D002510AA /* ChameleonFramework.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5A6229CC1DE5720D002510AA /* ChameleonFramework.framework */; };
 		5A756DCA1DE5E802003FD2C0 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5A756DC91DE5E802003FD2C0 /* GoogleService-Info.plist */; };
@@ -25,6 +24,7 @@
 		5AD645641E0DEFE600E5929C /* Post.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD645631E0DEFE600E5929C /* Post.swift */; };
 		5AD645671E0DF63100E5929C /* FeedPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD645661E0DF63100E5929C /* FeedPage.swift */; };
 		5AD645691E0DFEF800E5929C /* UploadPhotosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AD645681E0DFEF800E5929C /* UploadPhotosViewController.swift */; };
+		5ADEB9511E1F0F6B0012AF38 /* ActivityCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ADEB9501E1F0F6B0012AF38 /* ActivityCell.swift */; };
 		5AE3CCE41E0C89DC009F7816 /* SignUpPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AE3CCE31E0C89DC009F7816 /* SignUpPage.swift */; };
 		5AE3CCE71E0C9633009F7816 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AE3CCE61E0C9633009F7816 /* User.swift */; };
 		5AF346381E0AF2F5002FB896 /* LandingPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF346371E0AF2F5002FB896 /* LandingPage.swift */; };
@@ -46,7 +46,6 @@
 		5A28BE491E1459C900DD0396 /* CircleImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleImageView.swift; sourceTree = "<group>"; };
 		5A28BE4B1E1492CF00DD0396 /* FeedCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedCell.swift; sourceTree = "<group>"; };
 		5A44AB451E1C7ACB0029A480 /* ActivityPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityPage.swift; sourceTree = "<group>"; };
-		5A44AB471E1C7F110029A480 /* ActivityCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityCell.swift; sourceTree = "<group>"; };
 		5A6229CA1DE5720A002510AA /* Spring.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = Spring.framework; path = "../../../../Library/Developer/Xcode/DerivedData/Pix-ctukwtofcongdnezqcfllkcuomcc/Build/Products/Debug-iphonesimulator/Spring/Spring.framework"; sourceTree = "<group>"; };
 		5A6229CC1DE5720D002510AA /* ChameleonFramework.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = ChameleonFramework.framework; path = "../../../../Library/Developer/Xcode/DerivedData/Pix-ctukwtofcongdnezqcfllkcuomcc/Build/Products/Debug-iphonesimulator/ChameleonFramework/ChameleonFramework.framework"; sourceTree = "<group>"; };
 		5A756DC91DE5E802003FD2C0 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
@@ -60,6 +59,7 @@
 		5AD645631E0DEFE600E5929C /* Post.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Post.swift; sourceTree = "<group>"; };
 		5AD645661E0DF63100E5929C /* FeedPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedPage.swift; sourceTree = "<group>"; };
 		5AD645681E0DFEF800E5929C /* UploadPhotosViewController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UploadPhotosViewController.swift; sourceTree = "<group>"; };
+		5ADEB9501E1F0F6B0012AF38 /* ActivityCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityCell.swift; sourceTree = "<group>"; };
 		5AE3CCE31E0C89DC009F7816 /* SignUpPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpPage.swift; sourceTree = "<group>"; };
 		5AE3CCE61E0C9633009F7816 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
 		5AF346371E0AF2F5002FB896 /* LandingPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LandingPage.swift; sourceTree = "<group>"; };
@@ -111,7 +111,7 @@
 			isa = PBXGroup;
 			children = (
 				5A44AB451E1C7ACB0029A480 /* ActivityPage.swift */,
-				5A44AB471E1C7F110029A480 /* ActivityCell.swift */,
+				5ADEB9501E1F0F6B0012AF38 /* ActivityCell.swift */,
 			);
 			name = Activity;
 			sourceTree = "<group>";
@@ -377,9 +377,9 @@
 				5ABBC9061E1083E70056CE16 /* ExploreCell.swift in Sources */,
 				5A28BE4A1E1459C900DD0396 /* CircleImageView.swift in Sources */,
 				5AD645671E0DF63100E5929C /* FeedPage.swift in Sources */,
-				5A44AB481E1C7F110029A480 /* ActivityCell.swift in Sources */,
 				5AFF276F1DDB6FF7001CBF95 /* Ext.swift in Sources */,
 				5AD645641E0DEFE600E5929C /* Post.swift in Sources */,
+				5ADEB9511E1F0F6B0012AF38 /* ActivityCell.swift in Sources */,
 				5A93F8EF1E0F0F72008C7154 /* PostDetailPage.swift in Sources */,
 				5AE3CCE41E0C89DC009F7816 /* SignUpPage.swift in Sources */,
 				5ABBC9041E10781C0056CE16 /* ExplorePage.swift in Sources */,
