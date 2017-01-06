@@ -82,6 +82,7 @@ class FeedPage: UICollectionViewController, UICollectionViewDelegateFlowLayout, 
         navigationItem.hidesBackButton = true;
         navigationItem.title = "Feed";
         
+        self.loadPhotos();
         self.copyOverAndReload();
     } // End of viewDidAppear().
     
@@ -102,8 +103,8 @@ class FeedPage: UICollectionViewController, UICollectionViewDelegateFlowLayout, 
     public func loadPhotos() {
        
         // Observe the users.
-        fireRef.child("Users").child(currentUser.uid).observeSingleEvent(of: .value) { (snapshot: FIRDataSnapshot) in
-            
+        fireRef.child("Users").child(currentUser.uid).observe(.value) { (snapshot: FIRDataSnapshot) in
+        
             let value = snapshot.value as? [String : AnyObject] ?? [:];
             let following = value["following"] as? [String] ?? [];
             
@@ -117,7 +118,7 @@ class FeedPage: UICollectionViewController, UICollectionViewDelegateFlowLayout, 
         
         
         // Observe the info for each user that is in following and create User objects.
-        fireRef.child("Users").observeSingleEvent(of: .value, with: { (snapshot: FIRDataSnapshot) in
+        fireRef.child("Users").observe(.value, with: { (snapshot: FIRDataSnapshot) in
             
             // Get the snapshot
             let userDictionary = snapshot.value as? [String : AnyObject] ?? [:];
@@ -126,12 +127,11 @@ class FeedPage: UICollectionViewController, UICollectionViewDelegateFlowLayout, 
             for user in userDictionary {
                 
                 // Get the username.
-                let uid = user.value["uid"] as? String ?? "";
+                let uid = user.value["userid"] as? String ?? "";
                 
                 // Make sure that this is a user we need to be looking at.
                 if(self.usernames.containsUsername(username: uid)) {
                     
-                    let uid = user.value["userid"] as? String ?? "";
                     let privateAcc = user.value["is_private"] as? Bool ?? false;
                     let username = user.value["username"] as? String ?? "";
                     let em = user.value["email"] as? String ?? "";

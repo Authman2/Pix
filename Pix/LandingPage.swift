@@ -434,20 +434,20 @@ class LandingPage: UIViewController {
         profilePicturesActivityLog.removeAll();
         usersOnActivity.removeAll();
         
-//        UserDefaults.standard.removeObject(forKey: "\(currentUser.uid)_activity_log");
-//        UserDefaults.standard.removeObject(forKey: "\(currentUser.uid)_activity_log_profile_pictures")
-//        UserDefaults.standard.removeObject(forKey: "\(currentUser.uid)_activity_log_users");
+        UserDefaults.standard.removeObject(forKey: "\(currentUser.uid)_activity_log");
+        UserDefaults.standard.removeObject(forKey: "\(currentUser.uid)_activity_log_profile_pictures")
+        UserDefaults.standard.removeObject(forKey: "\(currentUser.uid)_activity_log_users");
         
         // Load up all of the current user's activity.
-        if let defVal = UserDefaults.standard.array(forKey: "\(currentUser.uid)_activity_log") {
-            notificationActivityLog = defVal as! [String];
-        }
-        if let defValProfPics = UserDefaults.standard.array(forKey: "\(currentUser.uid)_activity_log_profile_pictures") {
-            profilePicturesActivityLog = defValProfPics as! [Data];
-        }
-        if let defValUsers = UserDefaults.standard.array(forKey: "\(currentUser.uid)_activity_log_users") {
-            usersOnActivity = defValUsers as! [NSDictionary];
-        }
+//        if let defVal = UserDefaults.standard.array(forKey: "\(currentUser.uid)_activity_log") {
+//            notificationActivityLog = defVal as! [String];
+//        }
+//        if let defValProfPics = UserDefaults.standard.array(forKey: "\(currentUser.uid)_activity_log_profile_pictures") {
+//            profilePicturesActivityLog = defValProfPics as! [Data];
+//        }
+//        if let defValUsers = UserDefaults.standard.array(forKey: "\(currentUser.uid)_activity_log_users") {
+//            usersOnActivity = defValUsers as! [NSDictionary];
+//        }
     }
     
 }

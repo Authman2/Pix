@@ -230,6 +230,7 @@ class ProfilePage: UICollectionViewController, UICollectionViewDelegateFlowLayou
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated);
+        landingPage.loadUsersPhotos(user: useUser, completion: nil);
         collectionView?.reloadData();
         
         if useUser !== currentUser {
