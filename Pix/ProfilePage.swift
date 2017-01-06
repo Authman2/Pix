@@ -313,20 +313,28 @@ class ProfilePage: UICollectionViewController, UICollectionViewDelegateFlowLayou
         // First, check if the follower/following connection is already there. If not, continue...
         if(!currentUser.following.containsUsername(username: useUser.uid) && !useUser.followers.containsUsername(username: currentUser.uid)) {
             
-            
-            if followButton.titleLabel?.text != "Requested" && followButton.titleLabel?.text != "Unfollow" {
-                // Update the button.
-                self.followButton.setTitle("Requested", for: .normal);
+            // If the user is not private then just follow them. Otherwise send a follow request. 
+            if useUser.isPrivate == false {
                 
-                // Send a follow request.
-                if(useUser.notification_ID != currentUser.notification_ID) {
-                    OneSignal.postNotification(["contents": ["en": "\(currentUser.username) wants to follow you!"], "include_player_ids": ["\(useUser.notification_ID)"]], onSuccess: { (dict: [AnyHashable : Any]?) in
-                        
-                        self.debug(message: "Follow request notification was sent!");
-                        
-                    }, onFailure: { (error: Error?) in
-                        self.debug(message: "There was an error sending the notification.");
-                    })
+                self.acceptFollowRequest(user: useUser, followDirection: .fromTo);
+                
+            } else {
+            
+                if followButton.titleLabel?.text != "Requested" && followButton.titleLabel?.text != "Unfollow" {
+                    
+                    // Update the button.
+                    self.followButton.setTitle("Requested", for: .normal);
+                    
+                    // Send a follow request.
+                    if(useUser.notification_ID != currentUser.notification_ID) {
+                        OneSignal.postNotification(["contents": ["en": "\(currentUser.username) wants to follow you!"], "include_player_ids": ["\(useUser.notification_ID)"]], onSuccess: { (dict: [AnyHashable : Any]?) in
+                            
+                            self.debug(message: "Follow request notification was sent!");
+                            
+                        }, onFailure: { (error: Error?) in
+                            self.debug(message: "There was an error sending the notification.");
+                        })
+                    }
                 }
             }
             
@@ -360,24 +368,29 @@ class ProfilePage: UICollectionViewController, UICollectionViewDelegateFlowLayou
     
     
     
-    public func acceptFollowRequest() {
-        // First, check if the follower/following connection is already there. If not, continue...
-        if(!currentUser.following.containsUsername(username: useUser.uid) && !useUser.followers.containsUsername(username: currentUser.uid)) {
+    public func acceptFollowRequest(user: User, followDirection: followDirection) {
+        // Make sure it is not the same user.
+        if user !== currentUser || user.uid != currentUser.uid {
             
             // Set the values of the objects.
-            currentUser.following.append(useUser.uid);
-            useUser.followers.append(currentUser.uid);
+            if followDirection == .toFrom {
+                currentUser.followers.append(user.uid);
+                user.following.append(currentUser.uid);
+            } else {
+                currentUser.following.append(user.uid);
+                user.followers.append(currentUser.uid);
+            }
             
             // Update the button.
             self.followButton.setTitle("Unfollow", for: .normal);
             
             // Update both users in firebase.
             fireRef.child("Users").child(currentUser.uid).setValue(currentUser.toDictionary());
-            fireRef.child("Users").child(useUser.uid).setValue(useUser.toDictionary());
+            fireRef.child("Users").child(user.uid).setValue(user.toDictionary());
             
             // Send notification.
-            if(useUser.notification_ID != currentUser.notification_ID) {
-                OneSignal.postNotification(["contents": ["en": "\(currentUser.username) started following you!"], "include_player_ids": ["\(useUser.notification_ID)"]], onSuccess: { (dict: [AnyHashable : Any]?) in
+            if(user.notification_ID != currentUser.notification_ID) {
+                OneSignal.postNotification(["contents": ["en": "\(currentUser.username) started following you!"], "include_player_ids": ["\(user.notification_ID)"]], onSuccess: { (dict: [AnyHashable : Any]?) in
                     
                     self.debug(message: "Follow notification was sent!");
                     

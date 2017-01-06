@@ -432,9 +432,11 @@ class LandingPage: UIViewController {
     public func loadActivity() {
         notificationActivityLog.removeAll();
         profilePicturesActivityLog.removeAll();
+        usersOnActivity.removeAll();
         
 //        UserDefaults.standard.removeObject(forKey: "\(currentUser.uid)_activity_log");
 //        UserDefaults.standard.removeObject(forKey: "\(currentUser.uid)_activity_log_profile_pictures")
+//        UserDefaults.standard.removeObject(forKey: "\(currentUser.uid)_activity_log_users");
         
         // Load up all of the current user's activity.
         if let defVal = UserDefaults.standard.array(forKey: "\(currentUser.uid)_activity_log") {
@@ -442,6 +444,9 @@ class LandingPage: UIViewController {
         }
         if let defValProfPics = UserDefaults.standard.array(forKey: "\(currentUser.uid)_activity_log_profile_pictures") {
             profilePicturesActivityLog = defValProfPics as! [Data];
+        }
+        if let defValUsers = UserDefaults.standard.array(forKey: "\(currentUser.uid)_activity_log_users") {
+            usersOnActivity = defValUsers as! [NSDictionary];
         }
     }
     

@@ -8,6 +8,8 @@
 
 import UIKit
 import SnapKit
+import Firebase
+
 
 class ActivityCell: UITableViewCell {
 
@@ -16,6 +18,9 @@ class ActivityCell: UITableViewCell {
      *          VARIABLES
      *
      ********************************/
+    
+    /* The user for grabbing data. */
+    var user: User! = User(first: "", last: "", username: "", email: "");
     
     
     let profileView: CircleImageView = {
@@ -79,6 +84,7 @@ class ActivityCell: UITableViewCell {
         addSubview(acceptButton);
         addSubview(declineButton);
         
+        
         profileView.snp.makeConstraints { (maker: ConstraintMaker) in
             maker.left.equalTo(snp.left).offset(10);
             maker.top.equalTo(snp.top);
@@ -103,7 +109,6 @@ class ActivityCell: UITableViewCell {
             maker.centerX.equalTo(snp.centerX).offset(50);
         }
         
-        
         acceptButton.addTarget(self, action: #selector(accept), for: .touchUpInside);
     }
 
@@ -111,10 +116,23 @@ class ActivityCell: UITableViewCell {
     
     
     @objc func accept() {
-        profilePage.acceptFollowRequest();
-        profilePage.reloadLabels();
+        profilePage.acceptFollowRequest(user: self.user, followDirection: .toFrom);
         acceptButton.isHidden = true;
         declineButton.isHidden = true;
+        
+        // Update the NSUserDefaults.
+        UserDefaults.standard.setValue(notificationActivityLog, forKey: "\(currentUser.uid)_activity_log");
+        UserDefaults.standard.setValue(profilePicturesActivityLog, forKey: "\(currentUser.uid)_activity_log_profile_pictures");
+        UserDefaults.standard.setValue(usersOnActivity, forKey: "\(currentUser.uid)_activity_log_users");
+        
+        // Update the users in firebase.
+        let fireRef = FIRDatabase.database().reference();
+        fireRef.child("Users").child(currentUser.uid).updateChildValues(currentUser.toDictionary() as! [AnyHashable : Any]);
+        fireRef.child("Users").child(self.user.uid).updateChildValues(self.user.toDictionary() as! [AnyHashable : Any]);
+        
+        profilePage.nameLabel.text = "\(self.user.firstName) \(self.user.lastName)";
+        profilePage.followersLabel.text = "Followers: \(self.user.followers.count)";
+        profilePage.followingLabel.text = "Following: \(self.user.following.count)";
     }
     
     

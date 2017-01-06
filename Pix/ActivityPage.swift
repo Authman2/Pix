@@ -80,6 +80,11 @@ class ActivityPage: UITableViewController {
         cell.profileView.image = UIImage(data: profilePicturesActivityLog[profilePicturesActivityLog.count - indexPath.row - 1]);
         cell.titleLabel.text = notificationActivityLog[notificationActivityLog.count - indexPath.row - 1];
         
+        let userForRow = usersOnActivity[usersOnActivity.count - indexPath.row - 1].toUser();
+        userForRow.profilepic = UIImage(data: profilePicturesActivityLog[profilePicturesActivityLog.count - indexPath.row - 1]);
+        cell.user = userForRow;
+        
+        
         if notificationActivityLog[notificationActivityLog.count - indexPath.row - 1].contains("wants to follow you") {
             cell.acceptButton.isHidden = false;
             cell.declineButton.isHidden = false;
@@ -87,6 +92,14 @@ class ActivityPage: UITableViewController {
             cell.acceptButton.isHidden = true;
             cell.declineButton.isHidden = true;
         }
+        
+        // If the user has already been added to followers.
+        if currentUser.followers.containsUsername(username: userForRow.uid) {
+            
+            cell.acceptButton.isHidden = true;
+            cell.declineButton.isHidden = true;
+        }
+        
         
         cell.setup();
         

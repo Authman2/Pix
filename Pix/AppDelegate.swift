@@ -272,8 +272,18 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             for user in users {
                 
                 let uid = user.value["userid"] as? String ?? "";
-                let imgName = user.value["profile_picture"] as? String ?? "";
                 let username = user.value["username"] as? String ?? "";
+                let em = user.value["email"] as? String ?? "";
+                let firstName = user.value["first_name"] as? String ?? "";
+                let lastName = user.value["last_name"] as? String ?? "";
+                let pass = user.value["password"] as? String ?? "";
+                let followers = user.value["followers"] as? [String] ?? [];
+                let following = user.value["following"] as? [String] ?? [];
+                let likedPhotos = user.value["liked_photos"] as? [String] ?? [];
+                let notifID = user.value["notification_id"] as? String ?? "";
+                let privateAcc = user.value["is_private"] as? Bool ?? false;
+                let imgName = user.value["profile_picture"] as? String ?? "";
+                
                 
                 if username == (messageID as! String).substring(i: 0, j: (messageID as! String).indexOf(string: " ")) {
                     
@@ -284,6 +294,21 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                         if error == nil {
                             profilePicturesActivityLog.append(data!);
                             UserDefaults.standard.setValue(profilePicturesActivityLog, forKey: "\(currentUser.uid)_activity_log_profile_pictures");
+                            
+                            let usr = User(first: firstName, last: lastName, username: username, email: em);
+                            usr.uid = uid;
+                            usr.followers = followers;
+                            usr.following = following;
+                            usr.password = pass;
+                            usr.likedPhotos = likedPhotos;
+                            usr.notification_ID = notifID;
+                            usr.isPrivate = privateAcc;
+                            usr.profilePicName = imgName;
+                            usr.profilepic = UIImage(data: data!);
+                            
+                            usersOnActivity.append(usr.toDictionary());
+                            UserDefaults.standard.setValue(usersOnActivity, forKey: "\(currentUser.uid)_activity_log_users");
+                            
                             print("----------> Got profile picture of notification.");
                         } else {
                             print("----------> There was an error loading the activity user's profile pictures.");

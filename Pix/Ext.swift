@@ -23,6 +23,7 @@ var usedIds: [String] = [String]();
 /* An array for displaying the user's activity. */
 var notificationActivityLog: [String] = [String]();
 var profilePicturesActivityLog: [Data] = [Data]();
+var usersOnActivity: [NSDictionary] = [NSDictionary]();
 
 
 
@@ -228,4 +229,47 @@ public extension UIViewController {
     public func debug(message: String) {
         print("----------> \(message)");
     }
+}
+
+
+
+public extension NSDictionary {
+    
+    /* Converts an NSDictionary into a User object. */
+    public func toUser() -> User {
+        let firstName = value(forKey: "first_name") as! String;
+        let lastName = value(forKey: "last_name") as! String;
+        let uid = value(forKey: "userid") as! String;
+        let username = value(forKey: "username") as! String;
+        let em = value(forKey: "email") as! String;
+        let pass = value(forKey: "password") as! String;
+        let profPic = value(forKey: "profile_picture") as! String;
+        let followers = value(forKey: "followers") as! [String];
+        let following = value(forKey: "following") as! [String];
+        let likedPhotos = value(forKey: "liked_photos") as! [String];
+        let notifID = value(forKey: "notification_id") as! String;
+        let privateAcc = value(forKey: "is_private") as! Bool;
+        
+        
+        let user = User(first: firstName, last: lastName, username: username, email: em);
+        user.uid = uid;
+        user.password = pass;
+        user.profilePicName = profPic;
+        user.followers = followers;
+        user.following = following;
+        user.likedPhotos = likedPhotos;
+        user.notification_ID = notifID;
+        user.isPrivate = privateAcc;
+        
+        
+        return user;
+    }
+}
+
+
+public enum followDirection {
+    
+    case toFrom; // The one who clicks the follow button gets the next user added to their FOLLOWING.
+    case fromTo; // The one who clicks the follow button gets the next user added to their FOLLOWERS.
+    
 }
