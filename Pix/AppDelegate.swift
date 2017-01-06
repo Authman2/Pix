@@ -94,9 +94,16 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         
         
         /* Add all of the views as menu items. */
-        navContr.addMenuItem(name: "Home", image: UIImage(named: "HomeIcon.png"), destination: feedPage, completion: nil);
-        navContr.addMenuItem(name: "Explore", image: UIImage(named: "ExploreIcon.png"), destination: explorePage, completion: nil);
-        navContr.addMenuItem(name: "Activity", image: UIImage(named: "ActivityIcon.png"), destination: activityPage, completion: nil);
+        navContr.addMenuItem(name: "Home", image: UIImage(named: "HomeIcon.png"), destination: feedPage, completion: {
+            feedPage.collectionView?.stopPullRefreshEver();
+        });
+        navContr.addMenuItem(name: "Explore", image: UIImage(named: "ExploreIcon.png"), destination: explorePage, completion: {
+            explorePage.searchController.isActive = false;
+        });
+        navContr.addMenuItem(name: "Activity", image: UIImage(named: "ActivityIcon.png"), destination: activityPage, completion: {
+            
+            activityPage.tableView.stopPullRefreshEver();
+        });
         navContr.addMenuItem(name: "Profile", image: UIImage(named: "ProfileIcon.png"), destination: profilePage, completion: { void in
             profilePage.useUser = currentUser;
             profilePage.navigationItem.title = "Profile";
@@ -105,6 +112,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             profilePage.privateLabel.isHidden = true;
             profilePage.collectionView?.isHidden = false;
             profilePage.viewDidAppear(true);
+            
         });
         
         
@@ -243,15 +251,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         view.configureDropShadow();
         
         // Set message title, body, and icon. Here, we're overriding the default warning
-        view.configureContent(title: "Pix", body: "\(messageID)", iconImage: nil, iconText: nil, buttonImage: nil, buttonTitle: nil, buttonTapHandler: nil);
         view.configureTheme(backgroundColor: UIColor(red: 41/255, green: 230/255, blue: 153/255, alpha: 1), foregroundColor: .black);
-        
-        if (messageID as! String).contains("wants to follow you!") {
-            view.button?.backgroundColor = .white;
-            view.button?.setTitle("Accept", for: .normal);
-        } else {
-            view.button?.backgroundColor = UIColor(red: 41/255, green: 230/255, blue: 153/255, alpha: 1);
-        }
+        view.button?.backgroundColor = UIColor(red: 41/255, green: 230/255, blue: 153/255, alpha: 1);
+        view.configureContent(title: "Pix", body: "\(messageID)", iconImage: nil, iconText: nil, buttonImage: nil, buttonTitle: nil, buttonTapHandler: nil);
         
         var config = SwiftMessages.Config();
         config.presentationStyle = .top;
@@ -264,59 +266,25 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         SwiftMessages.show(config: config, view: view);
         
         
-        // Add to the activity log.
-        let fireRef = FIRDatabase.database().reference();
-        fireRef.child("Users").observeSingleEvent(of: .value) { (snapshot: FIRDataSnapshot) in
-            let users = snapshot.value as? [String: AnyObject] ?? [:];
-            
-            for user in users {
+        if (messageID as! String).contains("started following you") {
+            let _ = FIRDatabase.database().reference().child("Users").observeSingleEvent(of: .value) { (snapshot: FIRDataSnapshot) in
                 
-                let uid = user.value["userid"] as? String ?? "";
-                let username = user.value["username"] as? String ?? "";
-                let em = user.value["email"] as? String ?? "";
-                let firstName = user.value["first_name"] as? String ?? "";
-                let lastName = user.value["last_name"] as? String ?? "";
-                let pass = user.value["password"] as? String ?? "";
-                let followers = user.value["followers"] as? [String] ?? [];
-                let following = user.value["following"] as? [String] ?? [];
-                let likedPhotos = user.value["liked_photos"] as? [String] ?? [];
-                let notifID = user.value["notification_id"] as? String ?? "";
-                let privateAcc = user.value["is_private"] as? Bool ?? false;
-                let imgName = user.value["profile_picture"] as? String ?? "";
+                // Get the snapshot
+                let userDictionary = snapshot.value as? [String : AnyObject] ?? [:];
                 
                 
-                if username == (messageID as! String).substring(i: 0, j: (messageID as! String).indexOf(string: " ")) {
+                // Look through each user.
+                for user in userDictionary {
                     
-                    // Get a reference to the firebase media storage.
-                    let imgRef = FIRStorage.storage().reference().child("\(uid)/\(imgName).jpg");
-                    imgRef.data(withMaxSize: 50 * 1024 * 1024, completion: { (data: Data?, error: Error?) in
+                    // Get the email (and other info about the user).
+                    let uid = user.value["userid"] as? String ?? "";
+                    let username =  user.value["username"] as? String ?? "";
                     
-                        if error == nil {
-                            profilePicturesActivityLog.append(data!);
-                            UserDefaults.standard.setValue(profilePicturesActivityLog, forKey: "\(currentUser.uid)_activity_log_profile_pictures");
-                            
-                            let usr = User(first: firstName, last: lastName, username: username, email: em);
-                            usr.uid = uid;
-                            usr.followers = followers;
-                            usr.following = following;
-                            usr.password = pass;
-                            usr.likedPhotos = likedPhotos;
-                            usr.notification_ID = notifID;
-                            usr.isPrivate = privateAcc;
-                            usr.profilePicName = imgName;
-                            usr.profilepic = UIImage(data: data!);
-                            
-                            usersOnActivity.append(usr.toDictionary());
-                            UserDefaults.standard.setValue(usersOnActivity, forKey: "\(currentUser.uid)_activity_log_users");
-                            
-                            print("----------> Got profile picture of notification.");
-                        } else {
-                            print("----------> There was an error loading the activity user's profile pictures.");
-                            print("----------> \(error.debugDescription)");
-                        }
-                    });
+                    if username == (messageID as! String).substring(i: 0, j: (messageID as! String).indexOf(string: " ")) {
+                        
+                        currentUser.followers.append(uid);
+                    }
                     
-                    break;
                 }
             }
         }

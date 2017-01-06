@@ -156,8 +156,8 @@ class FeedCell: UICollectionViewCell {
             
             currentUser.likedPhotos.append(self.post.id!);
             post.likes += 1;
-            fireRef.child("Users").child(currentUser.uid).setValue(currentUser.toDictionary());
-            fireRef.child("Photos").child(post.uploader.uid).child(post.id!).setValue(post.toDictionary());
+            fireRef.child("Users").child(currentUser.uid).updateChildValues(currentUser.toDictionary() as! [AnyHashable : Any]);
+            fireRef.child("Photos").child(post.uploader.uid).child(post.id!).updateChildValues(post.toDictionary() as! [AnyHashable : Any]);
             
             // Send notification.
             if(self.post.uploader.notification_ID != currentUser.notification_ID) {
@@ -175,8 +175,8 @@ class FeedCell: UICollectionViewCell {
             if currentUser.likedPhotos.count > 0 {
                 currentUser.likedPhotos.removeItem(item: self.post.id!);
                 post.likes -= 1;
-                fireRef.child("Users").child(currentUser.uid).setValue(currentUser.toDictionary());
-                fireRef.child("Photos").child(post.uploader.uid).child(post.id!).setValue(post.toDictionary());
+                fireRef.child("Users").child(currentUser.uid).updateChildValues(currentUser.toDictionary() as! [AnyHashable : Any]);
+                fireRef.child("Photos").child(post.uploader.uid).child(post.id!).updateChildValues(post.toDictionary() as! [AnyHashable : Any]);
                 
             }
         }

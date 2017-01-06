@@ -142,7 +142,6 @@
 				5AD645631E0DEFE600E5929C /* Post.swift */,
 				5AD645681E0DFEF800E5929C /* UploadPhotosViewController.swift */,
 				5A93F8EE1E0F0F72008C7154 /* PostDetailPage.swift */,
-				5A28BE4B1E1492CF00DD0396 /* FeedCell.swift */,
 			);
 			name = Posts;
 			sourceTree = "<group>";
@@ -151,6 +150,7 @@
 			isa = PBXGroup;
 			children = (
 				5AD645661E0DF63100E5929C /* FeedPage.swift */,
+				5A28BE4B1E1492CF00DD0396 /* FeedCell.swift */,
 			);
 			name = Feed;
 			sourceTree = "<group>";
