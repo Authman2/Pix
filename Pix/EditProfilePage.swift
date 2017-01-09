@@ -79,6 +79,12 @@ class EditProfilePage: FormViewController {
                 }.cellUpdate { cell, row in
                     cell.textLabel?.font = cell.textLabel?.font;
             }
+            +++ Section("Logout")
+            <<< ButtonRow() { row in
+                row.title = "Logout";
+                }.onCellSelection({ (btn: ButtonCellOf<String>, btnRow: ButtonRowOf<String>) in
+                    profilePage.logout();
+                })
         
         
         let updateButton = UIBarButtonItem(title: "Update", style: .plain, target: self, action: #selector(updateProfile));

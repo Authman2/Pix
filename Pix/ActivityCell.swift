@@ -19,10 +19,6 @@ class ActivityCell: UICollectionViewCell {
      *
      ********************************/
     
-    /* The activity object for grabbing data. */
-    var activity: Activity?;
-    
-    
     let titleLabel: UILabel = {
         let a = UILabel();
         a.translatesAutoresizingMaskIntoConstraints = false;

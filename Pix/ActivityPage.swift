@@ -59,21 +59,13 @@ class ActivityPage: UIViewController, IGListAdapterDataSource {
         self.setupCollectionView();
         view.addSubview(collectionView);
         
-        
-        for itm in notificationActivityLog {
-            self.activities.append(itm.toActivity());
-        }
+        self.reloadActivites();
         
         // Pull To Refresh
         var options = PullToRefreshOption();
         options.backgroundColor = UIColor.lightGray.lighter(amount: 20);
         collectionView.addPullRefresh(options: options) { (Void) in
-            for itm in notificationActivityLog {
-                let item = itm.toActivity();
-                if !self.activities.containsActivity(activity: item) {
-                    self.activities.append(item);
-                }
-            }
+            self.reloadActivites();
             self.adapter.performUpdates(animated: true, completion: nil);
             
             self.collectionView.stopPullRefreshEver();
@@ -106,7 +98,15 @@ class ActivityPage: UIViewController, IGListAdapterDataSource {
     }
     
     
-    
+    /* Reloads the activites to make sure any new ones are properly added. */
+    func reloadActivites() {
+        activities.removeAll();
+        
+        for itm in notificationActivityLog {
+            let item = itm.toActivity();
+            self.activities.append(item);
+        }
+    }
     
     
     

@@ -6,9 +6,6 @@
 //  Copyright © 2016 Adeola Uthman. All rights reserved.
 //
 //
-// An extension to the String class
-//
-//
 
 import Foundation
 import UIKit
@@ -166,7 +163,7 @@ public extension Array {
             i += 1;
             let s = itm as! Activity;
             
-            if s.text == item.text {
+            if s.isEqual(toDiffableObject: item) {
                 break;
             }
         }
@@ -243,8 +240,9 @@ public extension Array {
         var i = 0;
         for itm in self {
             let temp = itm as! NSDictionary;
+            let actObj = temp.toActivity();
             
-            if temp.isEqual(to: activity.toDictionary() as! [AnyHashable : Any]) {
+            if actObj.isEqual(toDiffableObject: activity) {
                 return i;
             }
             i += 1;
@@ -260,7 +258,7 @@ public extension Array {
         for itm in self {
             let temp = itm as! Activity;
             
-            if temp.text == activity.text {
+            if temp.isEqual(toDiffableObject: activity) {
                 return true;
             }
         }

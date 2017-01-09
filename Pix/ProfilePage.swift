@@ -124,7 +124,7 @@ class ProfilePage: UIViewController, IGListAdapterDataSource, UIImagePickerContr
     
     
     /* The button for logging out. */
-    var logoutButton: UIBarButtonItem!;
+    var backButton: UIBarButtonItem!;
     
     
     /* The button used for editing the profile. */
@@ -225,9 +225,9 @@ class ProfilePage: UIViewController, IGListAdapterDataSource, UIImagePickerContr
         
         
         /* Bar button item. */
-        logoutButton = UIBarButtonItem(title: "Logout", style: .plain, target: self, action: #selector(logout));
-        logoutButton.tintColor = .white;
-        navigationItem.leftBarButtonItem = logoutButton;
+        backButton = UIBarButtonItem(title: "< Back", style: .plain, target: self, action: #selector(goBack));
+        backButton.tintColor = .white;
+        navigationItem.leftBarButtonItem = backButton;
         editProfileButton = UIBarButtonItem(title: "Edit", style: .plain, target: self, action: #selector(editProfile));
         editProfileButton.tintColor = .white;
         navigationItem.rightBarButtonItem = editProfileButton;
@@ -252,13 +252,13 @@ class ProfilePage: UIViewController, IGListAdapterDataSource, UIImagePickerContr
         self.adapter.performUpdates(animated: true, completion: nil);
         
         if useUser !== currentUser {
-            logoutButton.isEnabled = false;
-            logoutButton.tintColor = navigationController?.navigationBar.barTintColor;
+            backButton.isEnabled = true;
+            backButton.tintColor = .white;
             editProfileButton.isEnabled = false;
             editProfileButton.tintColor = navigationController?.navigationBar.barTintColor;
         } else {
-            logoutButton.isEnabled = true;
-            logoutButton.tintColor = .white;
+            backButton.isEnabled = false;
+            backButton.tintColor = navigationController?.navigationBar.barTintColor;
             editProfileButton.isEnabled = true;
             editProfileButton.tintColor = .white;
         }
@@ -294,6 +294,10 @@ class ProfilePage: UIViewController, IGListAdapterDataSource, UIImagePickerContr
     }
     
     
+    @objc func goBack() {
+        let _ = navigationController?.popViewController(animated: true);
+    }
+    
     
     @objc func logout() {
         do {
@@ -326,35 +330,8 @@ class ProfilePage: UIViewController, IGListAdapterDataSource, UIImagePickerContr
      POSTCONDITION: It is always the CURRENT USER who has this user added to their following, and the useUse who gets the CURRENT USER added to their followers.*/
     @objc func followUser() {
         
-        // First, check if the follower/following connection is already there. If not, continue...
-        if(!currentUser.following.containsUsername(username: useUser.uid) && !useUser.followers.containsUsername(username: currentUser.uid)) {
-            
-            // If the user is not private then just follow them. Otherwise send a follow request. 
-            if useUser.isPrivate == false {
-                
-                self.acceptFollowRequest(user: useUser, followDirection: .fromTo);
-                
-            } else {
-            
-                if followButton.titleLabel?.text != "Requested" && followButton.titleLabel?.text != "Unfollow" {
-                    
-                    // Update the button.
-                    self.followButton.setTitle("Requested", for: .normal);
-                    
-                    // Send a follow request.
-                    if(useUser.notification_ID != currentUser.notification_ID) {
-                        OneSignal.postNotification(["contents": ["en": "\(currentUser.username) wants to follow you!"], "include_player_ids": ["\(useUser.notification_ID)"]], onSuccess: { (dict: [AnyHashable : Any]?) in
-                            
-                            self.debug(message: "Follow request notification was sent!");
-                            
-                        }, onFailure: { (error: Error?) in
-                            self.debug(message: "There was an error sending the notification.");
-                        })
-                    }
-                }
-            }
-            
-        } else {
+        // Unfollow
+        if(self.followButton.titleLabel?.text == "Unfollow") {
             
             // Set the values of the objects.
             currentUser.following.removeItem(item: useUser.uid);
@@ -375,6 +352,36 @@ class ProfilePage: UIViewController, IGListAdapterDataSource, UIImagePickerContr
             }
             
             //feedPage.loadPhotos();
+        
+            
+        // Otherwise, check if the follower/following connection is already there. If not, continue...
+        } else {
+                
+                // If the user is not private then just follow them. Otherwise send a follow request.
+                if useUser.isPrivate == false {
+                    
+                    self.acceptFollowRequest(user: useUser, followDirection: .fromTo);
+                    
+                } else {
+                    
+                    if followButton.titleLabel?.text != "Requested" && followButton.titleLabel?.text != "Unfollow" {
+                        
+                        // Update the button.
+                        self.followButton.setTitle("Requested", for: .normal);
+                        
+                        // Send a follow request.
+                        if(useUser.notification_ID != currentUser.notification_ID) {
+                            OneSignal.postNotification(["contents": ["en": "\(currentUser.username) wants to follow you!"], "include_player_ids": ["\(useUser.notification_ID)"]], onSuccess: { (dict: [AnyHashable : Any]?) in
+                                
+                                self.debug(message: "Follow request notification was sent!");
+                                
+                            }, onFailure: { (error: Error?) in
+                                self.debug(message: "There was an error sending the notification.");
+                            })
+                        }
+                    }
+                }
+                
         }
         
         // Reload the labels.
@@ -390,11 +397,15 @@ class ProfilePage: UIViewController, IGListAdapterDataSource, UIImagePickerContr
             
             // Set the values of the objects.
             if followDirection == .toFrom {
-                currentUser.followers.append(user.uid);
-                user.following.append(currentUser.uid);
+                //if(!currentUser.followers.containsUsername(username: user.uid) && !user.following.containsUsername(username: currentUser.uid)) {
+                    //currentUser.followers.append(user.uid);
+                    user.following.append(currentUser.uid);
+                //}
             } else {
-                currentUser.following.append(user.uid);
-                user.followers.append(currentUser.uid);
+                //if(!currentUser.following.containsUsername(username: user.uid) && !user.followers.containsUsername(username: currentUser.uid)) {
+                    currentUser.following.append(user.uid);
+                    user.followers.append(currentUser.uid);
+                //}
             }
             
             // Update the button.
@@ -403,6 +414,11 @@ class ProfilePage: UIViewController, IGListAdapterDataSource, UIImagePickerContr
             // Update both users in firebase.
             fireRef.child("Users").child(currentUser.uid).setValue(currentUser.toDictionary());
             fireRef.child("Users").child(user.uid).setValue(user.toDictionary());
+            
+            
+            // Update the current user object.
+            landingPage.reloadCurrentUser();
+            
             
             // Send notification.
             if(user.notification_ID != currentUser.notification_ID) {
@@ -414,6 +430,8 @@ class ProfilePage: UIViewController, IGListAdapterDataSource, UIImagePickerContr
                     self.debug(message: "There was an error sending the notification.");
                 })
             }
+            
+            self.debug(message: "Follow request accepted!");
         }
     }
     

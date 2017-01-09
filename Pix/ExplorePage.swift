@@ -193,6 +193,9 @@ class ExplorePage: UITableViewController, UISearchResultsUpdating {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if listOfUsers.count > 0 {
+            // Update
+            landingPage.reloadCurrentUser();
+            
             // Tell the profile page which user to use.
             profilePage.useUser = listOfUsers[indexPath.row];
             profilePage.followButton.isHidden = false;
@@ -214,11 +217,13 @@ class ExplorePage: UITableViewController, UISearchResultsUpdating {
             /* CHECK IF PRIVATE ACCOUNT. */
             if profilePage.useUser.isPrivate == false || (profilePage.useUser.isPrivate == true && currentUser.following.containsUsername(username: profilePage.useUser.uid)) {
                 
+                landingPage.loadUsersPhotos(user: profilePage.useUser, continous: true, completion: nil);
                 profilePage.canChangeProfilePic = false;
                 profilePage.privateLabel.isHidden = true;
                 
             } else {
                 
+                profilePage.canChangeProfilePic = false;
                 profilePage.privateLabel.isHidden = false;
                 
             }

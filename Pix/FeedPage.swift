@@ -73,7 +73,7 @@ class FeedPage: UIViewController, IGListAdapterDataSource, UIImagePickerControll
         navigationController?.navigationBar.isHidden = false;
         navigationItem.hidesBackButton = true;
         navigationItem.title = "Feed";
-        
+                
         setupCollectionView();
         view.addSubview(collectionView);
         

@@ -112,24 +112,25 @@ class ActivityRequestCell: UICollectionViewCell {
     @objc func accept() {
         
         if activity?.interactedWith == false {
+            acceptButton.isHidden = true;
+            declineButton.isHidden = true;
+            self.acceptButton.isEnabled = false;
+            self.declineButton.isEnabled = false;
+            
+            // Accept the follow request.
             profilePage.acceptFollowRequest(user: (self.activity?.user)!, followDirection: .toFrom);
             
             // Update the activity object.
             let insertIndex = notificationActivityLog.indexOf(activity: self.activity!);
             self.activity?.interactedWith = true;
-            
-            
-            // Update the users in firebase.
-            let fireRef = FIRDatabase.database().reference();
-            fireRef.child("Users").child(currentUser.uid).updateChildValues(currentUser.toDictionary() as! [AnyHashable : Any]);
-            fireRef.child("Users").child((self.activity?.user?.uid)!).updateChildValues(self.activity?.user?.toDictionary() as! [AnyHashable : Any]);
-            
+ 
             
             // Save the defaults.
             if insertIndex == -1 {
                 notificationActivityLog.append((self.activity?.toDictionary())!);
             } else {
                 notificationActivityLog.insert((self.activity?.toDictionary())!, at: insertIndex);
+                notificationActivityLog.remove(at: insertIndex);
             }
             UserDefaults.standard.setValue(notificationActivityLog, forKey: "\(currentUser.uid)_activity_log");
         }
@@ -138,14 +139,24 @@ class ActivityRequestCell: UICollectionViewCell {
     
     
     @objc func decline() {
-        acceptButton.isHidden = true;
-        declineButton.isHidden = true;
-        self.activity?.interactedWith = true;
-        
-        // Save the defaults.
-        let insertIndex = notificationActivityLog.index(of: (self.activity?.toDictionary())!);
-        notificationActivityLog.insert((self.activity?.toDictionary())!, at: insertIndex!);
-        UserDefaults.standard.setValue(notificationActivityLog, forKey: "\(currentUser.uid)_activity_log");
+        if activity?.interactedWith == false {
+            acceptButton.isHidden = true;
+            declineButton.isHidden = true;
+            self.acceptButton.isEnabled = false;
+            self.declineButton.isEnabled = false;
+            
+            let insertIndex = notificationActivityLog.indexOf(activity: self.activity!);
+            self.activity?.interactedWith = true;
+            
+            // Save the defaults.
+            if insertIndex == -1 {
+                notificationActivityLog.append((self.activity?.toDictionary())!);
+            } else {
+                notificationActivityLog.insert((self.activity?.toDictionary())!, at: insertIndex);
+                notificationActivityLog.remove(at: insertIndex);
+            }
+            UserDefaults.standard.setValue(notificationActivityLog, forKey: "\(currentUser.uid)_activity_log");
+        }
     }
 
 

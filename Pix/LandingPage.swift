@@ -241,11 +241,12 @@ class LandingPage: UIViewController {
                     self.statusLabel.text = "Incorrect password.";
                     
                 } else {
+                    
                     // Search in the database for the user.
                     self.fireRef.child("Users").observeSingleEvent(of: .value, with: { (snapshot) in
                         
                         let userDictionary = snapshot.value as? [String : AnyObject] ?? [:];
-                    
+                        
                         for user in userDictionary {
                             let value = user.value as? NSDictionary
                             
@@ -286,12 +287,12 @@ class LandingPage: UIViewController {
                                 self.statusLabel.textColor = UIColor.red;
                                 self.statusLabel.isHidden = false;
                                 self.statusLabel.text = "Could not find that user.";
-
+                                
                                 
                             } // End of email check.
                             
                         } // End of for loop.
-                    
+                        
                         self.loadUsersPhotos(user: currentUser, continous: true, completion: {
                             self.debug(message: "Loading all of the user's posts...");
                             feedPage.loadPhotos();
@@ -302,6 +303,8 @@ class LandingPage: UIViewController {
                         
                         self.debug(message: "Signed In!");
                     });
+
+                    
                 }
             });
             
@@ -504,14 +507,109 @@ class LandingPage: UIViewController {
     public func loadActivity() {
         notificationActivityLog.removeAll();
         
-        UserDefaults.standard.removeObject(forKey: "\(currentUser.uid)_activity_log");
+//        UserDefaults.standard.removeObject(forKey: "\(currentUser.uid)_activity_log");
         
         // Load up all of the current user's activity.
-//        if let defVal = UserDefaults.standard.array(forKey: "\(currentUser.uid)_activity_log") {
-//            notificationActivityLog = defVal as! [NSDictionary];
-//        }
+        if let defVal = UserDefaults.standard.array(forKey: "\(currentUser.uid)_activity_log") {
+            notificationActivityLog = defVal as! [NSDictionary];
+        }
         
         
     }
+    
+    
+    public func reloadCurrentUser() {
+        // Search in the database for the user.
+        self.fireRef.child("Users").child(currentUser.uid).observeSingleEvent(of: .value, with: { (snapshot) in
+            
+            let value = snapshot.value as? [String : AnyObject] ?? [:];
+                
+            let uid = value["userid"] as? String ?? "";
+            let first = value["first_name"] as? String ?? "";
+            let last = value["last_name"] as? String ?? "";
+            let username = value["username"] as? String ?? "";
+            let pass = value["password"] as? String ?? "";
+            let em = value["email"] as? String ?? "";
+            let followers = value["followers"] as? [String] ?? [];
+            let following = value["following"] as? [String] ?? [];
+            let likedPhotos = value["liked_photos"] as? [String] ?? [];
+            let notifID = value["notification_id"] as? String ?? "";
+            let privateAcc = value["is_private"] as? Bool ?? false;
+            
+            
+            currentUser.uid = uid;
+            currentUser.firstName = first;
+            currentUser.lastName = last;
+            currentUser.username = username;
+            currentUser.password = pass;
+            currentUser.email = em;
+            currentUser.followers = followers;
+            currentUser.following = following;
+            currentUser.likedPhotos = likedPhotos;
+            currentUser.notification_ID = notifID;
+            currentUser.isPrivate = privateAcc;
+        });
+    }
+    
+    
+    public func loadFirebaseUser(completion: (()->Void)?) {
+        // Search in the database for the user.
+        self.fireRef.child("Users").observe(.value, with: { (snapshot) in
+            
+            let userDictionary = snapshot.value as? [String : AnyObject] ?? [:];
+            
+            for user in userDictionary {
+                let value = user.value as? NSDictionary
+                
+                let uid = value?["userid"] as? String ?? "";
+                let first = value?["first_name"] as? String ?? "";
+                let last = value?["last_name"] as? String ?? "";
+                let username = value?["username"] as? String ?? "";
+                let pass = value?["password"] as? String ?? "";
+                let em = value?["email"] as? String ?? "";
+                let followers = value?["followers"] as? [String] ?? [];
+                let following = value?["following"] as? [String] ?? [];
+                let likedPhotos = value?["liked_photos"] as? [String] ?? [];
+                let notifID = value?["notification_id"] as? String ?? "";
+                let privateAcc = value?["is_private"] as? Bool ?? false;
+                
+                
+                // If there is a match with the emails, login.
+                if(em == self.emailField.text!) {
+                    let usr = User(first: first, last: last, username: username, email: em);
+                    usr.uid = uid;
+                    usr.isPrivate = privateAcc;
+                    usr.password = pass;
+                    usr.followers = followers;
+                    usr.following = following;
+                    usr.likedPhotos = likedPhotos;
+                    usr.notification_ID = notifID;
+                    currentUser = usr;
+                    
+                    
+                    self.debug(message: "Logged in!");
+                    self.statusLabel.textColor = UIColor.green;
+                    self.statusLabel.isHidden = false;
+                    self.statusLabel.text = "Logging In!";
+                    
+                    break;
+                } else {
+                    
+                    self.statusLabel.textColor = UIColor.red;
+                    self.statusLabel.isHidden = false;
+                    self.statusLabel.text = "Could not find that user.";
+                    
+                    
+                } // End of email check.
+                
+            } // End of for loop.
+            
+           
+            if let comp = completion {
+                comp();
+            }
+        });
+        
+    } // End of method.
     
 }
