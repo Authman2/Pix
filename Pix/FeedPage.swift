@@ -9,8 +9,9 @@
 import UIKit
 import PullToRefreshSwift
 import Firebase
+import IGListKit
 
-class FeedPage: UICollectionViewController, UICollectionViewDelegateFlowLayout, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class FeedPage: UIViewController, IGListAdapterDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     
     /********************************
@@ -21,6 +22,27 @@ class FeedPage: UICollectionViewController, UICollectionViewDelegateFlowLayout, 
     
     /* Image picker */
     let imgPicker = UIImagePickerController();
+    
+    
+    /* The IG adapter. */
+    lazy var adapter: IGListAdapter = {
+        return IGListAdapter(updater: IGListAdapterUpdater(), viewController: self, workingRangeSize: 1);
+    }();
+    
+    
+    /* The collection view. */
+    let collectionView: IGListCollectionView = {
+        let layout = UICollectionViewFlowLayout();
+        layout.minimumLineSpacing = 20;
+        layout.minimumInteritemSpacing = 20;
+        layout.sectionInset = UIEdgeInsets(top: 20, left: 0, bottom: 20, right: 0);
+        
+        let view = IGListCollectionView(frame: CGRect.zero, collectionViewLayout: layout);
+        view.alwaysBounceVertical = true;
+        
+        return view;
+    }();
+
     
     
     /* An array of posts to display on the news feed. */
@@ -51,8 +73,9 @@ class FeedPage: UICollectionViewController, UICollectionViewDelegateFlowLayout, 
         navigationController?.navigationBar.isHidden = false;
         navigationItem.hidesBackButton = true;
         navigationItem.title = "Feed";
-        setupCollectionView();
         
+        setupCollectionView();
+        view.addSubview(collectionView);
         
         // Image Picker.
         imgPicker.delegate = self;
@@ -68,12 +91,19 @@ class FeedPage: UICollectionViewController, UICollectionViewDelegateFlowLayout, 
         // Pull to refresh
         var options = PullToRefreshOption();
         options.fixedSectionHeader = false;
-        collectionView?.addPullRefresh(options: options, refreshCompletion: { (Void) in
+        collectionView.addPullRefresh(options: options, refreshCompletion: { (Void) in
             self.copyOverAndReload();
-            self.collectionView?.stopPullRefreshEver();
+            self.adapter.performUpdates(animated: true, completion: nil);
+            self.collectionView.stopPullRefreshEver();
         });
         
     } // End of viewDidLoad().
+    
+    
+    override func viewDidLayoutSubviews() {
+        super.viewDidLayoutSubviews();
+        collectionView.frame = view.bounds;
+    } // End of viewDidLayoutSubviews().
 
     
     override func viewDidAppear(_ animated: Bool) {
@@ -82,18 +112,18 @@ class FeedPage: UICollectionViewController, UICollectionViewDelegateFlowLayout, 
         navigationItem.hidesBackButton = true;
         navigationItem.title = "Feed";
         
-        self.loadPhotos();
         self.copyOverAndReload();
+        self.adapter.performUpdates(animated: true, completion: nil);
     } // End of viewDidAppear().
     
     
     // Setup the collection view.
     func setupCollectionView() {
-        collectionView!.register(FeedCell.self, forCellWithReuseIdentifier: "Cell");
-        collectionView?.backgroundColor = view.backgroundColor;
-        collectionView?.alwaysBounceVertical = true;
-        collectionView?.delegate = self;
-        collectionView?.dataSource = self;
+        collectionView.register(FeedCell.self, forCellWithReuseIdentifier: "Cell");
+        collectionView.backgroundColor = view.backgroundColor;
+        
+        adapter.collectionView = collectionView;
+        adapter.dataSource = self;
     }
     
     
@@ -166,7 +196,7 @@ class FeedPage: UICollectionViewController, UICollectionViewDelegateFlowLayout, 
             // Observe the photos.
             for user in self.users {
             
-                landingPage.loadUsersPhotos(user: user, completion: nil);
+                landingPage.loadUsersPhotos(user: user, continous: true, completion: nil);
                 self.copyOverAndReload();
             
             } // End of getting users' photos for loop.
@@ -178,7 +208,9 @@ class FeedPage: UICollectionViewController, UICollectionViewDelegateFlowLayout, 
     
     
     
-    /* Puts all of the photos from each user into the overall array. */
+    /* Puts all of the photos from each user into the overall array. 
+     Don't be afraid to call this method more than once; it is not grabbing any data over a network, so
+     you don't have to worry about it being slow or anything. */
     public func copyOverAndReload() {
         // Load all of the photos.
         for user in users {
@@ -194,7 +226,6 @@ class FeedPage: UICollectionViewController, UICollectionViewDelegateFlowLayout, 
                 }
             }
         }
-        self.collectionView?.reloadData();
     }
     
     
@@ -239,33 +270,16 @@ class FeedPage: UICollectionViewController, UICollectionViewDelegateFlowLayout, 
      *
      ********************************/
 
-    override func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 1;
-    }
-
-
-    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return postFeed.count;
-    }
-
-    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! FeedCell;
-    
-        cell.post = postFeed[indexPath.item];
-        cell.setup();
-    
-        return cell
-    }
-
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: view.frame.width - 20, height: 300);
+    func objects(for listAdapter: IGListAdapter) -> [IGListDiffable] {
+        return postFeed;
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
-        return UIEdgeInsets(top: 20, left: 0, bottom: 20, right: 0);
+    func listAdapter(_ listAdapter: IGListAdapter, sectionControllerFor object: Any) -> IGListSectionController {
+        return FeedSectionController();
     }
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        return 20;
+    func emptyView(for listAdapter: IGListAdapter) -> UIView? {
+        return EmptyPhotoView();
     }
+    
 }

@@ -10,11 +10,11 @@ import UIKit
 import Foundation
 import SnapKit
 import Firebase
-import Presentr
 import PullToRefreshSwift
 import OneSignal
+import IGListKit
 
-class ProfilePage: UICollectionViewController, UICollectionViewDelegateFlowLayout, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class ProfilePage: UIViewController, IGListAdapterDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
 
     
     /********************************
@@ -25,6 +25,24 @@ class ProfilePage: UICollectionViewController, UICollectionViewDelegateFlowLayou
     
     /* The user to use for displaying data on this profile page.*/
     var useUser: User!;
+    
+    
+    /* The adapter. */
+    lazy var adapter: IGListAdapter = {
+        return IGListAdapter(updater: IGListAdapterUpdater(), viewController: self, workingRangeSize: 1);
+    }();
+    
+    
+    /* The collection view. */
+    let collectionView: IGListCollectionView = {
+        let layout = IGListGridCollectionViewLayout();
+        layout.minimumLineSpacing = 10;
+        layout.minimumInteritemSpacing = 10;
+        let view = IGListCollectionView(frame: CGRect.zero, collectionViewLayout: layout);
+        view.alwaysBounceVertical = true;
+        
+        return view;
+    }();
     
     
     /* The image view that displays the profile picture. */
@@ -139,7 +157,9 @@ class ProfilePage: UICollectionViewController, UICollectionViewDelegateFlowLayou
         navigationController?.navigationBar.isHidden = false;
         navigationItem.hidesBackButton = true;
         navigationItem.title = "Profile";
+        
         setupCollectionView();
+        view.addSubview(collectionView)
         
         
         /* Setup/Layout the view. */
@@ -186,7 +206,7 @@ class ProfilePage: UICollectionViewController, UICollectionViewDelegateFlowLayou
             maker.height.equalTo(35);
             maker.top.equalTo(followingLabel.snp.bottom).offset(5);
         }
-        collectionView?.snp.makeConstraints({ (maker: ConstraintMaker) in
+        collectionView.snp.makeConstraints({ (maker: ConstraintMaker) in
             maker.width.equalTo(view.frame.width);
             maker.centerX.equalTo(view);
             maker.top.equalTo(followButton.snp.bottom).offset(10);
@@ -196,12 +216,11 @@ class ProfilePage: UICollectionViewController, UICollectionViewDelegateFlowLayou
         /* Add the pull to refresh function. */
         var options = PullToRefreshOption();
         options.fixedSectionHeader = false;
-        collectionView?.addPullRefresh(options: options, refreshCompletion: { (Void) in
-            self.collectionView?.reloadData();
+        collectionView.addPullRefresh(options: options, refreshCompletion: { (Void) in
+            self.adapter.performUpdates(animated: true, completion: nil);
             self.reloadLabels();
-            self.debug(message: "Size: \(self.useUser.posts.count)");
             
-            self.collectionView?.stopPullRefreshEver();
+            self.collectionView.stopPullRefreshEver();
         });
         
         
@@ -230,8 +249,7 @@ class ProfilePage: UICollectionViewController, UICollectionViewDelegateFlowLayou
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated);
-        landingPage.loadUsersPhotos(user: useUser, completion: nil);
-        collectionView?.reloadData();
+        self.adapter.performUpdates(animated: true, completion: nil);
         
         if useUser !== currentUser {
             logoutButton.isEnabled = false;
@@ -265,13 +283,10 @@ class ProfilePage: UICollectionViewController, UICollectionViewDelegateFlowLayou
         if useUser !== currentUser {
             if useUser.isPrivate == false || (useUser.isPrivate == true && currentUser.following.containsUsername(username: profilePage.useUser.uid)) {
                 privateLabel.isHidden = true;
-                collectionView?.isHidden = false;
-                if useUser.posts.count == 0 {
-                    landingPage.loadUsersPhotos(user: useUser, completion: nil);
-                }
+                collectionView.isHidden = false;
             } else {
                 privateLabel.isHidden = false;
-                collectionView?.isHidden = true;
+                collectionView.isHidden = true;
             }
         }
         
@@ -359,7 +374,7 @@ class ProfilePage: UICollectionViewController, UICollectionViewDelegateFlowLayou
                 }
             }
             
-            feedPage.loadPhotos();
+            //feedPage.loadPhotos();
         }
         
         // Reload the labels.
@@ -489,57 +504,24 @@ class ProfilePage: UICollectionViewController, UICollectionViewDelegateFlowLayou
      ********************************/
     
     func setupCollectionView() {
-        collectionView?.register(ProfilePageCell.self, forCellWithReuseIdentifier: "Cell");
-        collectionView?.backgroundColor = view.backgroundColor;
-        collectionView?.alwaysBounceVertical = true;
-        collectionView?.delegate = self;
-        collectionView?.dataSource = self;
-    }
-    
-    
-    override func numberOfSections(in collectionView: UICollectionView) -> Int {
-        return 1;
-    }
-    
-    
-    override func collectionView(_ collectionView: UICollectionView, numberOfItemsInSection section: Int) -> Int {
-        return useUser.posts.count;
-    }
-    
-    
-    override func collectionView(_ collectionView: UICollectionView, cellForItemAt indexPath: IndexPath) -> UICollectionViewCell {
-        let cell = collectionView.dequeueReusableCell(withReuseIdentifier: "Cell", for: indexPath) as! ProfilePageCell;
+        collectionView.register(ProfilePageCell.self, forCellWithReuseIdentifier: "Cell");
+        collectionView.backgroundColor = view.backgroundColor;
         
-        cell.imageView.image = useUser.posts[indexPath.item].photo.image!;
-        cell.setup();
-    
-        return cell;
+        adapter.collectionView = collectionView;
+        adapter.dataSource = self;
     }
     
     
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        return CGSize(width: 90, height: 90);
+    func objects(for listAdapter: IGListAdapter) -> [IGListDiffable] {
+        return useUser.posts;
     }
     
-    
-    func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumLineSpacingForSectionAt section: Int) -> CGFloat {
-        return 10;
+    func listAdapter(_ listAdapter: IGListAdapter, sectionControllerFor object: Any) -> IGListSectionController {
+        return ProfileSectionController(vc: self);
     }
     
-    
-    override func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
-        let presenter: Presentr = {
-            let pres = Presentr(presentationType: .popup);
-            pres.dismissOnSwipe = true;
-            pres.dismissAnimated = true;
-            return pres;
-        }();
-        
-        let detailView = PostDetailPage();
-        detailView.setup(post: useUser.posts[indexPath.item]);
-        
-        
-        customPresentViewController(presenter, viewController: detailView, animated: true, completion: nil);
+    func emptyView(for listAdapter: IGListAdapter) -> UIView? {
+        return EmptyPhotoView();
     }
     
 }

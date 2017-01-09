@@ -80,10 +80,10 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         
         // Create the views
         landingPage = LandingPage();
-        feedPage = FeedPage(collectionViewLayout: createCollectionViewLayout());
+        feedPage = FeedPage();
         explorePage = ExplorePage(style: .plain);
-        activityPage = ActivityPage(style: .plain);
-        profilePage = ProfilePage(collectionViewLayout: createCollectionViewLayout());
+        activityPage = ActivityPage();
+        profilePage = ProfilePage();
         
         
         // Create the navigation controller with options.
@@ -95,14 +95,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         
         /* Add all of the views as menu items. */
         navContr.addMenuItem(name: "Home", image: UIImage(named: "HomeIcon.png"), destination: feedPage, completion: {
-            feedPage.collectionView?.stopPullRefreshEver();
+            feedPage.collectionView.stopPullRefreshEver();
         });
         navContr.addMenuItem(name: "Explore", image: UIImage(named: "ExploreIcon.png"), destination: explorePage, completion: {
             explorePage.searchController.isActive = false;
         });
         navContr.addMenuItem(name: "Activity", image: UIImage(named: "ActivityIcon.png"), destination: activityPage, completion: {
             
-            activityPage.tableView.stopPullRefreshEver();
+            activityPage.collectionView.stopPullRefreshEver();
         });
         navContr.addMenuItem(name: "Profile", image: UIImage(named: "ProfileIcon.png"), destination: profilePage, completion: { void in
             profilePage.useUser = currentUser;
@@ -110,7 +110,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             profilePage.canChangeProfilePic = true;
             profilePage.followButton.isHidden = true;
             profilePage.privateLabel.isHidden = true;
-            profilePage.collectionView?.isHidden = false;
+            profilePage.collectionView.isHidden = false;
             profilePage.viewDidAppear(true);
             
         });
@@ -266,31 +266,60 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         SwiftMessages.show(config: config, view: view);
         
         
-        if (messageID as! String).contains("started following you") {
-            let _ = FIRDatabase.database().reference().child("Users").observeSingleEvent(of: .value) { (snapshot: FIRDataSnapshot) in
+
+        let _ = FIRDatabase.database().reference().child("Users").observeSingleEvent(of: .value) { (snapshot: FIRDataSnapshot) in
+            
+            // Get the snapshot
+            let userDictionary = snapshot.value as? [String : AnyObject] ?? [:];
+            
+            
+            // Look through each user.
+            for user in userDictionary {
                 
-                // Get the snapshot
-                let userDictionary = snapshot.value as? [String : AnyObject] ?? [:];
+                // Get the email (and other info about the user).
+                let uid = user.value["userid"] as? String ?? "";
+                let username =  user.value["username"] as? String ?? "";
                 
-                
-                // Look through each user.
-                for user in userDictionary {
+                if username == (messageID as! String).substring(i: 0, j: (messageID as! String).indexOf(string: " ")) {
                     
-                    // Get the email (and other info about the user).
-                    let uid = user.value["userid"] as? String ?? "";
-                    let username =  user.value["username"] as? String ?? "";
+                    currentUser.followers.append(uid);
                     
-                    if username == (messageID as! String).substring(i: 0, j: (messageID as! String).indexOf(string: " ")) {
-                        
-                        currentUser.followers.append(uid);
+                    let em = user.value["email"] as? String ?? "";
+                    let firstName = user.value["first_name"] as? String ?? "";
+                    let lastName = user.value["last_name"] as? String ?? "";
+                    let pass = user.value["password"] as? String ?? "";
+                    let followers = user.value["followers"] as? [String] ?? [];
+                    let following = user.value["following"] as? [String] ?? [];
+                    let likedPhotos = user.value["liked_photos"] as? [String] ?? [];
+                    let notifID = user.value["notification_id"] as? String ?? "";
+                    let privateAcc = user.value["is_private"] as? Bool ?? false;
+                    
+                    let usr = User(first: firstName, last: lastName, username: username, email: em);
+                    usr.uid = uid;
+                    usr.isPrivate = privateAcc;
+                    usr.password = pass;
+                    usr.followers = followers;
+                    usr.following = following;
+                    usr.likedPhotos = likedPhotos;
+                    usr.notification_ID = notifID;
+                    
+                    // If it is a follow REQUEST
+                    var interactionNeeded = false;
+                    if (messageID as! String).contains("wants to follow you") {
+                        interactionNeeded = true;
                     }
                     
+                    // Create the activity object and save it to UserDefaults.
+                    let activity = Activity(text: "\(messageID as! String)", interactionRequired: interactionNeeded);
+                    activity.user = usr;
+                    
+                    notificationActivityLog.append(activity.toDictionary());
+                    UserDefaults.standard.setValue(notificationActivityLog, forKey: "\(currentUser.uid)_activity_log");
                 }
+                
             }
         }
         
-        notificationActivityLog.append("\(messageID as! String)");
-        UserDefaults.standard.setValue(notificationActivityLog, forKey: "\(currentUser.uid)_activity_log");
     }
     
     

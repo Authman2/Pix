@@ -86,20 +86,14 @@ class FeedCell: UICollectionViewCell {
      *
      ********************************/
     
-    public func setup() {
+    override init(frame: CGRect) {
+        super.init(frame: frame);
         
         // Tap gesture
         let tap = UITapGestureRecognizer(target: self, action: #selector(likePhoto));
         tap.numberOfTapsRequired = 2;
         imageView.addGestureRecognizer(tap);
         addGestureRecognizer(tap);
-        
-        
-        // Get the important info.
-        imageView.image = post.photo.image!;
-        captionLabel.text = "\(post.caption.text!)";
-        likesLabel.text = "Likes: \(post.likes)";
-        uploaderLabel.text = "\(post.uploader.firstName) \(post.uploader.lastName)";
         
         
         /* Layout the components. */
@@ -143,6 +137,10 @@ class FeedCell: UICollectionViewCell {
             maker.bottom.equalTo(uploaderLabel.snp.top);
         }
 
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
     }
     
     

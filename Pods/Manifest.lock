@@ -5,7 +5,6 @@ PODS:
   - ChameleonFramework/Swift (2.1.0):
     - ChameleonFramework/Default
   - DynamicColor (3.1.0)
-  - DZNEmptyDataSet (1.8.1)
   - Eureka (2.0.0-beta.1)
   - Firebase/Auth (3.11.0):
     - Firebase/Core
@@ -63,6 +62,7 @@ PODS:
     - GoogleToolboxForMac/NSString+URLArguments (= 2.1.0)
   - GoogleToolboxForMac/NSString+URLArguments (2.1.0)
   - GTMSessionFetcher/Core (1.1.7)
+  - IGListKit (2.0.0)
   - Neon (0.4.0)
   - OneSignal (2.3.4)
   - Presentr (1.1.0)
@@ -75,13 +75,13 @@ DEPENDENCIES:
   - AUNavigationMenuController
   - ChameleonFramework/Swift (from `https://github.com/ViccAlexander/Chameleon.git`)
   - DynamicColor (~> 3.1.0)
-  - DZNEmptyDataSet
   - Eureka (~> 2.0.0-beta.1)
   - Firebase/Auth
   - Firebase/Core
   - Firebase/Database
   - Firebase/Messaging
   - Firebase/Storage
+  - IGListKit (~> 2.0.0)
   - Neon
   - OneSignal
   - Presentr
@@ -109,7 +109,6 @@ SPEC CHECKSUMS:
   AUNavigationMenuController: c0a6fcfe51e12c217ddff0a8849304320bc4c797
   ChameleonFramework: d21a3cc247abfe5e37609a283a8238b03575cf64
   DynamicColor: 4dec283a881f7f9d9f3bc88fb5f306724242575f
-  DZNEmptyDataSet: 9525833b9e68ac21c30253e1d3d7076cc828eaa7
   Eureka: d014adf16406745e1a78d5790ea37ed130a0a8e5
   Firebase: b8134e285eb33201115bc688bc5d7f112923bc1f
   FirebaseAnalytics: 9c67af0ebeb8d2146c9b4ea2616439affa947b58
@@ -123,6 +122,7 @@ SPEC CHECKSUMS:
   GoogleSymbolUtilities: 631ee17048aa5e9ab133470d768ea997a5ef9b96
   GoogleToolboxForMac: 2b2596cbb7186865e98cadf2b1e262d851c2b168
   GTMSessionFetcher: a1f8ed39e4fe21c68957daed472c7afbcdf29166
+  IGListKit: ee255e4e61865bc3e01ca96b690c5435c2887849
   Neon: 7fb5a9327e7e57911843f608e08f4893a74deaf9
   OneSignal: c8f0d08ffa30fcf751c97a29639725877027e788
   Presentr: e73439be1cba3ad0651b18c58d77238bbacce59c
@@ -131,6 +131,6 @@ SPEC CHECKSUMS:
   Spring: 3f02b5dc3308572ef177b3cad0fa7bbc4b0706f7
   SwiftMessages: 9d03bb95d394ac60f9c20335e2305dfea9cac70a
 
-PODFILE CHECKSUM: d5e459889a0e7e72ae20f6fbe1908bd7b7924723
+PODFILE CHECKSUM: 392d7aa708c836e1f15c7f5d56002ab792a2929d
 
 COCOAPODS: 1.1.1

@@ -2,12 +2,10 @@
 # platform :ios, '9.0'
 
 target 'Pix' do
-    # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
-    use_frameworks!
+  # Comment the next line if you're not using Swift and don't want to use dynamic frameworks
+  use_frameworks!
 
-
-    source 'https://github.com/CocoaPods/Specs.git'
-    # Pods for Pix
+  # Pods for Pix
     pod 'Neon'
     pod 'ChameleonFramework/Swift', :git => 'https://github.com/ViccAlexander/Chameleon.git'
     pod 'Spring', :git => 'https://github.com/MengTo/Spring.git', :branch => 'swift3'
@@ -17,7 +15,6 @@ target 'Pix' do
     pod 'Firebase/Database'
     pod 'AUNavigationMenuController'
     pod 'DynamicColor', '~> 3.1.0'
-    pod 'DZNEmptyDataSet'
     pod 'Firebase/Storage'
     pod 'SnapKit', '~> 3.0.2'
     pod 'Presentr'
@@ -25,5 +22,6 @@ target 'Pix' do
     pod 'SwiftMessages'
     pod 'OneSignal'
     pod 'Eureka', '~> 2.0.0-beta.1'
-  
+    pod 'IGListKit', '~> 2.0.0'
+
 end

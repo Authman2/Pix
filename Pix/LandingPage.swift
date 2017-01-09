@@ -292,7 +292,7 @@ class LandingPage: UIViewController {
                             
                         } // End of for loop.
                     
-                        self.loadUsersPhotos(user: currentUser, completion: {
+                        self.loadUsersPhotos(user: currentUser, continous: true, completion: {
                             self.debug(message: "Loading all of the user's posts...");
                             feedPage.loadPhotos();
                             feedPage.copyOverAndReload();
@@ -318,7 +318,9 @@ class LandingPage: UIViewController {
     
     /* Tells the program to take the user to the actually application. */
     private func goToApp() {
-        navigationController?.pushViewController(feedPage, animated: false);
+        if navigationController?.topViewController !== feedPage {
+            navigationController?.pushViewController(feedPage, animated: false);
+        }
     }
     
     
@@ -335,14 +337,15 @@ class LandingPage: UIViewController {
     /* Loads all of the current user's photos from the firebase database. This method is public, and
      therefore should be used in any other class that needs to refresh the user's posts.
      PRECONDITION: current user is already initialized to the user that just logged in. */
-    public func loadUsersPhotos(user: User, completion: (() -> Void)?) {
+    public func loadUsersPhotos(user: User, continous: Bool, completion: (() -> Void)?) {
         
         // Start from the beginning.
         user.posts.removeAll();
         
         
         // Load all of the photo objects from the database.
-        fireRef.child("Photos").child(user.uid).queryOrderedByPriority().observeSingleEvent(of: .value) { (snapshot: FIRDataSnapshot) in
+        if continous == false {
+            fireRef.child("Photos").child(user.uid).queryOrderedByPriority().observeSingleEvent(of: .value) { (snapshot: FIRDataSnapshot) in
             
             // First, make sure there is a value for the posts. If so, then load all of them.
             let postDictionary = snapshot.value as? [String : AnyObject] ?? [:];
@@ -408,6 +411,75 @@ class LandingPage: UIViewController {
             } // End of for loop for each post.
             
         };
+        } else {
+            fireRef.child("Photos").child(user.uid).queryOrderedByPriority().observe(.value) { (snapshot: FIRDataSnapshot) in
+                
+                // First, make sure there is a value for the posts. If so, then load all of them.
+                let postDictionary = snapshot.value as? [String : AnyObject] ?? [:];
+                
+                
+                // Get each post from the database (in the form of json data).
+                for post in postDictionary {
+                    
+                    // Get each individual post as a dictionary of elements with the form [key : value].
+                    let aPost = post.value as! [String : AnyObject];
+                    
+                    
+                    // Get the name of the photo that is used to identify it.
+                    let imgName = aPost["image"] as? String;
+                    
+                    
+                    // Get a reference to the firebase media storage.
+                    let imgRef = FIRStorage.storage().reference().child("\(user.uid)/\(imgName!)");
+                    imgRef.data(withMaxSize: 50 * 1024 * 1024, completion: { (data: Data?, error: Error?) in
+                        
+                        if error == nil {
+                            
+                            // Get the value of each important piece of information.
+                            let image = UIImage(data: data!);
+                            let capt = aPost["caption"] as? String ?? "";
+                            let likes = aPost["likes"] as? Int ?? 0;
+                            let id = aPost["id"] as? String ?? "";
+                            let isProfilePic = aPost["is_profile_picture"] as? Bool ?? false;
+                            
+                            
+                            // Create a Post object and add it to the array if it is not already there.
+                            let actualPost = Post(photo: image, caption: capt, Uploader: user, ID: id);
+                            actualPost.likes = likes;
+                            actualPost.isProfilePicture = isProfilePic;
+                            
+                            
+                            // If this post (determined by the id variable) is not already in the array, add it.
+                            if(!user.posts.containsID(id: id)) {
+                                
+                                // Make sure it is not the profile picture. Otherwise just set that for the user here.
+                                if(actualPost.isProfilePicture == false) {
+                                    
+                                    user.posts.append(actualPost);
+                                    self.debug(message: "Added: \(actualPost.toString())");
+                                    
+                                } else {
+                                    
+                                    user.profilepic = image;
+                                    user.profilePicName = id;
+                                    
+                                }
+                                
+                            } else {
+                                self.debug(message: "Post \(id) was already in the array, so it was not added again.");
+                            }
+                            
+                        } else {
+                            self.debug(message: "There was an error: \(error.debugDescription)");
+                        }
+                        
+                    }); // End of access to media storage.
+                    
+                } // End of for loop for each post.
+                
+            };
+        }
+        
         
         if let comp = completion {
             comp();
@@ -431,18 +503,15 @@ class LandingPage: UIViewController {
     
     public func loadActivity() {
         notificationActivityLog.removeAll();
-        usersOnActivity.removeAll();
         
-//        UserDefaults.standard.removeObject(forKey: "\(currentUser.uid)_activity_log");
-//        UserDefaults.standard.removeObject(forKey: "\(currentUser.uid)_activity_log_users");
+        UserDefaults.standard.removeObject(forKey: "\(currentUser.uid)_activity_log");
         
         // Load up all of the current user's activity.
-        if let defVal = UserDefaults.standard.array(forKey: "\(currentUser.uid)_activity_log") {
-            notificationActivityLog = defVal as! [String];
-        }
-        if let defValUsers = UserDefaults.standard.array(forKey: "\(currentUser.uid)_activity_log_users") {
-            usersOnActivity = defValUsers as! [NSDictionary];
-        }
+//        if let defVal = UserDefaults.standard.array(forKey: "\(currentUser.uid)_activity_log") {
+//            notificationActivityLog = defVal as! [NSDictionary];
+//        }
+        
+        
     }
     
 }

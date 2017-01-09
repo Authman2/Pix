@@ -8,8 +8,9 @@
 
 import Foundation
 import UIKit
+import IGListKit
 
-public class Post: NSObject {
+public class Post: NSObject, IGListDiffable {
     
     /********************************
      *
@@ -88,5 +89,15 @@ public class Post: NSObject {
     }
     
     
+    public func diffIdentifier() -> NSObjectProtocol {
+        return self;
+    }
     
+    
+    public func isEqual(toDiffableObject object: IGListDiffable?) -> Bool {
+        if let obj = object as! Post? {
+            return id == obj.id;
+        }
+        return false;
+    }
 }

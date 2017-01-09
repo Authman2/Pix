@@ -21,8 +21,7 @@ import DynamicColor
 var usedIds: [String] = [String]();
 
 /* An array for displaying the user's activity. */
-var notificationActivityLog: [String] = [String]();
-var usersOnActivity: [NSDictionary] = [NSDictionary]();
+var notificationActivityLog: [NSDictionary] = [NSDictionary]();
 
 
 
@@ -160,6 +159,22 @@ public extension Array {
     }
     
     
+    public mutating func removeItem(item: Activity) {
+        var i: Int = 0;
+        for itm in self {
+            
+            i += 1;
+            let s = itm as! Activity;
+            
+            if s.text == item.text {
+                break;
+            }
+        }
+        i -= 1;
+        
+        remove(at: i);
+    }
+    
     
     /// Returns whether or not the array contains the given object.
     public func contains(item: NSObject) -> Bool {
@@ -220,6 +235,40 @@ public extension Array {
         
         return false;
     }
+    
+    
+    
+    /* Returns the index of the element. */
+    public func indexOf(activity: Activity) -> Int {
+        var i = 0;
+        for itm in self {
+            let temp = itm as! NSDictionary;
+            
+            if temp.isEqual(to: activity.toDictionary() as! [AnyHashable : Any]) {
+                return i;
+            }
+            i += 1;
+        }
+
+        return -1;
+    }
+    
+    
+    /* Returns whether or not an activity is already in the array. */
+    public func containsActivity(activity: Activity) -> Bool {
+        
+        for itm in self {
+            let temp = itm as! Activity;
+            
+            if temp.text == activity.text {
+                return true;
+            }
+        }
+        
+        return false;
+    }
+    
+    
 }
 
 
@@ -262,6 +311,23 @@ public extension NSDictionary {
         
         
         return user;
+    }
+    
+    
+    /* Converts a dictionary into an Activity object. */
+    public func toActivity() -> Activity {
+        let t = value(forKey: "text") as! String;
+        let iReq = value(forKey: "interaction_required") as! Bool;
+        let iWith = value(forKey: "interacted_with") as! Bool;
+        
+        let temp = value(forKey: "user") as! NSDictionary;
+        let user = temp.toUser();
+        
+        let act = Activity(text: t, interactionRequired: iReq);
+        act.interactedWith = iWith;
+        act.user = user;
+        
+        return act;
     }
 }
 
