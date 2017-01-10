@@ -24,6 +24,8 @@ public class AUNavigationMenuOptions: NSObject {
     public var itemSize: CGSize?;
     
     
+    /// How far down the menu will drop from the top of the screen.
+    public var pullAmount: CGFloat?;
     
     
     

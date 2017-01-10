@@ -90,6 +90,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         navContr = AUNavigationMenuController(rootViewController: landingPage);
         let auNavOptions = AUNavigationMenuOptions();
         auNavOptions.itemTextColor = .white;
+        auNavOptions.pullAmount = 150;
         navContr.configureOptions(options: auNavOptions);
         
         

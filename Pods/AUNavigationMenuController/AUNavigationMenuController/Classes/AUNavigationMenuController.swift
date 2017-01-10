@@ -4,7 +4,7 @@ import UIKit
 
 
 public class AUNavigationMenuController: UINavigationController, UICollectionViewDelegate, UICollectionViewDataSource, UICollectionViewDelegateFlowLayout {
-
+    
     
     /////////////////////////
     //
@@ -42,7 +42,7 @@ public class AUNavigationMenuController: UINavigationController, UICollectionVie
     
     
     // The options so that variables can be changed.
-    private var options: AUNavigationMenuOptions?;
+    private var options: AUNavigationMenuOptions? = AUNavigationMenuOptions();
     
     
     
@@ -56,6 +56,7 @@ public class AUNavigationMenuController: UINavigationController, UICollectionVie
     
     public override init(nibName nibNameOrNil: String?, bundle nibBundleOrNil: Bundle?) {
         super.init(nibName: nibNameOrNil, bundle: nibBundleOrNil);
+        setupVariables();
         setupCollectionView();
         setupTapGesture();
         addMenuView();
@@ -63,6 +64,7 @@ public class AUNavigationMenuController: UINavigationController, UICollectionVie
     
     public override init(rootViewController: UIViewController) {
         super.init(rootViewController: rootViewController);
+        setupVariables();
         setupCollectionView();
         setupTapGesture();
         addMenuView();
@@ -74,12 +76,14 @@ public class AUNavigationMenuController: UINavigationController, UICollectionVie
     
     public override func viewDidLoad() {
         super.viewDidLoad();
+        setupVariables();
         setupCollectionView();
         setupTapGesture();
         addMenuView();
     }
     
     public override func didMove(toParentViewController parent: UIViewController?) {
+        setupVariables();
         setupCollectionView();
         setupTapGesture();
         addMenuView();
@@ -121,15 +125,48 @@ public class AUNavigationMenuController: UINavigationController, UICollectionVie
         if let size = options.itemSize {
             itemSize = size;
         }
+        if let pAmount = options.pullAmount {
+            pullAmount = pAmount;
+            collectionView.removeFromSuperview();
+            self.setupCollectionView();
+            self.addMenuView();
+            if options.itemSize == nil {
+                itemSize = CGSize(width: 115, height: pullAmount - 35);
+            }
+        }
         
         self.collectionView.reloadData();
     }
     
     
+    /* Sets up all of the variables. */
+    private func setupVariables() {
+        if let color = self.options?.itemTextColor {
+            itemTextColor = color;
+        } else {
+            itemTextColor = .black;
+        }
+        if let space = self.options?.itemSpacing {
+            spacing = space;
+        } else {
+            spacing = 10;
+        }
+        if let amount = self.options?.pullAmount {
+            pullAmount = amount;
+        } else {
+            pullAmount = UIScreen.main.bounds.height / 4 + 10;
+        }
+        if let size = self.options?.itemSize {
+            itemSize = size;
+        } else {
+            itemSize = CGSize(width: 115, height: pullAmount - 35);
+        }
+        
+    }
+    
+    
     /* Setup what's needed for the collection view. */
     private func setupCollectionView() {
-        pullAmount = UIScreen.main.bounds.height / 4 + 10;
-        
         let layout = UICollectionViewFlowLayout();
         layout.scrollDirection = .horizontal;
         layout.sectionInset = UIEdgeInsets(top: 25, left: 0, bottom: 0, right: 0);
@@ -139,6 +176,7 @@ public class AUNavigationMenuController: UINavigationController, UICollectionVie
         collectionView.alwaysBounceHorizontal = true;
         collectionView.showsHorizontalScrollIndicator = false;
         collectionView.showsVerticalScrollIndicator = false;
+        collectionView.translatesAutoresizingMaskIntoConstraints = false;
     }
     
     
@@ -163,8 +201,8 @@ public class AUNavigationMenuController: UINavigationController, UICollectionVie
                 self.open = true;
                 
             });
-        
-        // Close
+            
+            // Close
         } else {
             
             UIView.animate(withDuration: 0.35, delay: 0.2, options: [], animations: {
@@ -190,6 +228,7 @@ public class AUNavigationMenuController: UINavigationController, UICollectionVie
     ////////// Adding Navigation Pages //////////
     
     private func addMenuView() {
+        
         // Initialize the collection view
         collectionView.frame = CGRect(x: 0, y: 0, width: view.frame.width, height: pullAmount);
         
@@ -208,21 +247,7 @@ public class AUNavigationMenuController: UINavigationController, UICollectionVie
         collectionView.dataSource = self;
         
         
-        if options == nil {
-            itemSize = CGSize(width: 115, height: pullAmount - 35);
-            spacing = 10;
-            itemTextColor = .black;
-        } else {
-            if let color = self.options?.itemTextColor {
-                itemTextColor = color;
-            }
-            if let space = self.options?.itemSpacing {
-                spacing = space;
-            }
-            if let size = self.options?.itemSize {
-                itemSize = size;
-            }
-        }
+        
     }
     
     
@@ -233,7 +258,7 @@ public class AUNavigationMenuController: UINavigationController, UICollectionVie
         menuItems.append(item);
     }
     
-        
+    
     /* Appends a new menu item onto the menu.
      */
     public func addMenuItem(name: String, image: UIImage?, destination: UIViewController) {
@@ -281,24 +306,34 @@ public class AUNavigationMenuController: UINavigationController, UICollectionVie
     
     
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, sizeForItemAt indexPath: IndexPath) -> CGSize {
-        if let _ = options?.itemSize {
-            return (options?.itemSize)!;
-        } else {
-            return CGSize(width: 115, height: pullAmount - 35);
-        }
+        return itemSize;
     }
     
     
     public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, minimumInteritemSpacingForSectionAt section: Int) -> CGFloat {
-        if let _ = options?.itemSpacing {
-            return (options?.itemSpacing)!;
-        } else {
-            return 10;
-        }
+        return self.spacing;
     }
+    
     
     public func collectionView(_ collectionView: UICollectionView, didSelectItemAt indexPath: IndexPath) {
         menuItems[indexPath.item].goToDestination(toggle: true);
+    }
+    
+    
+    public func collectionView(_ collectionView: UICollectionView, layout collectionViewLayout: UICollectionViewLayout, insetForSectionAt section: Int) -> UIEdgeInsets {
+        
+        let totalCellWidth: CGFloat?;
+        let totalSpacingWidth: CGFloat?;
+        let leftInset: CGFloat?;
+        
+        totalCellWidth = itemSize.width * CGFloat(menuItems.count);
+        
+        totalSpacingWidth = self.spacing * CGFloat(menuItems.count - 1);
+        
+        leftInset = (collectionView.width - CGFloat(totalCellWidth! + totalSpacingWidth!)) / 2;
+        let rightInset = leftInset;
+        
+        return UIEdgeInsetsMake(0, leftInset! + (itemSize.width / 2), 0, rightInset! + (itemSize.width / 2));
     }
     
 }

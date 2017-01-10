@@ -347,7 +347,7 @@ class LandingPage: UIViewController {
                     
                     
                     // Get a reference to the firebase media storage.
-                    let imgRef = FIRStorage.storage().reference().child("\(user.uid)/\(aPost?.id!).jpg");
+                    let imgRef = FIRStorage.storage().reference().child("\(user.uid)/\(aPost!.id!).jpg");
                     imgRef.data(withMaxSize: 50 * 1024 * 1024, completion: { (data: Data?, error: Error?) in
                         
                         if error == nil {
@@ -358,13 +358,13 @@ class LandingPage: UIViewController {
                             
                             
                             // If this post (determined by the id variable) is not already in the array, add it.
-                            if(!user.posts.containsID(id: (aPost?.id)!)) {
+                            if(!user.posts.containsID(id: aPost!.id!)) {
                                 
                                 // Make sure it is not the profile picture. Otherwise just set that for the user here.
                                 if(aPost?.isProfilePicture == false) {
                                 
                                     user.posts.append(aPost!);
-                                    self.debug(message: "Added: \(aPost?.toString())");
+                                    self.debug(message: "Added: \(aPost!.toString())");
                                 
                                 } else {
                                     
@@ -374,7 +374,7 @@ class LandingPage: UIViewController {
                                 }
                                 
                             } else {
-                                self.debug(message: "Post \(aPost?.id!) was already in the array, so it was not added again.");
+                                self.debug(message: "Post \(aPost!.id!) was already in the array, so it was not added again.");
                             }
                             
                         } else {
@@ -404,7 +404,7 @@ class LandingPage: UIViewController {
                     
                     
                     // Get a reference to the firebase media storage.
-                    let imgRef = FIRStorage.storage().reference().child("\(user.uid)/\(aPost?.id!).jpg");
+                    let imgRef = FIRStorage.storage().reference().child("\(user.uid)/\(aPost!.id!).jpg");
                     imgRef.data(withMaxSize: 50 * 1024 * 1024, completion: { (data: Data?, error: Error?) in
                         
                         if error == nil {
@@ -415,7 +415,7 @@ class LandingPage: UIViewController {
                             
                             
                             // If this post (determined by the id variable) is not already in the array, add it.
-                            if(!user.posts.containsID(id: (aPost?.id)!)) {
+                            if(!user.posts.containsID(id: aPost!.id!)) {
                                 
                                 // Make sure it is not the profile picture. Otherwise just set that for the user here.
                                 if(aPost?.isProfilePicture == false) {
@@ -431,7 +431,7 @@ class LandingPage: UIViewController {
                                 }
                                 
                             } else {
-                                self.debug(message: "Post \(aPost?.id!) was already in the array, so it was not added again.");
+                                self.debug(message: "Post \(aPost!.id!) was already in the array, so it was not added again.");
                             }
                             
                         } else {

@@ -15,6 +15,17 @@ class FeedSectionController: IGListSectionController, IGListSectionType {
     // The post object to display.
     var post: Post?;
     
+    // A reference to the view controller.
+    var vc: UIViewController?;
+    
+    
+    
+    
+    init(vc: UIViewController) {
+        self.vc = vc;
+    }
+    
+    
     
     
     
@@ -30,6 +41,7 @@ class FeedSectionController: IGListSectionController, IGListSectionType {
         let cell = collectionContext!.dequeueReusableCell(of: FeedCell.self, for: self, at: index) as! FeedCell;
         
         cell.post = post;
+        cell.vc = self.vc;
         cell.imageView.image = cell.post.photo.image!;
         cell.captionLabel.text = "\(cell.post.caption.text!)";
         cell.likesLabel.text = "Likes: \(cell.post.likes)";

@@ -65,6 +65,8 @@ public class AUNavigationMenuCell: UICollectionViewCell {
         
         imageView.anchorAndFillEdge(.top, xPad: 0, yPad: 5, otherSize: frame.height - 25);
         textLabel.align(.underCentered, relativeTo: imageView, padding: 0, width: frame.width, height: AutoHeight);
+        
+        translatesAutoresizingMaskIntoConstraints = false;
     }
     
     

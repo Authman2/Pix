@@ -97,7 +97,6 @@ class PostDetailPage: UIViewController {
         
         // Long press
         let longPress = UILongPressGestureRecognizer(target: self, action: #selector(openActionSheet));
-        longPress.minimumPressDuration = 2;
         imageView.addGestureRecognizer(longPress);
         view.addGestureRecognizer(longPress);
 
@@ -191,8 +190,12 @@ class PostDetailPage: UIViewController {
             self.post.flags += 1;
             self.fireRef.child("Photos").child(currentUser.uid).child(self.post.id!).updateChildValues(self.post.toDictionary() as! [AnyHashable : Any]);
         }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (action: UIAlertAction) in
+            actionSheet.dismiss(animated: true, completion: nil);
+        }
         
         actionSheet.addAction(flagAction);
+        actionSheet.addAction(cancelAction);
         
         present(actionSheet, animated: true, completion: nil);
     }

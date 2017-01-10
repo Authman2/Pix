@@ -254,7 +254,7 @@ class FeedPage: UIViewController, IGListAdapterDataSource, UIImagePickerControll
     }
     
     func listAdapter(_ listAdapter: IGListAdapter, sectionControllerFor object: Any) -> IGListSectionController {
-        return FeedSectionController();
+        return FeedSectionController(vc: self);
     }
     
     func emptyView(for listAdapter: IGListAdapter) -> UIView? {

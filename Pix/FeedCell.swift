@@ -75,6 +75,9 @@ class FeedCell: UICollectionViewCell {
     let fireRef: FIRDatabaseReference = FIRDatabase.database().reference();
     
     
+    /* A reference to the view controller. */
+    var vc: UIViewController?;
+    
     
     
     
@@ -94,6 +97,11 @@ class FeedCell: UICollectionViewCell {
         tap.numberOfTapsRequired = 2;
         imageView.addGestureRecognizer(tap);
         addGestureRecognizer(tap);
+        
+        // Long press
+        let longPress = UILongPressGestureRecognizer(target: self, action: #selector(openActionSheet));
+        imageView.addGestureRecognizer(longPress);
+        addGestureRecognizer(longPress);
         
         
         /* Layout the components. */
@@ -183,5 +191,21 @@ class FeedCell: UICollectionViewCell {
     }
     
     
-    
+    @objc func openActionSheet() {
+        
+        let actionSheet = UIAlertController(title: "Photo Options", message: nil, preferredStyle: .actionSheet);
+        let flagAction = UIAlertAction(title: "Flag as Inappropriate", style: .destructive) { (action: UIAlertAction) in
+            self.post.flags += 1;
+            self.fireRef.child("Photos").child(currentUser.uid).child(self.post.id!).updateChildValues(self.post.toDictionary() as! [AnyHashable : Any]);
+        }
+        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (action: UIAlertAction) in
+            actionSheet.dismiss(animated: true, completion: nil);
+        }
+        
+        actionSheet.addAction(flagAction);
+        actionSheet.addAction(cancelAction);
+        
+        
+        vc?.present(actionSheet, animated: true, completion: nil);
+    }
 }

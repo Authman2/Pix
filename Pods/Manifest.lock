@@ -1,5 +1,5 @@
 PODS:
-  - AUNavigationMenuController (1.1.1):
+  - AUNavigationMenuController (1.1.8):
     - Neon (~> 0.4.0)
   - ChameleonFramework/Default (2.1.0)
   - ChameleonFramework/Swift (2.1.0):
@@ -106,7 +106,7 @@ CHECKOUT OPTIONS:
     :git: https://github.com/MengTo/Spring.git
 
 SPEC CHECKSUMS:
-  AUNavigationMenuController: c0a6fcfe51e12c217ddff0a8849304320bc4c797
+  AUNavigationMenuController: f1293fcf0c8149c3b4878ef2e9bf5fb9f8bf1c6b
   ChameleonFramework: d21a3cc247abfe5e37609a283a8238b03575cf64
   DynamicColor: 4dec283a881f7f9d9f3bc88fb5f306724242575f
   Eureka: d014adf16406745e1a78d5790ea37ed130a0a8e5

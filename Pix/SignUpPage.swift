@@ -246,7 +246,7 @@ class SignUpPage: UIViewController {
             // No errors creating the user.
             if error == nil {
                 
-                user.uid = (usr?.uid)!;
+                user.uid = usr!.uid;
                 self.fireRef.child("Users").child(user.uid).setValue(user.toDictionary());
                 self.debug(message: "User created!");
                 
