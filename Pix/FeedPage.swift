@@ -155,35 +155,14 @@ class FeedPage: UIViewController, IGListAdapterDataSource, UIImagePickerControll
             
             // Look through each user.
             for user in userDictionary {
+                let value = user.value as? NSDictionary ?? [:];
                 
-                // Get the username.
-                let uid = user.value["userid"] as? String ?? "";
+                let usr = value.toUser();
+                
                 
                 // Make sure that this is a user we need to be looking at.
-                if(self.usernames.containsUsername(username: uid)) {
-                    
-                    let privateAcc = user.value["is_private"] as? Bool ?? false;
-                    let username = user.value["username"] as? String ?? "";
-                    let em = user.value["email"] as? String ?? "";
-                    let firstName = user.value["first_name"] as? String ?? "";
-                    let lastName = user.value["last_name"] as? String ?? "";
-                    let pass = user.value["password"] as? String ?? "";
-                    let followers = user.value["followers"] as? [String] ?? [];
-                    let following = user.value["following"] as? [String] ?? [];
-                    let likedPhotos = user.value["liked_photos"] as? [String] ?? [];
-                    let notifID = user.value["notification_id"] as? String ?? "";
-                    
-                    
-                    // Create a user and add it to the array.
-                    let usr = User(first: firstName, last: lastName, username: username, email: em);
-                    usr.uid = uid;
-                    usr.isPrivate = privateAcc;
-                    usr.password = pass;
-                    usr.followers = followers;
-                    usr.following = following;
-                    usr.likedPhotos = likedPhotos;
-                    usr.notification_ID = notifID;
-                    
+                if(self.usernames.containsUsername(username: usr.uid)) {
+                                        
                     if !self.users.containsUser(username: usr.uid) {
                         self.users.append(usr);
                     }

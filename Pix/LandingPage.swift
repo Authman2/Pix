@@ -250,31 +250,13 @@ class LandingPage: UIViewController {
                         for user in userDictionary {
                             let value = user.value as? NSDictionary
                             
-                            let uid = value?["userid"] as? String ?? "";
-                            let first = value?["first_name"] as? String ?? "";
-                            let last = value?["last_name"] as? String ?? "";
-                            let username = value?["username"] as? String ?? "";
-                            let pass = value?["password"] as? String ?? "";
-                            let em = value?["email"] as? String ?? "";
-                            let followers = value?["followers"] as? [String] ?? [];
-                            let following = value?["following"] as? [String] ?? [];
-                            let likedPhotos = value?["liked_photos"] as? [String] ?? [];
-                            let notifID = value?["notification_id"] as? String ?? "";
-                            let privateAcc = value?["is_private"] as? Bool ?? false;
+                            // Get a user object from the dictionary.
+                            let usr = value?.toUser();
                             
                             
                             // If there is a match with the emails, login.
-                            if(em == self.emailField.text!) {
-                                let usr = User(first: first, last: last, username: username, email: em);
-                                usr.uid = uid;
-                                usr.isPrivate = privateAcc;
-                                usr.password = pass;
-                                usr.followers = followers;
-                                usr.following = following;
-                                usr.likedPhotos = likedPhotos;
-                                usr.notification_ID = notifID;
+                            if(usr?.email == self.emailField.text!) {
                                 currentUser = usr;
-                                
                                 
                                 self.debug(message: "Logged in!");
                                 self.statusLabel.textColor = UIColor.green;
@@ -350,72 +332,60 @@ class LandingPage: UIViewController {
         if continous == false {
             fireRef.child("Photos").child(user.uid).queryOrderedByPriority().observeSingleEvent(of: .value) { (snapshot: FIRDataSnapshot) in
             
-            // First, make sure there is a value for the posts. If so, then load all of them.
-            let postDictionary = snapshot.value as? [String : AnyObject] ?? [:];
-                
-                
-            // Get each post from the database (in the form of json data).
-            for post in postDictionary {
-                
-                // Get each individual post as a dictionary of elements with the form [key : value].
-                let aPost = post.value as! [String : AnyObject];
-                
-                
-                // Get the name of the photo that is used to identify it.
-                let imgName = aPost["image"] as? String;
-                
-                
-                // Get a reference to the firebase media storage.
-                let imgRef = FIRStorage.storage().reference().child("\(user.uid)/\(imgName!)");
-                imgRef.data(withMaxSize: 50 * 1024 * 1024, completion: { (data: Data?, error: Error?) in
+                // First, make sure there is a value for the posts. If so, then load all of them.
+                let postDictionary = snapshot.value as? [String : AnyObject] ?? [:];
                     
-                    if error == nil {
+                    
+                // Get each post from the database (in the form of json data).
+                for post in postDictionary {
+                    
+                    // Get each individual post as a dictionary of elements with the form [key : value].
+                    let value = post.value as? NSDictionary;
+                    
+                    // Get a post object.
+                    let aPost = value?.toPost(user: user);
+                    
+                    
+                    // Get a reference to the firebase media storage.
+                    let imgRef = FIRStorage.storage().reference().child("\(user.uid)/\(aPost?.id!).jpg");
+                    imgRef.data(withMaxSize: 50 * 1024 * 1024, completion: { (data: Data?, error: Error?) in
                         
-                        // Get the value of each important piece of information.
-                        let image = UIImage(data: data!);
-                        let capt = aPost["caption"] as? String ?? "";
-                        let likes = aPost["likes"] as? Int ?? 0;
-                        let id = aPost["id"] as? String ?? "";
-                        let isProfilePic = aPost["is_profile_picture"] as? Bool ?? false;
-                        let flags = aPost["flags"] as? Int ?? 0;
-                        
-                        
-                        // Create a Post object and add it to the array if it is not already there.
-                        let actualPost = Post(photo: image, caption: capt, Uploader: user, ID: id);
-                        actualPost.likes = likes;
-                        actualPost.isProfilePicture = isProfilePic;
-                        actualPost.flags = flags;
-                        
-                        
-                        // If this post (determined by the id variable) is not already in the array, add it.
-                        if(!user.posts.containsID(id: id)) {
+                        if error == nil {
                             
-                            // Make sure it is not the profile picture. Otherwise just set that for the user here.
-                            if(actualPost.isProfilePicture == false) {
+                            // Set the image of the post.
+                            let image = UIImage(data: data!);
+                            aPost?.photo.image = image;
                             
-                                user.posts.append(actualPost);
-                                self.debug(message: "Added: \(actualPost.toString())");
                             
+                            // If this post (determined by the id variable) is not already in the array, add it.
+                            if(!user.posts.containsID(id: (aPost?.id)!)) {
+                                
+                                // Make sure it is not the profile picture. Otherwise just set that for the user here.
+                                if(aPost?.isProfilePicture == false) {
+                                
+                                    user.posts.append(aPost!);
+                                    self.debug(message: "Added: \(aPost?.toString())");
+                                
+                                } else {
+                                    
+                                    user.profilepic = image;
+                                    user.profilePicName = aPost?.id!;
+                                    
+                                }
+                                
                             } else {
-                                
-                                user.profilepic = image;
-                                user.profilePicName = id;
-                                
+                                self.debug(message: "Post \(aPost?.id!) was already in the array, so it was not added again.");
                             }
                             
                         } else {
-                            self.debug(message: "Post \(id) was already in the array, so it was not added again.");
+                            self.debug(message: "There was an error: \(error.debugDescription)");
                         }
                         
-                    } else {
-                        self.debug(message: "There was an error: \(error.debugDescription)");
-                    }
+                    }); // End of access to media storage.
                     
-                }); // End of access to media storage.
-                
-            } // End of for loop for each post.
+                } // End of for loop for each post.
             
-        };
+            };
         } else {
             fireRef.child("Photos").child(user.uid).queryOrderedByPriority().observe(.value) { (snapshot: FIRDataSnapshot) in
                 
@@ -427,53 +397,41 @@ class LandingPage: UIViewController {
                 for post in postDictionary {
                     
                     // Get each individual post as a dictionary of elements with the form [key : value].
-                    let aPost = post.value as! [String : AnyObject];
+                    let value = post.value as? NSDictionary;
                     
-                    
-                    // Get the name of the photo that is used to identify it.
-                    let imgName = aPost["image"] as? String;
+                    // Get a post object.
+                    let aPost = value?.toPost(user: user);
                     
                     
                     // Get a reference to the firebase media storage.
-                    let imgRef = FIRStorage.storage().reference().child("\(user.uid)/\(imgName!)");
+                    let imgRef = FIRStorage.storage().reference().child("\(user.uid)/\(aPost?.id!).jpg");
                     imgRef.data(withMaxSize: 50 * 1024 * 1024, completion: { (data: Data?, error: Error?) in
                         
                         if error == nil {
                             
-                            // Get the value of each important piece of information.
+                            // Set the image of the post.
                             let image = UIImage(data: data!);
-                            let capt = aPost["caption"] as? String ?? "";
-                            let likes = aPost["likes"] as? Int ?? 0;
-                            let id = aPost["id"] as? String ?? "";
-                            let isProfilePic = aPost["is_profile_picture"] as? Bool ?? false;
-                            let flags = aPost["flags"] as? Int ?? 0;
-                            
-                            
-                            // Create a Post object and add it to the array if it is not already there.
-                            let actualPost = Post(photo: image, caption: capt, Uploader: user, ID: id);
-                            actualPost.likes = likes;
-                            actualPost.isProfilePicture = isProfilePic;
-                            actualPost.flags = flags;
+                            aPost?.photo.image = image;
                             
                             
                             // If this post (determined by the id variable) is not already in the array, add it.
-                            if(!user.posts.containsID(id: id)) {
+                            if(!user.posts.containsID(id: (aPost?.id)!)) {
                                 
                                 // Make sure it is not the profile picture. Otherwise just set that for the user here.
-                                if(actualPost.isProfilePicture == false) {
+                                if(aPost?.isProfilePicture == false) {
                                     
-                                    user.posts.append(actualPost);
-                                    self.debug(message: "Added: \(actualPost.toString())");
+                                    user.posts.append(aPost!);
+                                    self.debug(message: "Added: \(aPost?.toString())");
                                     
                                 } else {
                                     
                                     user.profilepic = image;
-                                    user.profilePicName = id;
+                                    user.profilePicName = aPost?.id!;
                                     
                                 }
                                 
                             } else {
-                                self.debug(message: "Post \(id) was already in the array, so it was not added again.");
+                                self.debug(message: "Post \(aPost?.id!) was already in the array, so it was not added again.");
                             }
                             
                         } else {
@@ -526,32 +484,10 @@ class LandingPage: UIViewController {
         // Search in the database for the user.
         self.fireRef.child("Users").child(currentUser.uid).observeSingleEvent(of: .value, with: { (snapshot) in
             
-            let value = snapshot.value as? [String : AnyObject] ?? [:];
+            let value = snapshot.value as? NSDictionary ?? [:];
                 
-            let uid = value["userid"] as? String ?? "";
-            let first = value["first_name"] as? String ?? "";
-            let last = value["last_name"] as? String ?? "";
-            let username = value["username"] as? String ?? "";
-            let pass = value["password"] as? String ?? "";
-            let em = value["email"] as? String ?? "";
-            let followers = value["followers"] as? [String] ?? [];
-            let following = value["following"] as? [String] ?? [];
-            let likedPhotos = value["liked_photos"] as? [String] ?? [];
-            let notifID = value["notification_id"] as? String ?? "";
-            let privateAcc = value["is_private"] as? Bool ?? false;
-            
-            
-            currentUser.uid = uid;
-            currentUser.firstName = first;
-            currentUser.lastName = last;
-            currentUser.username = username;
-            currentUser.password = pass;
-            currentUser.email = em;
-            currentUser.followers = followers;
-            currentUser.following = following;
-            currentUser.likedPhotos = likedPhotos;
-            currentUser.notification_ID = notifID;
-            currentUser.isPrivate = privateAcc;
+            let usr = value.toUser();
+            currentUser = usr;
         });
     }
     
@@ -565,31 +501,12 @@ class LandingPage: UIViewController {
             for user in userDictionary {
                 let value = user.value as? NSDictionary
                 
-                let uid = value?["userid"] as? String ?? "";
-                let first = value?["first_name"] as? String ?? "";
-                let last = value?["last_name"] as? String ?? "";
-                let username = value?["username"] as? String ?? "";
-                let pass = value?["password"] as? String ?? "";
-                let em = value?["email"] as? String ?? "";
-                let followers = value?["followers"] as? [String] ?? [];
-                let following = value?["following"] as? [String] ?? [];
-                let likedPhotos = value?["liked_photos"] as? [String] ?? [];
-                let notifID = value?["notification_id"] as? String ?? "";
-                let privateAcc = value?["is_private"] as? Bool ?? false;
+                let usr = value?.toUser();
                 
                 
                 // If there is a match with the emails, login.
-                if(em == self.emailField.text!) {
-                    let usr = User(first: first, last: last, username: username, email: em);
-                    usr.uid = uid;
-                    usr.isPrivate = privateAcc;
-                    usr.password = pass;
-                    usr.followers = followers;
-                    usr.following = following;
-                    usr.likedPhotos = likedPhotos;
-                    usr.notification_ID = notifID;
+                if(usr?.email == self.emailField.text!) {
                     currentUser = usr;
-                    
                     
                     self.debug(message: "Logged in!");
                     self.statusLabel.textColor = UIColor.green;

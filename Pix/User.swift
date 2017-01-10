@@ -63,6 +63,10 @@ public class User: NSObject {
     var posts: [Post] = [Post]();
     
     
+    /* All of the ids of the users that this User has blocked. */
+    var blockedUsers: [String] = [String]();
+    
+    
     /* An image for the profile picture. */
     var profilepic: UIImage!;
     var profilePicName: String!;
@@ -108,6 +112,7 @@ public class User: NSObject {
                                              "followers" : followers,
                                              "following" : following,
                                              "liked_photos" : likedPhotos,
+                                             "blocked" : blockedUsers,
                                              "notification_id" : notification_ID,
                                              "is_private" : isPrivate]);
         return dict;

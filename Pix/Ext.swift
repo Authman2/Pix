@@ -283,18 +283,19 @@ public extension NSDictionary {
     
     /* Converts an NSDictionary into a User object. */
     public func toUser() -> User {
-        let firstName = value(forKey: "first_name") as! String;
-        let lastName = value(forKey: "last_name") as! String;
-        let uid = value(forKey: "userid") as! String;
-        let username = value(forKey: "username") as! String;
-        let em = value(forKey: "email") as! String;
-        let pass = value(forKey: "password") as! String;
-        let profPic = value(forKey: "profile_picture") as! String;
-        let followers = value(forKey: "followers") as! [String];
-        let following = value(forKey: "following") as! [String];
-        let likedPhotos = value(forKey: "liked_photos") as! [String];
-        let notifID = value(forKey: "notification_id") as! String;
-        let privateAcc = value(forKey: "is_private") as! Bool;
+        let firstName = value(forKey: "first_name") as? String ?? "";
+        let lastName = value(forKey: "last_name") as? String ?? "";
+        let uid = value(forKey: "userid") as? String ?? "";
+        let username = value(forKey: "username") as? String ?? "";
+        let em = value(forKey: "email") as? String ?? "";
+        let pass = value(forKey: "password") as? String ?? "";
+        let profPic = value(forKey: "profile_picture") as? String ?? "";
+        let followers = value(forKey: "followers") as? [String] ?? [];
+        let following = value(forKey: "following") as? [String] ?? [];
+        let likedPhotos = value(forKey: "liked_photos") as? [String] ?? [];
+        let blocked = value(forKey: "blocked") as? [String] ?? [];
+        let notifID = value(forKey: "notification_id") as? String ?? "";
+        let privateAcc = value(forKey: "is_private") as? Bool ?? false;
         
         
         let user = User(first: firstName, last: lastName, username: username, email: em);
@@ -304,21 +305,39 @@ public extension NSDictionary {
         user.followers = followers;
         user.following = following;
         user.likedPhotos = likedPhotos;
+        user.blockedUsers = blocked;
         user.notification_ID = notifID;
         user.isPrivate = privateAcc;
-        
-        
+    
         return user;
     }
     
     
-    /* Converts a dictionary into an Activity object. */
-    public func toActivity() -> Activity {
-        let t = value(forKey: "text") as! String;
-        let iReq = value(forKey: "interaction_required") as! Bool;
-        let iWith = value(forKey: "interacted_with") as! Bool;
+    /* Converts an NSDictionary into a Post object. Requires the uploader of the post to be passed in as a parameter. Does NOT set the profile picture image. */
+    public func toPost(user: User) -> Post {
+        let id = value(forKey: "id") as? String ?? "";
+        let caption = value(forKey: "caption") as? String ?? "";
+        let likes = value(forKey: "likes") as? Int ?? 0;
+        let isProfPic = value(forKey: "is_profile_picture") as? Bool ?? false;
+        let flags = value(forKey: "flags") as? Int ?? 0;
         
-        let temp = value(forKey: "user") as! NSDictionary;
+        
+        let post = Post(photo: nil, caption: caption, Uploader: user, ID: id);
+        post.isProfilePicture = isProfPic;
+        post.flags = flags;
+        post.likes = likes;
+        
+        return post;
+    }
+    
+    
+    /* Converts an NSDictionary into an Activity object. */
+    public func toActivity() -> Activity {
+        let t = value(forKey: "text") as? String ?? "";
+        let iReq = value(forKey: "interaction_required") as? Bool ?? false;
+        let iWith = value(forKey: "interacted_with") as? Bool ?? false;
+        
+        let temp = value(forKey: "user") as? NSDictionary ?? [:];
         let user = temp.toUser();
         
         let act = Activity(text: t, interactionRequired: iReq);
