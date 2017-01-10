@@ -119,6 +119,12 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         /* Set the root view controller. */
         window?.rootViewController = navContr;
         
+        if UserDefaults.standard.bool(forKey: "accepted_terms") == false {
+            navContr.pushViewController(TermsOfServicePage(), animated: true);
+        }
+        
+        
+        
         // Override point for customization after application launch.
         return true
     }
