@@ -377,12 +377,14 @@ class LandingPage: UIViewController {
                         let likes = aPost["likes"] as? Int ?? 0;
                         let id = aPost["id"] as? String ?? "";
                         let isProfilePic = aPost["is_profile_picture"] as? Bool ?? false;
+                        let flags = aPost["flags"] as? Int ?? 0;
                         
                         
                         // Create a Post object and add it to the array if it is not already there.
                         let actualPost = Post(photo: image, caption: capt, Uploader: user, ID: id);
                         actualPost.likes = likes;
                         actualPost.isProfilePicture = isProfilePic;
+                        actualPost.flags = flags;
                         
                         
                         // If this post (determined by the id variable) is not already in the array, add it.
@@ -444,12 +446,14 @@ class LandingPage: UIViewController {
                             let likes = aPost["likes"] as? Int ?? 0;
                             let id = aPost["id"] as? String ?? "";
                             let isProfilePic = aPost["is_profile_picture"] as? Bool ?? false;
+                            let flags = aPost["flags"] as? Int ?? 0;
                             
                             
                             // Create a Post object and add it to the array if it is not already there.
                             let actualPost = Post(photo: image, caption: capt, Uploader: user, ID: id);
                             actualPost.likes = likes;
                             actualPost.isProfilePicture = isProfilePic;
+                            actualPost.flags = flags;
                             
                             
                             // If this post (determined by the id variable) is not already in the array, add it.

@@ -94,6 +94,12 @@ class PostDetailPage: UIViewController {
         tap.numberOfTapsRequired = 2;
         imageView.addGestureRecognizer(tap);
         view.addGestureRecognizer(tap);
+        
+        // Long press
+        let longPress = UILongPressGestureRecognizer(target: self, action: #selector(openActionSheet));
+        longPress.minimumPressDuration = 2;
+        imageView.addGestureRecognizer(longPress);
+        view.addGestureRecognizer(longPress);
 
         
         // Get the important info.
@@ -176,4 +182,21 @@ class PostDetailPage: UIViewController {
         likesLabel.text = "Likes: \(post.likes)";
     }
 
+    
+    
+    @objc func openActionSheet() {
+        
+        let actionSheet = UIAlertController(title: "Photo Options", message: nil, preferredStyle: .actionSheet);
+        let flagAction = UIAlertAction(title: "Flag as Inappropriate", style: .destructive) { (action: UIAlertAction) in
+            self.post.flags += 1;
+            self.fireRef.child("Photos").child(currentUser.uid).child(self.post.id!).updateChildValues(self.post.toDictionary() as! [AnyHashable : Any]);
+        }
+        
+        actionSheet.addAction(flagAction);
+        
+        present(actionSheet, animated: true, completion: nil);
+    }
+    
+    
+    
 }

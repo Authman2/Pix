@@ -278,6 +278,7 @@ class SignUpPage: UIViewController {
                 // Create a post for the database.
                 let post = Post(photo: profileImage, caption: "", Uploader: user, ID: id);
                 post.isProfilePicture = true;
+                post.flags = 0;
                 
                 let postObj = post.toDictionary();
                 self.fireRef.child("Photos").child("\(user.uid)").child("\(id)").setValue(postObj);

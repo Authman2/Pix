@@ -53,6 +53,9 @@ public class Post: NSObject, IGListDiffable {
     var isProfilePicture = false;
     
     
+    /* The number of times this post has been flagged as inappropriate. */
+    var flags: Int = 0;
+    
     
     
     
@@ -78,7 +81,8 @@ public class Post: NSObject, IGListDiffable {
                                              "id" : id,
                                              "caption" : caption.text!,
                                              "likes" : likes,
-                                             "is_profile_picture" : isProfilePicture]);
+                                             "is_profile_picture" : isProfilePicture,
+                                             "flags" : flags]);
         return dict;
     }
     

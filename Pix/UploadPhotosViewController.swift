@@ -108,6 +108,7 @@ class UploadPhotosViewController: UIViewController {
         // Get a random name (id) for the post.
         let randomName = self.randomName();
         post.id = randomName;
+        post.flags = 0;
         
         let storageRef = FIRStorageReference().child("\(currentUser.uid)/\(randomName).jpg");
         let data = UIImageJPEGRepresentation(self.post.photo.image!, 100) as NSData?;
