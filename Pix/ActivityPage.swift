@@ -71,6 +71,12 @@ class ActivityPage: UIViewController, IGListAdapterDataSource {
             self.collectionView.stopPullRefreshEver();
         }
         
+        
+        // Clear activity button
+        let clearBtn = UIBarButtonItem(title: "Clear", style: .plain, target: self, action: #selector(clearActivity));
+        clearBtn.tintColor = .white;
+        navigationItem.rightBarButtonItem = clearBtn;
+        
     } // End of viewdidload.
     
     
@@ -84,6 +90,15 @@ class ActivityPage: UIViewController, IGListAdapterDataSource {
         super.viewDidAppear(animated);
         self.adapter.performUpdates(animated: true, completion: nil);
     } // End of viewdidappear.
+    
+    
+    
+    @objc func clearActivity() {
+        activities.removeAll();
+        notificationActivityLog.removeAll();
+        UserDefaults.standard.setValue(notificationActivityLog, forKey: "\(currentUser.uid)_activity_log");
+        self.adapter.performUpdates(animated: true, completion: nil);
+    }
     
     
 

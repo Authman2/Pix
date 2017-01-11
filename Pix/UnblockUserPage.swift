@@ -84,7 +84,7 @@ class UnblockUserPage: UIViewController {
         }
         noButton.snp.makeConstraints { (maker: ConstraintMaker) in
             maker.centerX.equalTo(view.snp.centerX);
-            maker.top.equalTo(yesButton.snp.bottom);
+            maker.top.equalTo(yesButton.snp.bottom).offset(10);
             maker.width.equalTo(view.width);
             maker.height.equalTo(50);
         }

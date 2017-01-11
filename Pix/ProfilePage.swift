@@ -349,8 +349,12 @@ class ProfilePage: UIViewController, IGListAdapterDataSource, UIImagePickerContr
         if(self.followButton.titleLabel?.text == "Unfollow") {
             
             // Set the values of the objects.
-            currentUser.following.removeItem(item: useUser.uid);
-            useUser.followers.removeItem(item: currentUser.uid);
+            if currentUser.following.containsUsername(username: useUser.uid) {
+                currentUser.following.removeItem(item: useUser.uid);
+            }
+            if useUser.followers.containsUsername(username: currentUser.uid) {
+                useUser.followers.removeItem(item: currentUser.uid);
+            }
             
             // Update the button.
             self.followButton.setTitle("Follow", for: .normal);

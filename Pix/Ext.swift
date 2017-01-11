@@ -292,7 +292,7 @@ public extension Array {
             let temp = itm as! NSDictionary;
             let actObj = temp.toActivity();
             
-            if actObj.isEqual(toDiffableObject: activity) {
+            if actObj.id! == activity.id! {
                 return i;
             }
             i += 1;
@@ -384,6 +384,7 @@ public extension NSDictionary {
     /* Converts an NSDictionary into an Activity object. */
     public func toActivity() -> Activity {
         let t = value(forKey: "text") as? String ?? "";
+        let id = value(forKey: "id") as? String ?? "";
         let iReq = value(forKey: "interaction_required") as? Bool ?? false;
         let iWith = value(forKey: "interacted_with") as? Bool ?? false;
         
@@ -391,6 +392,7 @@ public extension NSDictionary {
         let user = temp.toUser();
         
         let act = Activity(text: t, interactionRequired: iReq);
+        act.id = id;
         act.interactedWith = iWith;
         act.user = user;
         

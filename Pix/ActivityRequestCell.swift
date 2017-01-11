@@ -120,18 +120,14 @@ class ActivityRequestCell: UICollectionViewCell {
             // Accept the follow request.
             profilePage.acceptFollowRequest(user: (self.activity?.user)!, followDirection: .toFrom);
             
-            // Update the activity object.
+            // Get the index of the activity.
             let insertIndex = notificationActivityLog.indexOf(activity: self.activity!);
-            self.activity?.interactedWith = true;
- 
             
-            // Save the defaults.
-            if insertIndex == -1 {
-                notificationActivityLog.append((self.activity?.toDictionary())!);
-            } else {
-                notificationActivityLog.insert((self.activity?.toDictionary())!, at: insertIndex);
-                notificationActivityLog.remove(at: insertIndex);
-            }
+            // Update the activity object.
+            self.activity?.interactedWith = true;
+            
+            // Update the array.
+            notificationActivityLog[insertIndex] = self.activity!.toDictionary();
             UserDefaults.standard.setValue(notificationActivityLog, forKey: "\(currentUser.uid)_activity_log");
         }
         
@@ -145,16 +141,15 @@ class ActivityRequestCell: UICollectionViewCell {
             self.acceptButton.isEnabled = false;
             self.declineButton.isEnabled = false;
             
+            
+            // Get the index of the activity.
             let insertIndex = notificationActivityLog.indexOf(activity: self.activity!);
+            
+            // Update the activity object.
             self.activity?.interactedWith = true;
             
-            // Save the defaults.
-            if insertIndex == -1 {
-                notificationActivityLog.append((self.activity?.toDictionary())!);
-            } else {
-                notificationActivityLog.insert((self.activity?.toDictionary())!, at: insertIndex);
-                notificationActivityLog.remove(at: insertIndex);
-            }
+            // Update the array.
+            notificationActivityLog[insertIndex] = self.activity!.toDictionary();
             UserDefaults.standard.setValue(notificationActivityLog, forKey: "\(currentUser.uid)_activity_log");
         }
     }
