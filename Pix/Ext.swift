@@ -11,6 +11,7 @@ import Foundation
 import UIKit
 import Spring
 import DynamicColor
+import IGListKit
 
 
 
@@ -71,6 +72,20 @@ public extension String {
     }
     
 }
+
+
+extension UILabel: IGListDiffable {
+    
+    public func diffIdentifier() -> NSObjectProtocol {
+        return self;
+    }
+    
+    
+    public func isEqual(toDiffableObject object: IGListDiffable?) -> Bool {
+        return isEqual(object);
+    }
+}
+
 
 
 public extension SpringButton {
@@ -156,6 +171,23 @@ public extension Array {
     }
     
     
+    public mutating func removePost(byUserWithID uid: String) {
+        var i: Int = 0;
+        for itm in self {
+            
+            i += 1;
+            let s = itm as! Post;
+            
+            if s.uploader.uid == uid {
+                break;
+            }
+        }
+        i -= 1;
+        
+        remove(at: i);
+    }
+    
+    
     public mutating func removeItem(item: Activity) {
         var i: Int = 0;
         for itm in self {
@@ -171,6 +203,24 @@ public extension Array {
         
         remove(at: i);
     }
+    
+    
+    public mutating func removeUser(with uid: String) {
+        var i: Int = 0;
+        for itm in self {
+            
+            i += 1;
+            let s = itm as! User;
+            
+            if s.uid == uid {
+                break;
+            }
+        }
+        i -= 1;
+        
+        remove(at: i);
+    }
+    
     
     
     /// Returns whether or not the array contains the given object.

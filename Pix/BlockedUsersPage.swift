@@ -11,8 +11,15 @@ import Neon
 import SnapKit
 import Firebase
 import DynamicColor
+import IGListKit
 
-class BlockedUsersPage: UIViewController {
+
+
+// Parallel array
+var blockedUsernames = [String]();
+
+
+class BlockedUsersPage: UIViewController, IGListAdapterDataSource {
 
     /********************************
      *
@@ -54,18 +61,29 @@ class BlockedUsersPage: UIViewController {
         return a;
     }();
     
-    let blockedView: UITextView = {
-        let a = UITextView();
-        a.translatesAutoresizingMaskIntoConstraints = false;
-        a.isUserInteractionEnabled = false;
-        a.backgroundColor = .white;
-        a.textAlignment = .left;
+    
+    /* The adapter. */
+    lazy var adapter: IGListAdapter = {
+        return IGListAdapter(updater: IGListAdapterUpdater(), viewController: self, workingRangeSize: 1);
+    }();
+    
+    
+    let blockedView: IGListCollectionView = {
+        let layout = UICollectionViewFlowLayout();
+        layout.minimumLineSpacing = 10;
+        layout.minimumInteritemSpacing = 10;
+        let view = IGListCollectionView(frame: CGRect.zero, collectionViewLayout: layout);
+        view.alwaysBounceVertical = true;
         
-        return a;
+        return view;
     }();
     
     
     let fireRef: FIRDatabaseReference = FIRDatabase.database().reference();
+    
+    
+    
+    
     
     
     
@@ -80,6 +98,7 @@ class BlockedUsersPage: UIViewController {
         super.viewDidLoad();
         view.backgroundColor = UIColor(red: 240/255, green: 240/255, blue: 240/255, alpha: 1);
         navigationItem.hidesBackButton = true;
+        setupCollectionView();
         
         
         view.addSubview(textField);
@@ -124,29 +143,12 @@ class BlockedUsersPage: UIViewController {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated);
-        self.reloadBlockedView();
-    }
-    
-    
-    func reloadBlockedView() {
-        blockedView.text = "";
         
-        fireRef.child("Users").observeSingleEvent(of: .value) { (snapshot: FIRDataSnapshot) in
-            let userDictionary = snapshot.value as? [String : AnyObject] ?? [:];
-            
-            for user in userDictionary {
-                
-                let value = user.value as? NSDictionary
-                let user = value?.toUser();
-                
-                
-                if currentUser.blockedUsers.containsUsername(username: user!.uid) {
-                    self.blockedView.text.append(user!.username);
-                }
-                
-            } // End of for loop
-            
-        } // End of firebase obser.
+        if let val = UserDefaults.standard.stringArray(forKey: "\(currentUser.uid)_blocked_users") {
+            blockedUsernames = val;
+        }
+        
+        self.adapter.performUpdates(animated: true, completion: nil);
     }
     
     
@@ -173,20 +175,44 @@ class BlockedUsersPage: UIViewController {
                     if !currentUser.blockedUsers.containsUsername(username: user!.uid) {
                         
                         currentUser.blockedUsers.append(user!.uid);
-                        self.fireRef.child("Users").child(currentUser.uid).updateChildValues(currentUser.toDictionary() as! [AnyHashable : Any]);
-                        self.reloadBlockedView();
-                        landingPage.reloadCurrentUser();
-                        break;
+                        blockedUsernames.append(user!.username);
+                        UserDefaults.standard.setValue(blockedUsernames, forKey: "\(currentUser.uid)_blocked_users");
                         
+                        self.fireRef.child("Users").child(currentUser.uid).updateChildValues(currentUser.toDictionary() as! [AnyHashable : Any]);
+                        self.adapter.performUpdates(animated: true, completion: nil);
+                        break;
                     }
                     
                 }
                 
             } // End of for loop
             
-        } // End of firebase obser.
+        } // End of firebase observe.
         
     }
     
+    
+    
+    
+    func setupCollectionView() {
+        blockedView.register(BlockedUserCell.self, forCellWithReuseIdentifier: "Cell");
+        blockedView.backgroundColor = .white;
+        
+        adapter.collectionView = blockedView;
+        adapter.dataSource = self;
+    }
+    
+    
+    func objects(for listAdapter: IGListAdapter) -> [IGListDiffable] {
+        return blockedUsernames as [IGListDiffable];
+    }
+    
+    func listAdapter(_ listAdapter: IGListAdapter, sectionControllerFor object: Any) -> IGListSectionController {
+        return BlockedUserSectionController(vc: self);
+    }
+    
+    func emptyView(for listAdapter: IGListAdapter) -> UIView? {
+        return nil;
+    }
     
 }

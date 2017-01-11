@@ -288,6 +288,21 @@ class ProfilePage: UIViewController, IGListAdapterDataSource, UIImagePickerContr
                 privateLabel.isHidden = false;
                 collectionView.isHidden = true;
             }
+            
+            
+            // Blocked users.
+            // You cannot follow/unfollow or see the photos of users who you blocked.
+            if currentUser.blockedUsers.containsUsername(username: useUser.uid) || useUser.blockedUsers.containsUsername(username: currentUser.uid) {
+                
+                collectionView.isHidden = true;
+                followButton.isHidden = true;
+                
+            } else {
+                
+                collectionView.isHidden = false;
+                followButton.isHidden = false;
+                
+            }
         }
         
         profilePicture.image = useUser.profilepic;
@@ -304,7 +319,7 @@ class ProfilePage: UIViewController, IGListAdapterDataSource, UIImagePickerContr
             try FIRAuth.auth()?.signOut();
             currentUser = nil;
             feedPage.users.removeAll();
-            feedPage.usernames.removeAll();
+            feedPage.uids.removeAll();
             feedPage.postFeed.removeAll();
             explorePage.listOfUsers.removeAll();
             explorePage.listOfUsers_fb.removeAllObjects();
@@ -500,13 +515,6 @@ class ProfilePage: UIViewController, IGListAdapterDataSource, UIImagePickerContr
             }
     }
 
-    
-    
-    
-    
-    
-    
-    
     
     
     

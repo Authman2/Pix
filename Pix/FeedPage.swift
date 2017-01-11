@@ -50,7 +50,7 @@ class FeedPage: UIViewController, IGListAdapterDataSource, UIImagePickerControll
     
     
     // Temporary array for the users that currentUser is following.
-    var usernames: [String] = [String]();
+    var uids: [String] = [String]();
     var users: [User] = [User]();
     
     
@@ -92,8 +92,10 @@ class FeedPage: UIViewController, IGListAdapterDataSource, UIImagePickerControll
         var options = PullToRefreshOption();
         options.fixedSectionHeader = false;
         collectionView.addPullRefresh(options: options, refreshCompletion: { (Void) in
+            self.refreshFollowedUsers();
             self.copyOverAndReload();
             self.adapter.performUpdates(animated: true, completion: nil);
+            
             self.collectionView.stopPullRefreshEver();
         });
         
@@ -103,6 +105,7 @@ class FeedPage: UIViewController, IGListAdapterDataSource, UIImagePickerControll
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews();
         collectionView.frame = view.bounds;
+        
     } // End of viewDidLayoutSubviews().
 
     
@@ -114,6 +117,9 @@ class FeedPage: UIViewController, IGListAdapterDataSource, UIImagePickerControll
         
         self.copyOverAndReload();
         self.adapter.performUpdates(animated: true, completion: nil);
+        collectionView.stopPullRefreshEver();
+        
+        debug(message: "SIZE: \(postFeed.count)");
     } // End of viewDidAppear().
     
     
@@ -138,9 +144,11 @@ class FeedPage: UIViewController, IGListAdapterDataSource, UIImagePickerControll
             let value = snapshot.value as? [String : AnyObject] ?? [:];
             let following = value["following"] as? [String] ?? [];
             
+            
+            // "name" is really the UID.
             for name in following {
-                if !self.usernames.containsUsername(username: name) {
-                    self.usernames.append(name);
+                if !self.uids.containsUsername(username: name) {
+                    self.uids.append(name);
                 }
             }
             
@@ -161,7 +169,7 @@ class FeedPage: UIViewController, IGListAdapterDataSource, UIImagePickerControll
                 
                 
                 // Make sure that this is a user we need to be looking at.
-                if(self.usernames.containsUsername(username: usr.uid)) {
+                if(self.uids.containsUsername(username: usr.uid)) {
                                         
                     if !self.users.containsUser(username: usr.uid) {
                         self.users.append(usr);
@@ -191,6 +199,7 @@ class FeedPage: UIViewController, IGListAdapterDataSource, UIImagePickerControll
      Don't be afraid to call this method more than once; it is not grabbing any data over a network, so
      you don't have to worry about it being slow or anything. */
     public func copyOverAndReload() {
+        
         // Load all of the photos.
         for user in users {
             
@@ -207,6 +216,26 @@ class FeedPage: UIViewController, IGListAdapterDataSource, UIImagePickerControll
         }
     }
     
+    
+    // COME BACK TO THIS WHEN YOU HAVE MORE QUOTA
+    public func refreshFollowedUsers() {
+        // Refresh the users and uids
+        for id in uids {
+            if !currentUser.following.containsUsername(username: id) {
+                if self.uids.containsUsername(username: id) {
+                    self.uids.removeItem(item: id);
+                    self.users.removeUser(with: id);
+                    
+                    for post in postFeed {
+                        if post.uploader.uid == id {
+                            postFeed.removeItem(item: post);
+                        }
+                    }
+                }
+            }
+        }
+        self.adapter.performUpdates(animated: true, completion: nil);
+    }
     
     
     

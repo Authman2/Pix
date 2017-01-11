@@ -113,7 +113,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             profilePage.privateLabel.isHidden = true;
             profilePage.collectionView.isHidden = false;
             profilePage.viewDidAppear(true);
-            
         });
         
         

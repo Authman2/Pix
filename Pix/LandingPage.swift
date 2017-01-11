@@ -421,7 +421,7 @@ class LandingPage: UIViewController {
                                 if(aPost?.isProfilePicture == false) {
                                     
                                     user.posts.append(aPost!);
-                                    self.debug(message: "Added: \(aPost?.toString())");
+                                    self.debug(message: "Added: \(aPost!.toString())");
                                     
                                 } else {
                                     

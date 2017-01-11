@@ -32,6 +32,9 @@
 		5ADEB9511E1F0F6B0012AF38 /* ActivityRequestCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ADEB9501E1F0F6B0012AF38 /* ActivityRequestCell.swift */; };
 		5AE3CCE41E0C89DC009F7816 /* SignUpPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AE3CCE31E0C89DC009F7816 /* SignUpPage.swift */; };
 		5AE3CCE71E0C9633009F7816 /* User.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AE3CCE61E0C9633009F7816 /* User.swift */; };
+		5AF109011E26A4800030D4DF /* BlockedUserSectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF109001E26A4800030D4DF /* BlockedUserSectionController.swift */; };
+		5AF109031E26A48B0030D4DF /* BlockedUserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF109021E26A48B0030D4DF /* BlockedUserCell.swift */; };
+		5AF109051E26ABCF0030D4DF /* UnblockUserPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF109041E26ABCF0030D4DF /* UnblockUserPage.swift */; };
 		5AF346381E0AF2F5002FB896 /* LandingPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF346371E0AF2F5002FB896 /* LandingPage.swift */; };
 		5AF5CC161E1DB9C7007DE325 /* ActivityIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 5AF5CC121E1DB9C7007DE325 /* ActivityIcon.png */; };
 		5AF5CC171E1DB9C7007DE325 /* ExploreIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 5AF5CC131E1DB9C7007DE325 /* ExploreIcon.png */; };
@@ -71,6 +74,9 @@
 		5ADEB9501E1F0F6B0012AF38 /* ActivityRequestCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityRequestCell.swift; sourceTree = "<group>"; };
 		5AE3CCE31E0C89DC009F7816 /* SignUpPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = SignUpPage.swift; sourceTree = "<group>"; };
 		5AE3CCE61E0C9633009F7816 /* User.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = User.swift; sourceTree = "<group>"; };
+		5AF109001E26A4800030D4DF /* BlockedUserSectionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockedUserSectionController.swift; sourceTree = "<group>"; };
+		5AF109021E26A48B0030D4DF /* BlockedUserCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockedUserCell.swift; sourceTree = "<group>"; };
+		5AF109041E26ABCF0030D4DF /* UnblockUserPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnblockUserPage.swift; sourceTree = "<group>"; };
 		5AF346371E0AF2F5002FB896 /* LandingPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LandingPage.swift; sourceTree = "<group>"; };
 		5AF5CC121E1DB9C7007DE325 /* ActivityIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ActivityIcon.png; sourceTree = "<group>"; };
 		5AF5CC131E1DB9C7007DE325 /* ExploreIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ExploreIcon.png; sourceTree = "<group>"; };
@@ -130,7 +136,7 @@
 				5AC84A9A1E22D3320095288D /* ProfileSectionController.swift */,
 				5AD645611E0DB5A400E5929C /* ProfilePageCell.swift */,
 				5AF7CE271E1EAFAE0005EBE6 /* EditProfilePage.swift */,
-				5A8C7DF11E25AE0000F3F687 /* BlockedUsersPage.swift */,
+				5AF108FF1E26A4670030D4DF /* BlockedUsers */,
 			);
 			name = Profile;
 			sourceTree = "<group>";
@@ -153,6 +159,17 @@
 				5A28BE4B1E1492CF00DD0396 /* FeedCell.swift */,
 			);
 			name = Feed;
+			sourceTree = "<group>";
+		};
+		5AF108FF1E26A4670030D4DF /* BlockedUsers */ = {
+			isa = PBXGroup;
+			children = (
+				5A8C7DF11E25AE0000F3F687 /* BlockedUsersPage.swift */,
+				5AF109001E26A4800030D4DF /* BlockedUserSectionController.swift */,
+				5AF109021E26A48B0030D4DF /* BlockedUserCell.swift */,
+				5AF109041E26ABCF0030D4DF /* UnblockUserPage.swift */,
+			);
+			name = BlockedUsers;
 			sourceTree = "<group>";
 		};
 		5AF346361E0AF2DC002FB896 /* Landing */ = {
@@ -382,6 +399,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5AD645691E0DFEF800E5929C /* UploadPhotosViewController.swift in Sources */,
+				5AF109011E26A4800030D4DF /* BlockedUserSectionController.swift in Sources */,
 				5AD6455F1E0D819B00E5929C /* ProfilePage.swift in Sources */,
 				5A44AB461E1C7ACB0029A480 /* ActivityPage.swift in Sources */,
 				5A3121171E24562500B38C45 /* TermsOfServicePage.swift in Sources */,
@@ -390,6 +408,7 @@
 				5AC84A9F1E22E3100095288D /* ActivitySectionController.swift in Sources */,
 				5A1BA7621E21BF5100666EC9 /* FeedSectionController.swift in Sources */,
 				5A28BE4A1E1459C900DD0396 /* CircleImageView.swift in Sources */,
+				5AF109031E26A48B0030D4DF /* BlockedUserCell.swift in Sources */,
 				5AD645671E0DF63100E5929C /* FeedPage.swift in Sources */,
 				5AFF276F1DDB6FF7001CBF95 /* Ext.swift in Sources */,
 				5AC84AA11E22E4950095288D /* ActivityCell.swift in Sources */,
@@ -397,6 +416,7 @@
 				5A8C7DF01E25A7A300F3F687 /* ActionSheet.swift in Sources */,
 				5AC84A9B1E22D3320095288D /* ProfileSectionController.swift in Sources */,
 				5ADEB9511E1F0F6B0012AF38 /* ActivityRequestCell.swift in Sources */,
+				5AF109051E26ABCF0030D4DF /* UnblockUserPage.swift in Sources */,
 				5A8C7DF21E25AE0000F3F687 /* BlockedUsersPage.swift in Sources */,
 				5A93F8EF1E0F0F72008C7154 /* PostDetailPage.swift in Sources */,
 				5AE3CCE41E0C89DC009F7816 /* SignUpPage.swift in Sources */,

@@ -169,7 +169,6 @@ class ExplorePage: UITableViewController, UISearchResultsUpdating {
             
             // Tell the profile page which user to use.
             profilePage.useUser = listOfUsers[indexPath.row];
-            profilePage.followButton.isHidden = false;
             
             if(currentUser.following.containsUsername(username: listOfUsers[indexPath.row].uid)) {
                 profilePage.followButton.setTitle("Unfollow", for: .normal);
@@ -177,11 +176,6 @@ class ExplorePage: UITableViewController, UISearchResultsUpdating {
                 profilePage.followButton.setTitle("Follow", for: .normal);
             }
             
-            if listOfUsers[indexPath.row].uid == currentUser.uid {
-                profilePage.followButton.isHidden = true;
-            } else {
-                profilePage.followButton.isHidden = false;
-            }
             
             // Load all of that user's photos.
             
