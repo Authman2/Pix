@@ -11,6 +11,10 @@ import UIKit
 import Eureka
 import Firebase
 
+
+var formBackgroundColor: UIColor?;
+
+
 class EditProfilePage: FormViewController {
 
     /********************************
@@ -40,6 +44,7 @@ class EditProfilePage: FormViewController {
         super.viewDidLoad();
         navigationItem.hidesBackButton = true;
         navigationItem.title = "Edit Profile";
+        formBackgroundColor = view.backgroundColor;
         
         form = Section("Profile")
             <<< TextRow(){ row in
@@ -79,6 +84,11 @@ class EditProfilePage: FormViewController {
                 }.cellUpdate { cell, row in
                     cell.textLabel?.font = cell.textLabel?.font;
             }
+            <<< ButtonRow() { row in
+                    row.title = "Blocked Users"
+                }.onCellSelection({ (btn: ButtonCellOf<String>, btnRow: ButtonRowOf<String>) in
+                    self.navigationController?.pushViewController(BlockedUsersPage(), animated: true);
+                })
             +++ Section("Logout")
             <<< ButtonRow() { row in
                 row.title = "Logout";

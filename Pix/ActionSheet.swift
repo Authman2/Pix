@@ -81,7 +81,7 @@ class ActionSheet: UIViewController {
     @objc func flagMethod() {
         flag.backgroundColor = UIColor(red: 170, green: 170, blue: 170, alpha: 1);
         self.post?.flags += 1;
-        self.fireRef.child("Photos").child(currentUser.uid).child((self.post?.id!)!).updateChildValues(self.post?.toDictionary() as! [AnyHashable : Any]);
+        self.fireRef.child("Photos").child(self.post!.uploader.uid).child((self.post?.id!)!).updateChildValues(self.post?.toDictionary() as! [AnyHashable : Any]);
         
         cancelMethod();
     }
