@@ -12,6 +12,7 @@ import SnapKit
 import Neon
 import Firebase
 import OneSignal
+import Presentr
 
 class FeedCell: UICollectionViewCell {
     
@@ -193,19 +194,17 @@ class FeedCell: UICollectionViewCell {
     
     @objc func openActionSheet() {
         
-        let actionSheet = UIAlertController(title: "Photo Options", message: nil, preferredStyle: .actionSheet);
-        let flagAction = UIAlertAction(title: "Flag as Inappropriate", style: .destructive) { (action: UIAlertAction) in
-            self.post.flags += 1;
-            self.fireRef.child("Photos").child(currentUser.uid).child(self.post.id!).updateChildValues(self.post.toDictionary() as! [AnyHashable : Any]);
-        }
-        let cancelAction = UIAlertAction(title: "Cancel", style: .cancel) { (action: UIAlertAction) in
-            actionSheet.dismiss(animated: true, completion: nil);
-        }
+        let presenter: Presentr = {
+            let pres = Presentr(presentationType: .bottomHalf);
+            pres.dismissOnSwipe = true;
+            pres.dismissAnimated = true;
+            pres.backgroundOpacity = 0.7;
+            return pres;
+        }();
         
-        actionSheet.addAction(flagAction);
-        actionSheet.addAction(cancelAction);
+        let detailView = ActionSheet();
+        detailView.post = self.post;
         
-        
-        vc?.present(actionSheet, animated: true, completion: nil);
+        vc?.customPresentViewController(presenter, viewController: detailView, animated: true, completion: nil);
     }
 }
