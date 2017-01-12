@@ -39,21 +39,19 @@ class ActivitySectionController: IGListSectionController, IGListSectionType {
 
         if let cell = cell as? ActivityRequestCell {
             
-            cell.activity = self.activityObject;
+            cell.activity = self.activityObject!;
             cell.titleLabel.text = "\(activityObject!.text!)";
             
-            if activityObject?.interactedWith == true {
+            if self.activityObject?.interactedWith == true {
                 cell.acceptButton.isHidden = true;
                 cell.declineButton.isHidden = true;
             }
-            
             
         } else if let cell = cell as? ActivityCell {
             
             cell.titleLabel.text = "\(activityObject!.text!)";
             
         }
-        
         
         return cell;
     }

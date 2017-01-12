@@ -100,6 +100,7 @@ class ActivityRequestCell: UICollectionViewCell {
         }
         
         acceptButton.addTarget(self, action: #selector(accept), for: .touchUpInside);
+        declineButton.addTarget(self, action: #selector(declineMethod), for: .touchUpInside);
     }
     
     required init?(coder aDecoder: NSCoder) {
@@ -118,7 +119,7 @@ class ActivityRequestCell: UICollectionViewCell {
             self.declineButton.isEnabled = false;
             
             // Accept the follow request.
-            profilePage.acceptFollowRequest(user: (self.activity?.user)!, followDirection: .toFrom);
+            profilePage.acceptFollowRequest(user: self.activity!.user!, followDirection: .toFrom);
             
             // Get the index of the activity.
             let insertIndex = notificationActivityLog.indexOf(activity: self.activity!);
@@ -134,13 +135,13 @@ class ActivityRequestCell: UICollectionViewCell {
     } // End of method.
     
     
-    @objc func decline() {
-        if activity?.interactedWith == false {
+    @objc func declineMethod() {
+        if self.activity?.interactedWith == false {
+            print("---------> Decline button clicked.");
             acceptButton.isHidden = true;
             declineButton.isHidden = true;
             self.acceptButton.isEnabled = false;
             self.declineButton.isEnabled = false;
-            
             
             // Get the index of the activity.
             let insertIndex = notificationActivityLog.indexOf(activity: self.activity!);

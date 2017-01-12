@@ -416,16 +416,21 @@ class ProfilePage: UIViewController, IGListAdapterDataSource, UIImagePickerContr
             
             // Set the values of the objects.
             if followDirection == .toFrom {
-                //if(!currentUser.followers.containsUsername(username: user.uid) && !user.following.containsUsername(username: currentUser.uid)) {
-                    //currentUser.followers.append(user.uid);
+                if(!currentUser.followers.containsUsername(username: user.uid)) {
+                    currentUser.followers.append(user.uid);
+                }
+                if(!user.following.containsUsername(username: currentUser.uid)) {
                     user.following.append(currentUser.uid);
-                //}
+                }
             } else {
-                //if(!currentUser.following.containsUsername(username: user.uid) && !user.followers.containsUsername(username: currentUser.uid)) {
+                if(!currentUser.following.containsUsername(username: user.uid)) {
                     currentUser.following.append(user.uid);
+                }
+                if(!user.followers.containsUsername(username: currentUser.uid)) {
                     user.followers.append(currentUser.uid);
-                //}
+                }
             }
+
             
             // Update the button.
             self.followButton.setTitle("Unfollow", for: .normal);

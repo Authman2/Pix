@@ -166,6 +166,7 @@ class ExplorePage: UITableViewController, UISearchResultsUpdating {
         if listOfUsers.count > 0 {
             // Update
             landingPage.reloadCurrentUser();
+            landingPage.loadFirebaseUser(completion: nil);
             
             // Tell the profile page which user to use.
             profilePage.useUser = listOfUsers[indexPath.row];
@@ -196,6 +197,8 @@ class ExplorePage: UITableViewController, UISearchResultsUpdating {
             // Go to the next page.
             navigationController?.pushViewController(profilePage, animated: true);
             profilePage.navigationItem.title = "\(listOfUsers[indexPath.row].username)";
+            
+            profilePage.reloadLabels();
         }
     }
     

@@ -53,13 +53,8 @@ public class Activity: NSObject, IGListDiffable {
         super.init();
         self.text = text;
         self.interactionRequired = interactionRequired;
+        self.interactedWith = false;
         self.id = randomName();
-        
-        if self.interactionRequired == false {
-            interactedWith = true;
-        } else {
-            interactedWith = false;
-        }
     }
     
     
