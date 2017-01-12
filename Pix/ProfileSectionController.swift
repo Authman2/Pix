@@ -34,7 +34,7 @@ class ProfileSectionController: IGListSectionController, IGListSectionType {
     }
     
     func sizeForItem(at index: Int) -> CGSize {
-        return CGSize(width: 90, height: 90);
+        return CGSize(width: (collectionContext?.containerSize.width)!/4, height: 90);
     }
     
     func cellForItem(at index: Int) -> UICollectionViewCell {

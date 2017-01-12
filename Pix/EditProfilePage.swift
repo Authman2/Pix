@@ -149,10 +149,18 @@ class EditProfilePage: FormViewController {
             
         self.fireRef.child("Users").child(currentUser.uid).setValue(currentUser.toDictionary());
         FIRAuth.auth()?.currentUser?.updateEmail(currentUser.email, completion: { (error: Error?) in
-            self.debug(message: "There was an issue updating the email: \(error.debugDescription)");
+            if error == nil {
+                self.debug(message: "Email was reset!");
+            } else {
+                self.debug(message: "There was an issue updating the email: \(error.debugDescription)");
+            }
         })
         FIRAuth.auth()?.currentUser?.updatePassword(currentUser.password, completion: { (error: Error?) in
-            self.debug(message: "There was an issue updating the password: \(error.debugDescription)");
+            if error == nil {
+                self.debug(message: "Password was reset!");
+            } else {
+                self.debug(message: "There was an issue updating the password: \(error.debugDescription)");
+            }
         })
         
         self.fireRef.child("Users").child(currentUser.uid).updateChildValues(currentUser.toDictionary() as! [AnyHashable : Any]);

@@ -218,13 +218,30 @@ class SignUpPage: UIViewController {
     
     func createUser(username: String) {
         // Get the variables needed to create a user.
-        let name = self.fullnameField.text!;
+        let name = self.fullnameField.text!.components(separatedBy: " ");
+        let first: String?;
+        let last: String?;
+        if name.count == 3 {
+            first = name[0];
+            last = name[1] + " " + name[2];
+        } else if name.count == 2 {
+            first = name[0];
+            last = name[1];
+        } else if name.count == 1 {
+            first = name[0];
+            last = "";
+        } else {
+            self.statusLabel.textColor = .red;
+            self.statusLabel.text = "Enter a valid full name.";
+            self.statusLabel.isHidden = false;
+            return;
+        }
         let em = self.emailField.text!;
         let pass = self.passwordField.text!;
-        
+    
         
         // Create a user and save it to the firebase database.
-        let user = User(first: name.substring(i: 0, j: name.indexOf(string: " ")), last: name.substring(i: name.indexOf(string: " ") + 1, j: name.length()), username: username, email: em);
+        let user = User(first: first!, last: last!, username: username, email: em);
         user.password = pass;
         user.isPrivate = false;
         OneSignal.syncHashedEmail(em);

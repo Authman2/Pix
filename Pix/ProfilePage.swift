@@ -36,8 +36,6 @@ class ProfilePage: UIViewController, IGListAdapterDataSource, UIImagePickerContr
     /* The collection view. */
     let collectionView: IGListCollectionView = {
         let layout = IGListGridCollectionViewLayout();
-        layout.minimumLineSpacing = 10;
-        layout.minimumInteritemSpacing = 10;
         let view = IGListCollectionView(frame: CGRect.zero, collectionViewLayout: layout);
         view.alwaysBounceVertical = true;
         
