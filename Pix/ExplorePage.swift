@@ -182,7 +182,6 @@ class ExplorePage: UITableViewController, UISearchResultsUpdating {
             /* CHECK IF PRIVATE ACCOUNT. */
             if profilePage.useUser.isPrivate == false || (profilePage.useUser.isPrivate == true && currentUser.following.containsUsername(username: profilePage.useUser.uid)) {
                 
-                util.loadUsersPhotos(user: profilePage.useUser, continous: true, completion: nil);
                 profilePage.canChangeProfilePic = false;
                 profilePage.privateLabel.isHidden = true;
                 

@@ -215,10 +215,13 @@ class ProfilePage: UIViewController, IGListAdapterDataSource, UIImagePickerContr
         var options = PullToRefreshOption();
         options.fixedSectionHeader = false;
         collectionView.addPullRefresh(options: options, refreshCompletion: { (Void) in
-            self.adapter.performUpdates(animated: true, completion: nil);
-            self.reloadLabels();
             
-            self.collectionView.stopPullRefreshEver();
+            util.loadUsersPhotos(user: self.useUser, continous: true, completion: {
+                self.adapter.performUpdates(animated: true, completion: nil);
+                self.reloadLabels();
+                self.collectionView.stopPullRefreshEver();
+            })
+            
         });
         
         
@@ -276,6 +279,7 @@ class ProfilePage: UIViewController, IGListAdapterDataSource, UIImagePickerContr
         nameLabel.text = "\(useUser.firstName) \(useUser.lastName)";
         followersLabel.text = "Followers: \(useUser.followers.count)";
         followingLabel.text = "Following: \(useUser.following.count)";
+        profilePicture.image = useUser.profilepic;
         
         privateLabel.text = "\(useUser.username) is private. Send a follow request to see their photos.";
         if useUser !== currentUser {

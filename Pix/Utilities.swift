@@ -61,7 +61,7 @@ class Utilities: NSObject {
                         if(aPost?.isProfilePicture == false) {
                             
                             user.posts.append(aPost!);
-                            self.debug(message: "Added: \(aPost!.toString())");
+                            self.debug(message: "Loaded: \(aPost!.toString())");
                             
                         } else {
                             
@@ -117,7 +117,7 @@ class Utilities: NSObject {
                         if(aPost?.isProfilePicture == false) {
                             
                             user.posts.append(aPost!);
-                            self.debug(message: "Added: \(aPost!.toString())");
+                            self.debug(message: "Loaded: \(aPost!.toString())");
                             
                         } else {
                             
