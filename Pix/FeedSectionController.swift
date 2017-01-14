@@ -42,8 +42,8 @@ class FeedSectionController: IGListSectionController, IGListSectionType {
         
         cell.post = post;
         cell.vc = self.vc;
-        cell.imageView.image = cell.post.photo.image!;
-        cell.captionLabel.text = "\(cell.post.caption.text!)";
+        cell.imageView.image = cell.post.photo;
+        cell.captionLabel.text = "\(cell.post.caption)";
         cell.likesLabel.text = "Likes: \(cell.post.likes)";
         cell.uploaderLabel.text = "\(cell.post.uploader.firstName) \(cell.post.uploader.lastName)";
         

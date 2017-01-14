@@ -134,6 +134,38 @@ class FeedPage: UIViewController, IGListAdapterDataSource, UIImagePickerControll
     
     
     
+    /**
+     Loads all of the photos for each person that the current user is following.
+     */
+    public func loadFollowingPhotos() {
+        // Remove every post that is currently in the post feed.
+        postFeed.removeAll();
+        
+        
+        // Go through each userID in the current user's following array.
+        for uid in currentUser.following {
+            
+            // Find that user in firebase.
+            fireRef.child("Users").child(uid).observeSingleEvent(of: .value, with: { (snapshot: FIRDataSnapshot) in
+                
+                // Get a user object.
+                let value = snapshot.value as? NSDictionary ?? [:];
+                let followingUser = value.toUser();
+                
+                
+                // Load all of the photos for the following user.
+                util.loadUsersPhotos(user: followingUser, continous: false, completion: nil);
+                
+            
+            }) // End of observe.
+            
+        } // End of for loop.
+        
+    } // End of method.
+    
+    
+    
+    
     
     /* Loads the photos for all of the people that this user is following. */
     public func loadPhotos() {

@@ -103,8 +103,8 @@ class PostDetailPage: UIViewController {
 
         
         // Get the important info.
-        imageView.image = post.photo.image!;
-        captionLabel.text = "\(post.caption.text!)";
+        imageView.image = post.photo;
+        captionLabel.text = "\(post.caption!)";
         likesLabel.text = "Likes: \(post.likes)";
         uploaderLabel.text = "\(post.uploader.firstName) \(post.uploader.lastName)";
         

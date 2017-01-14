@@ -40,7 +40,7 @@ class ProfileSectionController: IGListSectionController, IGListSectionType {
     func cellForItem(at index: Int) -> UICollectionViewCell {
         let cell = collectionContext!.dequeueReusableCell(of: ProfilePageCell.self, for: self, at: index) as! ProfilePageCell;
         
-        cell.imageView.image = post?.photo.image!;
+        cell.imageView.image = post?.photo;
         cell.setup();
         
         

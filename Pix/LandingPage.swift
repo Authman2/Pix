@@ -275,14 +275,16 @@ class LandingPage: UIViewController {
                             
                         } // End of for loop.
                         
-                        util.loadUsersPhotos(user: currentUser, continous: true, completion: {
-                            self.debug(message: "Loading all of the user's posts...");
-                            feedPage.loadPhotos();
-                            feedPage.copyOverAndReload();
-                            util.loadActivity();
-                            self.goToApp();
-                        });
                         
+                        
+                        // Load up the current user's photos while moving to the main app.
+                        util.loadUsersPhotos(user: currentUser, continous: true, completion: {
+                            self.debug(message: "Successfully loaded the current user's photos!");
+                        });
+                        feedPage.loadPhotos();
+                        feedPage.copyOverAndReload();
+                        util.loadActivity();
+                        self.goToApp();
                         self.debug(message: "Signed In!");
                     });
 

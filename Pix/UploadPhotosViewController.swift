@@ -72,7 +72,7 @@ class UploadPhotosViewController: UIViewController {
         
         
         /* View layout stuff. */
-        imageView.image = post.photo.image;
+        imageView.image = post.photo;
         view.addSubview(imageView);
         view.addSubview(textArea);
         
@@ -103,7 +103,7 @@ class UploadPhotosViewController: UIViewController {
     
     @objc func uploadPost() {
         postButton.isEnabled = false;
-        post.caption.text = textArea.text!;
+        post.caption = textArea.text!;
         
         // Get a random name (id) for the post.
         let randomName = self.randomName();
@@ -111,7 +111,7 @@ class UploadPhotosViewController: UIViewController {
         post.flags = 0;
         
         let storageRef = FIRStorageReference().child("\(currentUser.uid)/\(randomName).jpg");
-        let data = UIImageJPEGRepresentation(self.post.photo.image!, 100) as NSData?;
+        let data = UIImageJPEGRepresentation(self.post.photo, 100) as NSData?;
         
         let _ = storageRef.put(data! as Data, metadata: nil) { (metaData, error) in
             

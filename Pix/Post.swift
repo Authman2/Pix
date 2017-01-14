@@ -19,22 +19,10 @@ public class Post: NSObject, IGListDiffable {
      ********************************/
     
     /* The image view of the photo that is uploaded on this post. */
-    var photo: UIImageView = {
-        let p = UIImageView();
-        p.translatesAutoresizingMaskIntoConstraints = false;
-        
-        return p;
-    }();
-    
+    var photo: UIImage!;
     
     /* The caption on the photo. */
-    var caption: UILabel = {
-        let c = UILabel();
-        c.translatesAutoresizingMaskIntoConstraints = false;
-        c.textColor = UIColor.black;
-        
-        return c;
-    }();
+    var caption: String!;
     
     
     /* The number of likes on this post. */
@@ -67,8 +55,8 @@ public class Post: NSObject, IGListDiffable {
      ********************************/
     
     init(photo: UIImage?, caption: String?, Uploader: User?, ID: String?) {
-        self.photo.image = photo;
-        self.caption.text = caption;
+        self.photo = photo;
+        self.caption = caption;
         self.uploader = Uploader;
         self.id = ID;
     }
@@ -79,7 +67,7 @@ public class Post: NSObject, IGListDiffable {
     func toDictionary() -> NSDictionary {
         let dict = NSDictionary(dictionary: ["image" : id+".jpg",
                                              "id" : id,
-                                             "caption" : caption.text!,
+                                             "caption" : caption,
                                              "likes" : likes,
                                              "is_profile_picture" : isProfilePicture,
                                              "flags" : flags]);
@@ -89,7 +77,7 @@ public class Post: NSObject, IGListDiffable {
     
     
     func toString() -> String {
-        return "id=\(id!), caption=\(caption.text!), likes=\(likes), profile picture?: \(isProfilePicture)";
+        return "id=\(id!), caption=\(caption), likes=\(likes), profile picture?: \(isProfilePicture)";
     }
     
     

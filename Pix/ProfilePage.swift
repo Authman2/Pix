@@ -361,13 +361,6 @@ class ProfilePage: UIViewController, IGListAdapterDataSource, UIImagePickerContr
             fireRef.child("Users").child(currentUser.uid).setValue(currentUser.toDictionary());
             fireRef.child("Users").child(useUser.uid).setValue(useUser.toDictionary());
             
-            // Remove all of the photos from the feed page that belong to this user.
-            if feedPage.postFeed.count > 0 {
-                for post in useUser.posts {
-                    feedPage.postFeed.removeItem(item: post);
-                }
-            }
-            
             //feedPage.loadPhotos();
         
             
@@ -480,46 +473,45 @@ class ProfilePage: UIViewController, IGListAdapterDataSource, UIImagePickerContr
         
         if let photo = info[UIImagePickerControllerOriginalImage] as? UIImage {
                 
-                // Set the picture on the image view and also on the actual user object.
-                profilePicture.image = photo;
-                let id = useUser.profilePicName;
-                useUser.profilepic = photo;
-                
-                
-                // Delete the old picture from firebase, and replace it with the new one, but keep the same id.
-                let storageRef = FIRStorageReference().child("\(useUser.uid)/\(id!).jpg");
-                storageRef.delete { error in
-                    // If there's an error.
-                    if let error = error {
-                        self.debug(message: "There was an error deleting the image: \(error)");
-                    } else {
+            // Set the picture on the image view and also on the actual user object.
+            profilePicture.image = photo;
+            let id = useUser.profilePicName;
+            useUser.profilepic = photo;
+            
+            
+            // Delete the old picture from firebase, and replace it with the new one, but keep the same id.
+            let storageRef = FIRStorageReference().child("\(useUser.uid)/\(id!).jpg");
+            storageRef.delete { error in
+                // If there's an error.
+                if let error = error {
+                    self.debug(message: "There was an error deleting the image: \(error)");
+                } else {
+                    // Save the new image.
+                    let data = UIImageJPEGRepresentation(photo, 100) as NSData?;
+                    
+                    let _ = storageRef.put(data! as Data, metadata: nil) { (metaData, error) in
                         
-                        // Save the new image.
-                        let data = UIImageJPEGRepresentation(photo, 100) as NSData?;
-                        
-                        let _ = storageRef.put(data! as Data, metadata: nil) { (metaData, error) in
+                        if (error == nil) {
                             
-                            if (error == nil) {
-                                
-                                let post = Post(photo: photo, caption: "", Uploader: self.useUser, ID: id!);
-                                post.isProfilePicture = true;
-                                let postObj = post.toDictionary();
-                                self.fireRef.child("Photos").child("\(self.useUser.uid)").child("\(id!)").setValue(postObj);
-                                self.debug(message: "Old profile picture was removed; replace with new one.");
-                                
-                            } else {
-                                print(error.debugDescription);
-                            }
+                            let post = Post(photo: photo, caption: "", Uploader: self.useUser, ID: id!);
+                            post.isProfilePicture = true;
+                            let postObj = post.toDictionary();
+                            self.fireRef.child("Photos").child("\(self.useUser.uid)").child("\(id!)").setValue(postObj);
+                            self.debug(message: "Old profile picture was removed; replace with new one.");
+                            
+                        } else {
+                            print(error.debugDescription);
                         }
-                        
                     }
+                    
                 }
-                
-                
-                // Dismiss view controller.
-                imgPicker.dismiss(animated: true, completion: nil);
-                
             }
+            
+            
+            // Dismiss view controller.
+            imgPicker.dismiss(animated: true, completion: nil);
+            
+        }
     }
 
     
