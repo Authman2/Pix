@@ -10,6 +10,7 @@ import UIKit
 import SnapKit
 import Firebase
 import OneSignal
+import Spring
 
 class SignUpPage: UIViewController {
 
@@ -87,8 +88,8 @@ class SignUpPage: UIViewController {
     
     
     /* The sign up button. */
-    let signupButton: UIButton = {
-        let s = UIButton();
+    let signupButton: SpringButton = {
+        let s = SpringButton();
         s.setTitle("Sign Up", for: .normal);
         s.backgroundColor = UIColor(red: 21/255, green: 180/255, blue: 133/255, alpha: 1);
         s.layer.cornerRadius = 25;
@@ -183,10 +184,13 @@ class SignUpPage: UIViewController {
     
     /* Goes to the sign up page. */
     @objc func signUp() {
+        
         if (self.fullnameField.text?.length())! > 0 {
             if (self.emailField.text?.length())! > 0 {
                 if (self.passwordField.text?.length())! > 0 {
                     if ((self.usernameField.text?.length())! > 0) {
+                        
+                        signupButton.animateButtonClick();
                      
                         fireRef.child("Users").observeSingleEvent(of: .value, with: { (snapshot: FIRDataSnapshot) in
                             

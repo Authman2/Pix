@@ -145,10 +145,9 @@ class FeedPage: UIViewController, IGListAdapterDataSource, UIImagePickerControll
             let following = value["following"] as? [String] ?? [];
             
             
-            // "name" is really the UID.
-            for name in following {
-                if !self.uids.containsUsername(username: name) {
-                    self.uids.append(name);
+            for uid in following {
+                if !self.uids.containsUsername(username: uid) {
+                    self.uids.append(uid);
                 }
             }
             
@@ -183,7 +182,7 @@ class FeedPage: UIViewController, IGListAdapterDataSource, UIImagePickerControll
             // Observe the photos.
             for user in self.users {
             
-                landingPage.loadUsersPhotos(user: user, continous: true, completion: nil);
+                util.loadUsersPhotos(user: user, continous: true, completion: nil);
                 self.copyOverAndReload();
             
             } // End of getting users' photos for loop.

@@ -35,6 +35,7 @@
 		5AF109011E26A4800030D4DF /* BlockedUserSectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF109001E26A4800030D4DF /* BlockedUserSectionController.swift */; };
 		5AF109031E26A48B0030D4DF /* BlockedUserCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF109021E26A48B0030D4DF /* BlockedUserCell.swift */; };
 		5AF109051E26ABCF0030D4DF /* UnblockUserPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF109041E26ABCF0030D4DF /* UnblockUserPage.swift */; };
+		5AF33C681E2A9C7A00BA6B94 /* Utilities.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF33C671E2A9C7A00BA6B94 /* Utilities.swift */; };
 		5AF346381E0AF2F5002FB896 /* LandingPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AF346371E0AF2F5002FB896 /* LandingPage.swift */; };
 		5AF5CC161E1DB9C7007DE325 /* ActivityIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 5AF5CC121E1DB9C7007DE325 /* ActivityIcon.png */; };
 		5AF5CC171E1DB9C7007DE325 /* ExploreIcon.png in Resources */ = {isa = PBXBuildFile; fileRef = 5AF5CC131E1DB9C7007DE325 /* ExploreIcon.png */; };
@@ -77,6 +78,7 @@
 		5AF109001E26A4800030D4DF /* BlockedUserSectionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockedUserSectionController.swift; sourceTree = "<group>"; };
 		5AF109021E26A48B0030D4DF /* BlockedUserCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockedUserCell.swift; sourceTree = "<group>"; };
 		5AF109041E26ABCF0030D4DF /* UnblockUserPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = UnblockUserPage.swift; sourceTree = "<group>"; };
+		5AF33C671E2A9C7A00BA6B94 /* Utilities.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Utilities.swift; sourceTree = "<group>"; };
 		5AF346371E0AF2F5002FB896 /* LandingPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LandingPage.swift; sourceTree = "<group>"; };
 		5AF5CC121E1DB9C7007DE325 /* ActivityIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ActivityIcon.png; sourceTree = "<group>"; };
 		5AF5CC131E1DB9C7007DE325 /* ExploreIcon.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = ExploreIcon.png; sourceTree = "<group>"; };
@@ -240,6 +242,7 @@
 				5A28BE491E1459C900DD0396 /* CircleImageView.swift */,
 				5A1BA7631E21C20800666EC9 /* EmptyViews.swift */,
 				5A8C7DEF1E25A7A300F3F687 /* ActionSheet.swift */,
+				5AF33C671E2A9C7A00BA6B94 /* Utilities.swift */,
 			);
 			name = Extras;
 			sourceTree = "<group>";
@@ -402,6 +405,7 @@
 				5AF109011E26A4800030D4DF /* BlockedUserSectionController.swift in Sources */,
 				5AD6455F1E0D819B00E5929C /* ProfilePage.swift in Sources */,
 				5A44AB461E1C7ACB0029A480 /* ActivityPage.swift in Sources */,
+				5AF33C681E2A9C7A00BA6B94 /* Utilities.swift in Sources */,
 				5A3121171E24562500B38C45 /* TermsOfServicePage.swift in Sources */,
 				5AD645621E0DB5A400E5929C /* ProfilePageCell.swift in Sources */,
 				5ABBC9061E1083E70056CE16 /* ExploreCell.swift in Sources */,
@@ -556,7 +560,7 @@
 					"$(PROJECT_DIR)/build/Debug-iphoneos/Spring",
 				);
 				INFOPLIST_FILE = Pix/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.adeolauthman.Pix;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -582,7 +586,7 @@
 					"$(PROJECT_DIR)/build/Debug-iphoneos/Spring",
 				);
 				INFOPLIST_FILE = Pix/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.2;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.adeolauthman.Pix;
 				PRODUCT_NAME = "$(TARGET_NAME)";

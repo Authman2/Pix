@@ -64,7 +64,7 @@ class ActionSheet: UIViewController {
         
         titleLabel.anchorToEdge(.top, padding: 5, width: view.width, height: 15);
         flag.align(.underCentered, relativeTo: titleLabel, padding: 30, width: view.width, height: 30);
-        cancel.align(.underCentered, relativeTo: flag, padding: 0, width: view.width, height: 30);
+        cancel.anchorToEdge(.bottom, padding: 10, width: view.width, height: 30);
         
         cancel.addTarget(self, action: #selector(cancelMethod), for: .touchUpInside);
         flag.addTarget(self, action: #selector(flagMethod), for: .touchUpInside);

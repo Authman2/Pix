@@ -131,6 +131,10 @@ public extension NSObject {
         return false;
     }
 
+    /// Prints a debug message using a nice looking format.
+    public func debug(message: Any) {
+        print("----------> \(message)");
+    }
 }
 
 
@@ -318,15 +322,6 @@ public extension Array {
     
     
 }
-
-
-public extension UIViewController {
-    /// Prints a debug message using a nice looking format.
-    public func debug(message: String) {
-        print("----------> \(message)");
-    }
-}
-
 
 
 public extension NSDictionary {

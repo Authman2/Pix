@@ -439,7 +439,7 @@ class ProfilePage: UIViewController, IGListAdapterDataSource, UIImagePickerContr
             
             
             // Update the current user object.
-            landingPage.reloadCurrentUser();
+            //util.reloadCurrentUser();
             
             
             // Send notification.
