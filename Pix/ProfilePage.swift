@@ -23,9 +23,6 @@ class ProfilePage: UIViewController, IGListAdapterDataSource, UIImagePickerContr
      *
      ********************************/
     
-    /* The user to use for displaying data on this profile page.*/
-    var useUser: User!;
-    
     
     /* The adapter. */
     lazy var adapter: IGListAdapter = {
@@ -106,24 +103,7 @@ class ProfilePage: UIViewController, IGListAdapterDataSource, UIImagePickerContr
         
         return n;
     }();
-    
-    
-    /* A button to follow a user. */
-    let followButton: UIButton = {
-        let a = UIButton();
-        a.setTitle("Follow", for: .normal);
-        a.backgroundColor = UIColor(red: 21/255, green: 180/255, blue: 133/255, alpha: 1);
-        a.layer.cornerRadius = 20;
-        a.titleLabel?.font = UIFont(name: (a.titleLabel?.font.fontName)!, size: 15);
-        
-        return a;
-    }();
-    
-    
-    
-    /* The button for logging out. */
-    var backButton: UIBarButtonItem!;
-    
+
     
     /* The button used for editing the profile. */
     var editProfileButton: UIBarButtonItem!;
@@ -166,7 +146,6 @@ class ProfilePage: UIViewController, IGListAdapterDataSource, UIImagePickerContr
         view.addSubview(nameLabel);
         view.addSubview(followersLabel);
         view.addSubview(followingLabel);
-        view.addSubview(followButton);
         
         profilePicture.snp.makeConstraints { (maker: ConstraintMaker) in
             maker.centerX.equalTo(view.snp.centerX);
@@ -198,16 +177,10 @@ class ProfilePage: UIViewController, IGListAdapterDataSource, UIImagePickerContr
             maker.height.equalTo(20);
             maker.top.equalTo(followersLabel.snp.bottom).offset(5);
         }
-        followButton.snp.makeConstraints { (maker: ConstraintMaker) in
-            maker.centerX.equalTo(view.snp.centerX);
-            maker.width.equalTo(view.width / 4.2);
-            maker.height.equalTo(35);
-            maker.top.equalTo(followingLabel.snp.bottom).offset(5);
-        }
         collectionView.snp.makeConstraints({ (maker: ConstraintMaker) in
             maker.width.equalTo(view.frame.width);
             maker.centerX.equalTo(view);
-            maker.top.equalTo(followButton.snp.bottom).offset(10);
+            maker.top.equalTo(followingLabel.snp.bottom).offset(10);
             maker.bottom.equalTo(view.snp.bottom);
         })
         
@@ -216,27 +189,17 @@ class ProfilePage: UIViewController, IGListAdapterDataSource, UIImagePickerContr
         options.fixedSectionHeader = false;
         collectionView.addPullRefresh(options: options, refreshCompletion: { (Void) in
             
-            util.loadUsersPhotos(user: self.useUser, continous: true, completion: {
-                self.adapter.performUpdates(animated: true, completion: nil);
+            //self.adapter.performUpdates(animated: true, completion: nil);
+            self.adapter.reloadData(completion: { (b: Bool) in
                 self.reloadLabels();
                 self.collectionView.stopPullRefreshEver();
             })
-            
-        });
-        
+        });        
         
         /* Bar button item. */
-        backButton = UIBarButtonItem(title: "< Back", style: .plain, target: self, action: #selector(goBack));
-        backButton.tintColor = .white;
-        navigationItem.leftBarButtonItem = backButton;
         editProfileButton = UIBarButtonItem(title: "Edit", style: .plain, target: self, action: #selector(editProfile));
         editProfileButton.tintColor = .white;
         navigationItem.rightBarButtonItem = editProfileButton;
-        
-        
-        /* Follow button. */
-        followButton.addTarget(self, action: #selector(followUser), for: .touchUpInside);
-        
         
         /* Profile pic image picker. */
         imgPicker.delegate = self;
@@ -250,69 +213,32 @@ class ProfilePage: UIViewController, IGListAdapterDataSource, UIImagePickerContr
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated);
-        self.adapter.performUpdates(animated: true, completion: nil);
-        
-        if useUser !== currentUser {
-            backButton.isEnabled = true;
-            backButton.tintColor = .white;
-            editProfileButton.isEnabled = false;
-            editProfileButton.tintColor = navigationController?.navigationBar.barTintColor;
-        } else {
-            backButton.isEnabled = false;
-            backButton.tintColor = navigationController?.navigationBar.barTintColor;
-            editProfileButton.isEnabled = true;
-            editProfileButton.tintColor = .white;
+        //self.adapter.performUpdates(animated: true, completion: nil);
+        self.adapter.reloadData { (b: Bool) in
+            self.debug(message: "PHOTOS: \(currentUser.posts)");
         }
+        
+        editProfileButton.isEnabled = true;
+        editProfileButton.tintColor = .white;
         
         self.reloadLabels();
         
-        if canChangeProfilePic == false {
-            profilePicture.removeGestureRecognizer(tap);
-        } else {
-            profilePicture.addGestureRecognizer(tap);
-        }
+        profilePicture.addGestureRecognizer(tap);
         
     } // End of viewDidAppear().
     
     
     func reloadLabels() {
-        nameLabel.text = "\(useUser.firstName) \(useUser.lastName)";
-        followersLabel.text = "Followers: \(useUser.followers.count)";
-        followingLabel.text = "Following: \(useUser.following.count)";
-        profilePicture.image = useUser.profilepic;
+        nameLabel.text = "\(currentUser.firstName) \(currentUser.lastName)";
+        followersLabel.text = "Followers: \(currentUser.followers.count)";
+        followingLabel.text = "Following: \(currentUser.following.count)";
+        profilePicture.image = currentUser.profilepic;
         
-        privateLabel.text = "\(useUser.username) is private. Send a follow request to see their photos.";
-        if useUser !== currentUser {
-            if useUser.isPrivate == false || (useUser.isPrivate == true && currentUser.following.containsUsername(username: profilePage.useUser.uid)) {
-                privateLabel.isHidden = true;
-                collectionView.isHidden = false;
-            } else {
-                privateLabel.isHidden = false;
-                collectionView.isHidden = true;
-            }
-            
-            
-            // Blocked users.
-            // You cannot follow/unfollow or see the photos of users who you blocked.
-            if currentUser.blockedUsers.containsUsername(username: useUser.uid) || useUser.blockedUsers.containsUsername(username: currentUser.uid) {
-                
-                collectionView.isHidden = true;
-                followButton.isHidden = true;
-                
-            } else {
-                
-                collectionView.isHidden = false;
-                followButton.isHidden = false;
-                
-            }
-        }
+        privateLabel.text = "\(currentUser.username) is private. Send a follow request to see their photos.";
         
-        profilePicture.image = useUser.profilepic;
-    }
-    
-    
-    @objc func goBack() {
-        let _ = navigationController?.popViewController(animated: true);
+        privateLabel.isHidden = true;
+        collectionView.isHidden = false;
+        profilePicture.image = currentUser.profilepic;
     }
     
     
@@ -320,12 +246,10 @@ class ProfilePage: UIViewController, IGListAdapterDataSource, UIImagePickerContr
         do {
             try FIRAuth.auth()?.signOut();
             currentUser = nil;
-            feedPage.users.removeAll();
-            feedPage.uids.removeAll();
+            feedPage.followingUsers.removeAll();
             feedPage.postFeed.removeAll();
             explorePage.listOfUsers.removeAll();
             explorePage.listOfUsers_fb.removeAllObjects();
-            self.useUser = nil;
             
             let _ = navigationController?.popToRootViewController(animated: true);
             self.debug(message: "Signed out!");
@@ -342,117 +266,14 @@ class ProfilePage: UIViewController, IGListAdapterDataSource, UIImagePickerContr
     
     
     
-    /* Makes the current user follow the user on this profile page.
-     PRECONDITION: The user being displayed is NOT the current user.
-     POSTCONDITION: It is always the CURRENT USER who has this user added to their following, and the useUse who gets the CURRENT USER added to their followers.*/
-    @objc func followUser() {
-        
-        // Unfollow
-        if(self.followButton.titleLabel?.text == "Unfollow") {
-            
-            // Set the values of the objects.
-            if currentUser.following.containsUsername(username: useUser.uid) {
-                currentUser.following.removeItem(item: useUser.uid);
-            }
-            if useUser.followers.containsUsername(username: currentUser.uid) {
-                useUser.followers.removeItem(item: currentUser.uid);
-            }
-            
-            // Update the button.
-            self.followButton.setTitle("Follow", for: .normal);
-            
-            // Update both users in firebase.
-            fireRef.child("Users").child(currentUser.uid).setValue(currentUser.toDictionary());
-            fireRef.child("Users").child(useUser.uid).setValue(useUser.toDictionary());
-            
-            //feedPage.loadPhotos();
-        
-            
-        // Otherwise, check if the follower/following connection is already there. If not, continue...
-        } else {
-                
-                // If the user is not private then just follow them. Otherwise send a follow request.
-                if useUser.isPrivate == false {
-                    
-                    self.acceptFollowRequest(user: useUser, followDirection: .fromTo);
-                    
-                } else {
-                    
-                    if followButton.titleLabel?.text != "Requested" && followButton.titleLabel?.text != "Unfollow" {
-                        
-                        // Update the button.
-                        self.followButton.setTitle("Requested", for: .normal);
-                        
-                        // Send a follow request.
-                        if(useUser.notification_ID != currentUser.notification_ID) {
-                            OneSignal.postNotification(["contents": ["en": "\(currentUser.username) wants to follow you!"], "include_player_ids": ["\(useUser.notification_ID)"]], onSuccess: { (dict: [AnyHashable : Any]?) in
-                                
-                                self.debug(message: "Follow request notification was sent!");
-                                
-                            }, onFailure: { (error: Error?) in
-                                self.debug(message: "There was an error sending the notification.");
-                            })
-                        }
-                    }
-                }
-                
-        }
-        
-        // Reload the labels.
-        self.reloadLabels();
-        
-    } // End of followUser() method.
     
     
     
-    public func acceptFollowRequest(user: User, followDirection: followDirection) {
-        // Make sure it is not the same user.
-        if user !== currentUser || user.uid != currentUser.uid {
-            
-            // Set the values of the objects.
-            if followDirection == .toFrom {
-                if(!currentUser.followers.containsUsername(username: user.uid)) {
-                    currentUser.followers.append(user.uid);
-                }
-                if(!user.following.containsUsername(username: currentUser.uid)) {
-                    user.following.append(currentUser.uid);
-                }
-            } else {
-                if(!currentUser.following.containsUsername(username: user.uid)) {
-                    currentUser.following.append(user.uid);
-                }
-                if(!user.followers.containsUsername(username: currentUser.uid)) {
-                    user.followers.append(currentUser.uid);
-                }
-            }
-
-            
-            // Update the button.
-            self.followButton.setTitle("Unfollow", for: .normal);
-            
-            // Update both users in firebase.
-            fireRef.child("Users").child(currentUser.uid).setValue(currentUser.toDictionary());
-            fireRef.child("Users").child(user.uid).setValue(user.toDictionary());
-            
-            
-            // Update the current user object.
-            //util.reloadCurrentUser();
-            
-            
-            // Send notification.
-            if(user.notification_ID != currentUser.notification_ID) {
-                OneSignal.postNotification(["contents": ["en": "\(currentUser.username) started following you!"], "include_player_ids": ["\(user.notification_ID)"]], onSuccess: { (dict: [AnyHashable : Any]?) in
-                    
-                    self.debug(message: "Follow notification was sent!");
-                    
-                }, onFailure: { (error: Error?) in
-                    self.debug(message: "There was an error sending the notification.");
-                })
-            }
-            
-            self.debug(message: "Follow request accepted!");
-        }
-    }
+    
+    
+    
+    
+    
     
     
     
@@ -479,12 +300,12 @@ class ProfilePage: UIViewController, IGListAdapterDataSource, UIImagePickerContr
                 
             // Set the picture on the image view and also on the actual user object.
             profilePicture.image = photo;
-            let id = useUser.profilePicName;
-            useUser.profilepic = photo;
+            let id = currentUser.profilePicName;
+            currentUser.profilepic = photo;
             
             
             // Delete the old picture from firebase, and replace it with the new one, but keep the same id.
-            let storageRef = FIRStorageReference().child("\(useUser.uid)/\(id!).jpg");
+            let storageRef = FIRStorageReference().child("\(currentUser.uid)/\(id!).jpg");
             storageRef.delete { error in
                 // If there's an error.
                 if let error = error {
@@ -497,10 +318,10 @@ class ProfilePage: UIViewController, IGListAdapterDataSource, UIImagePickerContr
                         
                         if (error == nil) {
                             
-                            let post = Post(photo: photo, caption: "", Uploader: self.useUser, ID: id!);
+                            let post = Post(photo: photo, caption: "", Uploader: currentUser, ID: id!);
                             post.isProfilePicture = true;
                             let postObj = post.toDictionary();
-                            self.fireRef.child("Photos").child("\(self.useUser.uid)").child("\(id!)").setValue(postObj);
+                            self.fireRef.child("Photos").child("\(currentUser.uid)").child("\(id!)").setValue(postObj);
                             self.debug(message: "Old profile picture was removed; replace with new one.");
                             
                         } else {
@@ -542,7 +363,7 @@ class ProfilePage: UIViewController, IGListAdapterDataSource, UIImagePickerContr
     
     
     func objects(for listAdapter: IGListAdapter) -> [IGListDiffable] {
-        return useUser.posts;
+        return currentUser.posts;
     }
     
     func listAdapter(_ listAdapter: IGListAdapter, sectionControllerFor object: Any) -> IGListSectionController {
@@ -550,7 +371,7 @@ class ProfilePage: UIViewController, IGListAdapterDataSource, UIImagePickerContr
     }
     
     func emptyView(for listAdapter: IGListAdapter) -> UIView? {
-        return EmptyPhotoView();
+        return EmptyPhotoView(place: .top);
     }
     
 }

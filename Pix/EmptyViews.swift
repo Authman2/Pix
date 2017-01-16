@@ -21,12 +21,33 @@ class EmptyPhotoView: UIView {
         return a;
     }();
     
+    enum placement {
+        case top;
+        case center;
+    }
     
+    
+    var place: placement?;
+    
+    
+    init(place: placement) {
+        super.init(frame: CGRect.zero);
+        self.place = place;
+    }
+    
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
     
     
     override func layoutSubviews() {
         addSubview(titleLabel);
-        titleLabel.anchorInCenter(width: width, height: height);
+        
+        if place == .center {
+            titleLabel.anchorInCenter(width: width, height: height);
+        } else {
+            titleLabel.anchorToEdge(.top, padding: 0, width: width, height: height);
+        }
     }
     
 }

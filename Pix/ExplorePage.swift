@@ -164,39 +164,40 @@ class ExplorePage: UITableViewController, UISearchResultsUpdating {
     
     override func tableView(_ tableView: UITableView, didSelectRowAt indexPath: IndexPath) {
         if listOfUsers.count > 0 {
-            // Update
-            util.reloadCurrentUser();
             
             // Tell the profile page which user to use.
-            profilePage.useUser = listOfUsers[indexPath.row];
+            otherProfilePage.useUser = listOfUsers[indexPath.row];
             
             if(currentUser.following.containsUsername(username: listOfUsers[indexPath.row].uid)) {
-                profilePage.followButton.setTitle("Unfollow", for: .normal);
+                otherProfilePage.followButton.setTitle("Unfollow", for: .normal);
             } else {
-                profilePage.followButton.setTitle("Follow", for: .normal);
+                otherProfilePage.followButton.setTitle("Follow", for: .normal);
             }
             
             
             // Load all of that user's photos.
             
             /* CHECK IF PRIVATE ACCOUNT. */
-            if profilePage.useUser.isPrivate == false || (profilePage.useUser.isPrivate == true && currentUser.following.containsUsername(username: profilePage.useUser.uid)) {
+            if otherProfilePage.useUser.isPrivate == false || (otherProfilePage.useUser.isPrivate == true && currentUser.following.containsUsername(username: otherProfilePage.useUser.uid)) {
                 
-                profilePage.canChangeProfilePic = false;
-                profilePage.privateLabel.isHidden = true;
+                util.loadUsersPhotos(user: otherProfilePage.useUser, continous: true, completion: {
+                    otherProfilePage.adapter.reloadData(completion: { (b: Bool) in
+                        otherProfilePage.reloadLabels();
+                    });
+                });
+                otherProfilePage.privateLabel.isHidden = true;
+                otherProfilePage.collectionView.isHidden = false;
                 
             } else {
                 
-                profilePage.canChangeProfilePic = false;
-                profilePage.privateLabel.isHidden = false;
+                otherProfilePage.privateLabel.isHidden = false;
+                otherProfilePage.collectionView.isHidden = true;
                 
             }
             
             // Go to the next page.
-            navigationController?.pushViewController(profilePage, animated: true);
-            profilePage.navigationItem.title = "\(listOfUsers[indexPath.row].username)";
-            
-            profilePage.reloadLabels();
+            navigationController?.pushViewController(otherProfilePage, animated: true);
+            otherProfilePage.navigationItem.title = "\(listOfUsers[indexPath.row].username)";
         }
     }
     

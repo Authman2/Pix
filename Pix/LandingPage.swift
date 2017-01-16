@@ -281,8 +281,6 @@ class LandingPage: UIViewController {
                         util.loadUsersPhotos(user: currentUser, continous: true, completion: {
                             self.debug(message: "Successfully loaded the current user's photos!");
                         });
-                        feedPage.loadPhotos();
-                        feedPage.copyOverAndReload();
                         util.loadActivity();
                         self.goToApp();
                         self.debug(message: "Signed In!");

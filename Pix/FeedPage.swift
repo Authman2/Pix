@@ -50,8 +50,7 @@ class FeedPage: UIViewController, IGListAdapterDataSource, UIImagePickerControll
     
     
     // Temporary array for the users that currentUser is following.
-    var uids: [String] = [String]();
-    var users: [User] = [User]();
+    var followingUsers: [User] = [User]();
     
     
     /* The firebase database reference. */
@@ -92,11 +91,23 @@ class FeedPage: UIViewController, IGListAdapterDataSource, UIImagePickerControll
         var options = PullToRefreshOption();
         options.fixedSectionHeader = false;
         collectionView.addPullRefresh(options: options, refreshCompletion: { (Void) in
-            self.refreshFollowedUsers();
-            self.copyOverAndReload();
-            self.adapter.performUpdates(animated: true, completion: nil);
             
-            self.collectionView.stopPullRefreshEver();
+            self.gatherUsers(completion: {
+                //self.debug(message: "FOLLOWING: \(self.followingUsers)");
+                
+                if !currentUser.following.isEmpty {
+                    
+                    self.loadFollowingPhotos(eachCompletion: {
+                        //self.debug(message: "POSTS: \(self.postFeed)");
+                        
+                        self.refreshFeed();
+                    });
+                    
+                } else {
+                    self.refreshFeed();
+                }
+            });
+        
         });
         
     } // End of viewDidLoad().
@@ -115,11 +126,12 @@ class FeedPage: UIViewController, IGListAdapterDataSource, UIImagePickerControll
         navigationItem.hidesBackButton = true;
         navigationItem.title = "Feed";
         
-        self.copyOverAndReload();
-        self.adapter.performUpdates(animated: true, completion: nil);
-        collectionView.stopPullRefreshEver();
         
-        debug(message: "SIZE: \(postFeed.count)");
+        // Remove any posts that belong to people you have unfollowed recently.
+        self.removeUnfollowedPosts(completion: {
+            //self.debug(message: "UNFOLLOWED POSTS: \(self.postFeed)");
+        });
+        
     } // End of viewDidAppear().
     
     
@@ -134,139 +146,121 @@ class FeedPage: UIViewController, IGListAdapterDataSource, UIImagePickerControll
     
     
     
+    
+    /********************************
+     *
+     *          FEED DATA
+     *
+     ********************************/
+    
+    
     /**
-     Loads all of the photos for each person that the current user is following.
+     Finds all of the users that the current user is following.
      */
-    public func loadFollowingPhotos() {
-        // Remove every post that is currently in the post feed.
-        postFeed.removeAll();
+    public func gatherUsers(completion: (()->Void)?) {
+        self.followingUsers.removeAll();
         
         
-        // Go through each userID in the current user's following array.
-        for uid in currentUser.following {
+        // Find that user in firebase.
+        fireRef.child("Users").observeSingleEvent(of: .value, with: { (snapshot: FIRDataSnapshot) in
             
-            // Find that user in firebase.
-            fireRef.child("Users").child(uid).observeSingleEvent(of: .value, with: { (snapshot: FIRDataSnapshot) in
+            let userDictionary = snapshot.value as? [String : AnyObject] ?? [:];
+            
+            for user in userDictionary {
                 
                 // Get a user object.
-                let value = snapshot.value as? NSDictionary ?? [:];
-                let followingUser = value.toUser();
+                let value = user.value as? NSDictionary;
+                let usr = User(dictionary: value!);
                 
                 
-                // Load all of the photos for the following user.
-                util.loadUsersPhotos(user: followingUser, continous: false, completion: nil);
-                
+                // Add to the array if it has the same uid.
+                if currentUser.following.contains(usr.uid) {
+                    self.followingUsers.append(usr);
+                }
+            }
             
-            }) // End of observe.
-            
-        } // End of for loop.
+            if let comp = completion {
+                comp();
+            }
+        });
         
     } // End of method.
     
     
     
     
-    
-    /* Loads the photos for all of the people that this user is following. */
-    public func loadPhotos() {
-       
-        // Observe the users.
-        fireRef.child("Users").child(currentUser.uid).observe(.value) { (snapshot: FIRDataSnapshot) in
+    /**
+     Loads all of the photos for each person that the current user is following.
+     */
+    public func loadFollowingPhotos(eachCompletion: (()->Void)?) {
         
-            let value = snapshot.value as? [String : AnyObject] ?? [:];
-            let following = value["following"] as? [String] ?? [];
+        for user in self.followingUsers {
             
-            
-            for uid in following {
-                if !self.uids.containsUsername(username: uid) {
-                    self.uids.append(uid);
-                }
-            }
-            
-        } // End of observe following block.
-        
-        
-        // Observe the info for each user that is in following and create User objects.
-        fireRef.child("Users").observe(.value, with: { (snapshot: FIRDataSnapshot) in
-            
-            // Get the snapshot
-            let userDictionary = snapshot.value as? [String : AnyObject] ?? [:];
-            
-            // Look through each user.
-            for user in userDictionary {
-                let value = user.value as? NSDictionary ?? [:];
+            util.loadUsersPhotos(withoutImageData: user, continous: false, completion: {
                 
-                let usr = value.toUser();
-                
-                
-                // Make sure that this is a user we need to be looking at.
-                if(self.uids.containsUsername(username: usr.uid)) {
-                                        
-                    if !self.users.containsUser(username: usr.uid) {
-                        self.users.append(usr);
-                    }
+                for post in user.posts {
                     
-                } // End of if statement.
-                
-            } // End of user for loop.
-            
-            
-            // Observe the photos.
-            for user in self.users {
-            
-                util.loadUsersPhotos(user: user, continous: true, completion: nil);
-                self.copyOverAndReload();
-            
-            } // End of getting users' photos for loop.
-            
-            
-        }) // End of observe.
-        
-    } // End of load photos method.
-    
-    
-    
-    /* Puts all of the photos from each user into the overall array. 
-     Don't be afraid to call this method more than once; it is not grabbing any data over a network, so
-     you don't have to worry about it being slow or anything. */
-    public func copyOverAndReload() {
-        
-        // Load all of the photos.
-        for user in users {
-            
-            // Go through each post.
-            for post in user.posts {
-                
-                // If the post is not already in the array, add it. 
-                if !self.postFeed.containsID(id: post.id) {
-                    
-                    self.postFeed.append(post);
-                    
-                }
-            }
-        }
-    }
-    
-    
-    // COME BACK TO THIS WHEN YOU HAVE MORE QUOTA
-    public func refreshFollowedUsers() {
-        // Refresh the users and uids
-        for id in uids {
-            if !currentUser.following.containsUsername(username: id) {
-                if self.uids.containsUsername(username: id) {
-                    self.uids.removeItem(item: id);
-                    self.users.removeUser(with: id);
-                    
-                    for post in postFeed {
-                        if post.uploader.uid == id {
-                            postFeed.removeItem(item: post);
+                    post.photo = util.loadPostImage(user: user, aPost: post, success: { 
+                       
+                        if !self.postFeed.containsID(id: post.id) {
+                            self.postFeed.append(post);
                         }
-                    }
+                        
+                        if let comp = eachCompletion {
+                            comp();
+                        }
+                        
+                    });
+                    
                 }
-            }
-        }
-        self.adapter.performUpdates(animated: true, completion: nil);
+                
+            })
+//            util.loadUsersPhotos(user: user, continous: false, completion: {
+//                self.postFeed.append(contentsOf: user.posts);
+//                
+//                if let comp = eachCompletion {
+//                    comp();
+//                }
+//            });
+            
+        } // End of for loop.
+        
     }
+    
+    
+    
+    /**
+     Reload the collection view so that all of the correct photos are displayed.
+     */
+    public func refreshFeed() {
+        self.adapter.performUpdates(animated: true) { (b: Bool) in
+            self.collectionView.stopPullRefreshEver();
+        }
+    }
+    
+    
+    
+    
+    /**
+     Removes any posts from the news feed that belong to people the current user may have unfollowed since the last refresh.
+     */
+    public func removeUnfollowedPosts(completion: (()->Void)?) {
+        
+        for post in self.postFeed {
+            
+            if !currentUser.following.containsUsername(username: post.uploader.uid) {
+                
+                self.postFeed.removeItem(item: post);
+                
+            }
+            
+        } // End of for loop.
+        
+        if let comp = completion {
+            comp();
+        }
+    }
+    
     
     
     
@@ -318,7 +312,7 @@ class FeedPage: UIViewController, IGListAdapterDataSource, UIImagePickerControll
     }
     
     func emptyView(for listAdapter: IGListAdapter) -> UIView? {
-        return EmptyPhotoView();
+        return EmptyPhotoView(place: .center);
     }
     
 }

@@ -11,7 +11,6 @@ import UIKit
 import Firebase
 
 
-
 // A global reference to the utilities class.
 let util = Utilities();
 
@@ -22,13 +21,13 @@ class Utilities: NSObject {
     
     
     
-    /* Loads all of the current user's photos from the firebase database. This method is public, and
+    /** Loads all of the current user's photos from the firebase database. This method is public, and
      therefore should be used in any other class that needs to refresh the user's posts.
      PRECONDITION: current user is already initialized to the user that just logged in. */
     public func loadUsersPhotos(user: User, continous: Bool, completion: (()->Void)?) {
         
         // Start from the beginning.
-        user.posts.removeAll();
+        //user.posts.removeAll();
         
         // Profile picture stuff.
         var profPicPost: Post?;
@@ -51,25 +50,35 @@ class Utilities: NSObject {
                     // Get a post object.
                     let aPost = value?.toPost(user: user);
                     
-                    // Load the image for the post.
-                    aPost?.photo = self.loadPostImage(user: user, aPost: aPost, success: nil);
-                    
-                    // If this post (determined by the id variable) is not already in the array, add it.
-                    if(!user.posts.containsID(id: aPost!.id!)) {
+                    // Check if the user object already has this post. If so, update it and move on.
+                    // Otherwise, load it up from firebase.
+                    if user.posts.containsID(id: aPost!.id!) {
                         
-                        // Make sure it is not the profile picture. Otherwise just set that for the user here.
-                        if(aPost?.isProfilePicture == false) {
+                        continue;
+                        
+                        
+                    } else {
+                        // Load the image for the post.
+                        aPost?.photo = self.loadPostImage(user: user, aPost: aPost, success: {
+                            self.debug(message: "[Loaded the image data for \(aPost!.id!)]");
+                        });
+                        
+                        // If this post (determined by the id variable) is not already in the array, add it.
+                        if(!user.posts.containsID(id: aPost!.id!)) {
                             
-                            user.posts.append(aPost!);
-                            self.debug(message: "Loaded: \(aPost!.toString())");
-                            
-                        } else {
-                            
-                            profPicPost = aPost;
-                            
+                            // Make sure it is not the profile picture. Otherwise just set that for the user here.
+                            if(aPost?.isProfilePicture == false) {
+                                
+                                user.posts.append(aPost!);
+                                self.debug(message: "Loaded: \(aPost!.toString())");
+                                
+                            } else {
+                                
+                                profPicPost = aPost;
+                                
+                            }
                         }
                     }
-                    
                 } // End of for loop for each post.
                 
                 
@@ -89,6 +98,12 @@ class Utilities: NSObject {
                     }); // End of loading the profile picture.
                     
                 } // End of the profile picture checker.
+                else {
+                    // Run the completion block.
+                    if let comp = completion {
+                        comp();
+                    }
+                }
             };
         } else {
             
@@ -107,22 +122,33 @@ class Utilities: NSObject {
                     // Get a post object.
                     let aPost = value?.toPost(user: user);
                     
-                    // Load the image for the post.
-                    aPost?.photo = self.loadPostImage(user: user, aPost: aPost, success: nil);
-                    
-                    // If this post (determined by the id variable) is not already in the array, add it.
-                    if(!user.posts.containsID(id: aPost!.id!)) {
+                    // Check if the user object already has this post. If so, update it and move on.
+                    // Otherwise, load it up from firebase.
+                    if user.posts.containsID(id: aPost!.id!) {
                         
-                        // Make sure it is not the profile picture. Otherwise just set that for the user here.
-                        if(aPost?.isProfilePicture == false) {
+                        continue;
+                        
+                        
+                    } else {
+                        // Load the image for the post.
+                        aPost?.photo = self.loadPostImage(user: user, aPost: aPost, success: {
+                            self.debug(message: "[Loaded the image data for \(aPost!.id!)]");
+                        });
+                        
+                        // If this post (determined by the id variable) is not already in the array, add it.
+                        if(!user.posts.containsID(id: aPost!.id!)) {
                             
-                            user.posts.append(aPost!);
-                            self.debug(message: "Loaded: \(aPost!.toString())");
-                            
-                        } else {
-                            
-                            profPicPost = aPost;
-                            
+                            // Make sure it is not the profile picture. Otherwise just set that for the user here.
+                            if(aPost?.isProfilePicture == false) {
+                                
+                                user.posts.append(aPost!);
+                                self.debug(message: "Loaded: \(aPost!.toString())");
+                                
+                            } else {
+                                
+                                profPicPost = aPost;
+                                
+                            }
                         }
                     }
                     
@@ -145,14 +171,179 @@ class Utilities: NSObject {
                     }); // End of loading the profile picture.
                     
                 } // End of the profile picture checker.
+                else {
+                    // Run the completion block.
+                    if let comp = completion {
+                        comp();
+                    }
+                }
             };
             
         }
         
     } // End of the loadUsersPhotos() method.
-
-
     
+    
+    
+    
+    /** Loads all of the current user's photos from the firebase database. This method is public, and
+     therefore should be used in any other class that needs to refresh the user's posts. This method loads just the Post objects; it does not load any of the image data for those posts. This method is used for when you want to load the image data only after the Post objects have been loaded OR if you want to wait until the image data is loaded before calling the completion block.
+     PRECONDITION: current user is already initialized to the user that just logged in. */
+    public func loadUsersPhotos(withoutImageData user: User, continous: Bool, completion: (()->Void)?) {
+        
+        // Start from the beginning.
+        //user.posts.removeAll();
+        
+        // Profile picture stuff.
+        var profPicPost: Post?;
+        
+        
+        // Load all of the photo objects from the database.
+        if continous == false {
+            fireRef.child("Photos").child(user.uid).queryOrderedByPriority().observeSingleEvent(of: .value) { (snapshot: FIRDataSnapshot) in
+                
+                // First, make sure there is a value for the posts. If so, then load all of them.
+                let postDictionary = snapshot.value as? [String : AnyObject] ?? [:];
+                
+                
+                // Get each post from the database (in the form of json data).
+                for post in postDictionary {
+                    
+                    // Get each individual post as a dictionary of elements with the form [key : value].
+                    let value = post.value as? NSDictionary;
+                    
+                    // Get a post object.
+                    let aPost = value?.toPost(user: user);
+                    
+                    // Check if the user object already has this post. If so, update it and move on.
+                    // Otherwise, load it up from firebase.
+                    if user.posts.containsID(id: aPost!.id!) {
+                        
+                        continue;
+                        
+                        
+                    } else {
+                        
+                        // If this post (determined by the id variable) is not already in the array, add it.
+                        if(!user.posts.containsID(id: aPost!.id!)) {
+                            
+                            // Make sure it is not the profile picture. Otherwise just set that for the user here.
+                            if(aPost?.isProfilePicture == false) {
+                                
+                                user.posts.append(aPost!);
+                                self.debug(message: "Loaded: \(aPost!.toString())");
+                                
+                            } else {
+                                
+                                profPicPost = aPost;
+                                
+                            }
+                        }
+                    }
+                } // End of for loop for each post.
+                
+                
+                // Load the profile picture.
+                if let prof = profPicPost {
+                    let _ = self.loadPostImage(user: user, aPost: prof, success: {
+                        
+                        user.profilepic = prof.photo;
+                        user.profilePicName = prof.id;
+                        self.debug(message: "Sucessfully loaded profile picture!");
+                        
+                        // Run the completion block.
+                        if let comp = completion {
+                            comp();
+                        }
+                        
+                    }); // End of loading the profile picture.
+                    
+                } // End of the profile picture checker.
+                else {
+                    // Run the completion block.
+                    if let comp = completion {
+                        comp();
+                    }
+                }
+            };
+        } else {
+            
+            fireRef.child("Photos").child(user.uid).queryOrderedByPriority().observe(.value) { (snapshot: FIRDataSnapshot) in
+                
+                // First, make sure there is a value for the posts. If so, then load all of them.
+                let postDictionary = snapshot.value as? [String : AnyObject] ?? [:];
+                
+                
+                // Get each post from the database (in the form of json data).
+                for post in postDictionary {
+                    
+                    // Get each individual post as a dictionary of elements with the form [key : value].
+                    let value = post.value as? NSDictionary;
+                    
+                    // Get a post object.
+                    let aPost = value?.toPost(user: user);
+                    
+                    // Check if the user object already has this post. If so, update it and move on.
+                    // Otherwise, load it up from firebase.
+                    if user.posts.containsID(id: aPost!.id!) {
+                        
+                        continue;
+                        
+                        
+                    } else {
+                        
+                        // If this post (determined by the id variable) is not already in the array, add it.
+                        if(!user.posts.containsID(id: aPost!.id!)) {
+                            
+                            // Make sure it is not the profile picture. Otherwise just set that for the user here.
+                            if(aPost?.isProfilePicture == false) {
+                                
+                                user.posts.append(aPost!);
+                                self.debug(message: "Loaded: \(aPost!.toString())");
+                                
+                            } else {
+                                
+                                profPicPost = aPost;
+                                
+                            }
+                        }
+                    }
+                    
+                } // End of for loop for each post.
+                
+                
+                // Load the profile picture.
+                if let prof = profPicPost {
+                    let _ = self.loadPostImage(user: user, aPost: prof, success: {
+                        
+                        user.profilepic = prof.photo;
+                        user.profilePicName = prof.id;
+                        self.debug(message: "Sucessfully loaded profile picture!");
+                        
+                        // Run the completion block.
+                        if let comp = completion {
+                            comp();
+                        }
+                        
+                    }); // End of loading the profile picture.
+                    
+                } // End of the profile picture checker.
+                else {
+                    // Run the completion block.
+                    if let comp = completion {
+                        comp();
+                    }
+                }
+            };
+            
+        }
+        
+    } // End of the loadUsersPhotos() method.
+    
+    
+    
+    
+    /** Loads the image data for the Post object in the parameter. That image data gets put into the same Post object so that it can be displayed in a UIImage later on. */
     public func loadPostImage(user: User, aPost: Post?, success: (()->Void)?) -> UIImage? {
         
         // Get a reference to the firebase media storage.
@@ -176,6 +367,7 @@ class Utilities: NSObject {
         return aPost?.photo;
     } // End of method.
     
+
     
     
     public func loadUsedIDs() {

@@ -20,6 +20,7 @@ var feedPage: FeedPage!;
 var explorePage: ExplorePage!;
 var activityPage: ActivityPage!;
 var profilePage: ProfilePage!;
+var otherProfilePage: OtherProfilePage!;
 var navContr: AUNavigationMenuController!;
 
 
@@ -84,6 +85,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         explorePage = ExplorePage(style: .plain);
         activityPage = ActivityPage();
         profilePage = ProfilePage();
+        otherProfilePage = OtherProfilePage();
         
         
         // Create the navigation controller with options.
@@ -96,23 +98,20 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         
         /* Add all of the views as menu items. */
         navContr.addMenuItem(name: "Home", image: UIImage(named: "HomeIcon.png"), destination: feedPage, completion: {
-            feedPage.collectionView.stopPullRefreshEver();
+            
         });
         navContr.addMenuItem(name: "Explore", image: UIImage(named: "ExploreIcon.png"), destination: explorePage, completion: {
             explorePage.searchController.isActive = false;
         });
         navContr.addMenuItem(name: "Activity", image: UIImage(named: "ActivityIcon.png"), destination: activityPage, completion: {
             
-            activityPage.collectionView.stopPullRefreshEver();
         });
         navContr.addMenuItem(name: "Profile", image: UIImage(named: "ProfileIcon.png"), destination: profilePage, completion: { void in
-            profilePage.useUser = currentUser;
-            profilePage.navigationItem.title = "Profile";
-            profilePage.canChangeProfilePic = true;
-            profilePage.followButton.isHidden = true;
-            profilePage.privateLabel.isHidden = true;
-            profilePage.collectionView.isHidden = false;
-            profilePage.viewDidAppear(true);
+//            util.loadUsersPhotos(user: currentUser, continous: true, completion: {
+//                profilePage.adapter.reloadData(completion: { (b: Bool) in
+//                    profilePage.reloadLabels();
+//                })
+//            });
         });
         
         
@@ -287,13 +286,14 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                 
                 if usr.username == (messageID as! String).substring(i: 0, j: (messageID as! String).indexOf(string: " ")) {
                     
-                    currentUser.followers.append(usr.uid);
-                    
-                    
                     // If it is a follow REQUEST
                     var interactionNeeded = false;
                     if (messageID as! String).contains("wants to follow you") {
                         interactionNeeded = true;
+                    }
+                    if (messageID as! String).contains("started following you") {
+                        currentUser.followers.append(usr.uid);
+                        interactionNeeded = false;
                     }
                     
                     // Create the activity object and save it to UserDefaults.

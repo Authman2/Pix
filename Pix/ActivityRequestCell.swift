@@ -119,7 +119,7 @@ class ActivityRequestCell: UICollectionViewCell {
             self.declineButton.isEnabled = false;
             
             // Accept the follow request.
-            profilePage.acceptFollowRequest(user: self.activity!.user!, followDirection: .toFrom);
+            otherProfilePage.acceptFollowRequest(user: self.activity!.user!, followDirection: .toFrom);
             
             // Get the index of the activity.
             let insertIndex = notificationActivityLog.indexOf(activity: self.activity!);
@@ -137,7 +137,6 @@ class ActivityRequestCell: UICollectionViewCell {
     
     @objc func declineMethod() {
         if self.activity?.interactedWith == false {
-            print("---------> Decline button clicked.");
             acceptButton.isHidden = true;
             declineButton.isHidden = true;
             self.acceptButton.isEnabled = false;

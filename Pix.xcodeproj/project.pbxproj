@@ -18,6 +18,7 @@
 		5A8C7DF01E25A7A300F3F687 /* ActionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A8C7DEF1E25A7A300F3F687 /* ActionSheet.swift */; };
 		5A8C7DF21E25AE0000F3F687 /* BlockedUsersPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A8C7DF11E25AE0000F3F687 /* BlockedUsersPage.swift */; };
 		5A93F8EF1E0F0F72008C7154 /* PostDetailPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A93F8EE1E0F0F72008C7154 /* PostDetailPage.swift */; };
+		5AA6D0371E2BF034002CE674 /* OtherProfilePage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AA6D0361E2BF034002CE674 /* OtherProfilePage.swift */; };
 		5ABBC9041E10781C0056CE16 /* ExplorePage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ABBC9031E10781C0056CE16 /* ExplorePage.swift */; };
 		5ABBC9061E1083E70056CE16 /* ExploreCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ABBC9051E1083E70056CE16 /* ExploreCell.swift */; };
 		5AC84A9B1E22D3320095288D /* ProfileSectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AC84A9A1E22D3320095288D /* ProfileSectionController.swift */; };
@@ -60,6 +61,7 @@
 		5A8C7DEF1E25A7A300F3F687 /* ActionSheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActionSheet.swift; sourceTree = "<group>"; };
 		5A8C7DF11E25AE0000F3F687 /* BlockedUsersPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockedUsersPage.swift; sourceTree = "<group>"; };
 		5A93F8EE1E0F0F72008C7154 /* PostDetailPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostDetailPage.swift; sourceTree = "<group>"; };
+		5AA6D0361E2BF034002CE674 /* OtherProfilePage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OtherProfilePage.swift; sourceTree = "<group>"; };
 		5AA766F61E1B542600765C7A /* Pix.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Pix.entitlements; sourceTree = "<group>"; };
 		5ABBC9031E10781C0056CE16 /* ExplorePage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExplorePage.swift; sourceTree = "<group>"; };
 		5ABBC9051E1083E70056CE16 /* ExploreCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ExploreCell.swift; sourceTree = "<group>"; };
@@ -126,6 +128,7 @@
 			children = (
 				5ABBC9031E10781C0056CE16 /* ExplorePage.swift */,
 				5ABBC9051E1083E70056CE16 /* ExploreCell.swift */,
+				5AA6D0361E2BF034002CE674 /* OtherProfilePage.swift */,
 			);
 			name = Explore;
 			sourceTree = "<group>";
@@ -402,6 +405,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				5AD645691E0DFEF800E5929C /* UploadPhotosViewController.swift in Sources */,
+				5AA6D0371E2BF034002CE674 /* OtherProfilePage.swift in Sources */,
 				5AF109011E26A4800030D4DF /* BlockedUserSectionController.swift in Sources */,
 				5AD6455F1E0D819B00E5929C /* ProfilePage.swift in Sources */,
 				5A44AB461E1C7ACB0029A480 /* ActivityPage.swift in Sources */,
@@ -560,7 +564,7 @@
 					"$(PROJECT_DIR)/build/Debug-iphoneos/Spring",
 				);
 				INFOPLIST_FILE = Pix/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.adeolauthman.Pix;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -586,7 +590,7 @@
 					"$(PROJECT_DIR)/build/Debug-iphoneos/Spring",
 				);
 				INFOPLIST_FILE = Pix/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.adeolauthman.Pix;
 				PRODUCT_NAME = "$(TARGET_NAME)";

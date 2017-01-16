@@ -100,6 +100,25 @@ public class User: NSObject {
     }
     
     
+    init(dictionary: NSDictionary) {
+        super.init();
+        let u = dictionary.toUser();
+        uid = u.uid;
+        firstName = u.firstName;
+        lastName = u.lastName;
+        username = u.username;
+        email = u.email;
+        password = u.password;
+        profilepic = u.profilepic;
+        profilePicName = u.profilePicName;
+        followers = u.followers;
+        following = u.following;
+        likedPhotos = u.likedPhotos;
+        blockedUsers = u.blockedUsers;
+        notification_ID = u.notification_ID;
+        isPrivate = u.isPrivate;
+    }
+    
     
     func toDictionary() -> NSDictionary {
         let dict = NSDictionary(dictionary: ["userid" : uid,
@@ -122,8 +141,7 @@ public class User: NSObject {
     func toString() -> String {
         return "Name: \(firstName) \(lastName), Username: \(username), Email: \(email), Password: \(password), UID: \(uid)";
     }
-    
-    
+  
     
     /* A random id for each post. */
     public func randomName() -> String {
