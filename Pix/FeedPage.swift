@@ -128,9 +128,7 @@ class FeedPage: UIViewController, IGListAdapterDataSource, UIImagePickerControll
         
         
         // Remove any posts that belong to people you have unfollowed recently.
-        self.removeUnfollowedPosts(completion: {
-            //self.debug(message: "UNFOLLOWED POSTS: \(self.postFeed)");
-        });
+        self.removeUnfollowedPosts(completion: nil);
         
     } // End of viewDidAppear().
     
@@ -188,7 +186,6 @@ class FeedPage: UIViewController, IGListAdapterDataSource, UIImagePickerControll
     
     
     
-    
     /**
      Loads all of the photos for each person that the current user is following.
      */
@@ -240,9 +237,8 @@ class FeedPage: UIViewController, IGListAdapterDataSource, UIImagePickerControll
     
     
     
-    
     /**
-     Removes any posts from the news feed that belong to people the current user may have unfollowed since the last refresh.
+     Removes any posts from the news feed that belong to people the current user may have unfollowed since the last refresh. Also removes posts from people you have blocked since the last refresh.
      */
     public func removeUnfollowedPosts(completion: (()->Void)?) {
         

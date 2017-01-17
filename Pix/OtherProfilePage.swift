@@ -314,7 +314,7 @@ class OtherProfilePage: UIViewController, IGListAdapterDataSource, UIImagePicker
             //feedPage.loadPhotos();
             
             
-            // Otherwise, check if the follower/following connection is already there. If not, continue...
+        // Otherwise, check if the follower/following connection is already there. If not, continue...
         } else {
             
             // If the user is not private then just follow them. Otherwise send a follow request.

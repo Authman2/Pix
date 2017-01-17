@@ -20,7 +20,7 @@ class ProfilePageCell: UICollectionViewCell {
     let imageView: UIImageView = {
         let a = UIImageView();
         a.translatesAutoresizingMaskIntoConstraints = false;
-        a.backgroundColor = UIColor(red: 150, green: 150, blue: 150, alpha: 1);
+        a.backgroundColor = UIColor(red: 150/255, green: 150/255, blue: 150/255, alpha: 1);
         a.isUserInteractionEnabled = true;
         
         return a;

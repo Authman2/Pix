@@ -180,7 +180,7 @@ class ExplorePage: UITableViewController, UISearchResultsUpdating {
             /* CHECK IF PRIVATE ACCOUNT. */
             if otherProfilePage.useUser.isPrivate == false || (otherProfilePage.useUser.isPrivate == true && currentUser.following.containsUsername(username: otherProfilePage.useUser.uid)) {
                 
-                util.loadUsersPhotos(user: otherProfilePage.useUser, continous: true, completion: {
+                util.loadUsersPhotos(user: otherProfilePage.useUser, continous: false, completion: {
                     otherProfilePage.adapter.reloadData(completion: { (b: Bool) in
                         otherProfilePage.reloadLabels();
                     });

@@ -32,6 +32,7 @@ class FeedCell: UICollectionViewCell {
         a.translatesAutoresizingMaskIntoConstraints = false;
         a.backgroundColor = .white;
         a.contentMode = .scaleAspectFit;
+        a.clipsToBounds = false;
         
         return a;
     }();
@@ -107,51 +108,42 @@ class FeedCell: UICollectionViewCell {
         
         /* Layout the components. */
         addSubview(imageView);
-        let bottomView = UIView();
-        bottomView.backgroundColor = .white;
-        bottomView.addSubview(captionLabel);
-        bottomView.addSubview(likesLabel);
-        bottomView.addSubview(uploaderLabel);
-        addSubview(bottomView);
-        
-        
-        /* Layout with Neon */
-        imageView.anchorToEdge(.top, padding: 0, width: width, height: height / 1.25);
-        bottomView.align(.underCentered, relativeTo: imageView, padding: 0, width: width, height: height - (height / 1.25));
-        
+        addSubview(captionLabel);
+        addSubview(likesLabel);
+        addSubview(uploaderLabel);
+
         
         /* Layout with Snapkit */
-        likesLabel.snp.makeConstraints { (maker: ConstraintMaker) in
-            maker.bottom.equalTo(snp.bottom);
-            maker.height.equalTo(20);
-            maker.right.equalTo(snp.right);
-        }
-        uploaderLabel.snp.makeConstraints { (maker: ConstraintMaker) in
-            maker.bottom.equalTo(snp.bottom);
-            maker.height.equalTo(20);
-            maker.left.equalTo(snp.left);
+        imageView.snp.makeConstraints { (maker: ConstraintMaker) in
+            maker.top.equalTo(snp.top);
+            maker.centerX.equalTo(snp.centerX);
+            maker.width.equalTo(snp.width);
+            maker.height.equalTo(300);
         }
         captionLabel.snp.makeConstraints { (maker: ConstraintMaker) in
-            maker.bottom.equalTo(uploaderLabel.snp.top);
-            maker.width.equalTo(frame.width);
-            maker.height.equalTo(50);
-            maker.left.equalTo(snp.left);
-            maker.right.equalTo(snp.right);
+            maker.top.equalTo(imageView.snp.bottom);
+            maker.centerX.equalTo(snp.centerX);
+            maker.width.equalTo(snp.width);
+            maker.height.equalTo(40);
         }
-        imageView.snp.makeConstraints { (maker: ConstraintMaker) in
-            maker.width.equalTo(frame.width);
+        uploaderLabel.snp.makeConstraints { (maker: ConstraintMaker) in
+            maker.top.equalTo(captionLabel.snp.bottom);
+            maker.height.equalTo(20);
             maker.left.equalTo(snp.left);
-            maker.right.equalTo(snp.right);
-            maker.top.equalTo(snp.top);
-            maker.bottom.equalTo(uploaderLabel.snp.top);
+            maker.right.equalTo(likesLabel.snp.left);
         }
-
+        likesLabel.snp.makeConstraints { (maker: ConstraintMaker) in
+            maker.top.equalTo(captionLabel.snp.bottom);
+            maker.height.equalTo(20);
+            maker.right.equalTo(snp.right);
+            maker.width.equalTo(100);
+        }
+        
     }
     
     required init?(coder aDecoder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
-    
     
     
     

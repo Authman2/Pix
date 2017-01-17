@@ -34,7 +34,7 @@ class FeedSectionController: IGListSectionController, IGListSectionType {
     }
     
     func sizeForItem(at index: Int) -> CGSize {
-        return CGSize(width: (collectionContext?.containerSize.width)! - 20, height: 300);
+        return CGSize(width: (collectionContext?.containerSize.width)! - 20, height: 380);
     }
     
     func cellForItem(at index: Int) -> UICollectionViewCell {
@@ -43,7 +43,7 @@ class FeedSectionController: IGListSectionController, IGListSectionType {
         cell.post = post;
         cell.vc = self.vc;
         cell.imageView.image = cell.post.photo;
-        cell.captionLabel.text = "\(cell.post.caption)";
+        cell.captionLabel.text = "\(cell.post.caption!)";
         cell.likesLabel.text = "Likes: \(cell.post.likes)";
         cell.uploaderLabel.text = "\(cell.post.uploader.firstName) \(cell.post.uploader.lastName)";
         
