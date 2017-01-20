@@ -151,9 +151,9 @@ class FeedCell: UICollectionViewCell {
         
         // If the id for this photo is not already in the current user's list of liked photos, then add it and update firebase.
         // Otherwise, unlike it.
-        if !currentUser.likedPhotos.containsUsername(username: self.post.id!) {
+        if !currentUser.likedPhotos.containsUsername(username: "\(self.post.uploader.uid) \(self.post.id!)") {
             
-            currentUser.likedPhotos.append(self.post.id!);
+            currentUser.likedPhotos.append("\(self.post.uploader.uid) \(self.post.id!)");
             post.likes += 1;
             fireRef.child("Users").child(currentUser.uid).updateChildValues(currentUser.toDictionary() as! [AnyHashable : Any]);
             fireRef.child("Photos").child(post.uploader.uid).child(post.id!).updateChildValues(post.toDictionary() as! [AnyHashable : Any]);

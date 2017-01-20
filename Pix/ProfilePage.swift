@@ -215,7 +215,7 @@ class ProfilePage: UIViewController, IGListAdapterDataSource, UIImagePickerContr
         super.viewDidAppear(animated);
         //self.adapter.performUpdates(animated: true, completion: nil);
         self.adapter.reloadData { (b: Bool) in
-            self.debug(message: "PHOTOS: \(currentUser.posts)");
+//            self.debug(message: "PHOTOS: \(currentUser.posts)");
         }
         
         editProfileButton.isEnabled = true;

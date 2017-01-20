@@ -212,13 +212,6 @@ class FeedPage: UIViewController, IGListAdapterDataSource, UIImagePickerControll
                 }
                 
             })
-//            util.loadUsersPhotos(user: user, continous: false, completion: {
-//                self.postFeed.append(contentsOf: user.posts);
-//                
-//                if let comp = eachCompletion {
-//                    comp();
-//                }
-//            });
             
         } // End of for loop.
         

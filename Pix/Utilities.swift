@@ -370,6 +370,35 @@ class Utilities: NSObject {
 
     
     
+    /** Loads a single post by the user and adds it to their array of posts. */
+    public func loadSinglePost(user: User, withPostID id: String, loadInto post: inout Post, success: (()->Void)?) {
+        
+        let tempPost = post;
+        
+        fireRef.child("Photos").child(user.uid).child(id).observeSingleEvent(of: .value) { (snapshot: FIRDataSnapshot) in
+            
+            // Create a post object from the database.
+            let val = snapshot.value as? NSDictionary ?? [:];
+            let aPost = val.toPost(user: user);
+            
+            // Get the image data for that post.
+            aPost.photo = self.loadPostImage(user: user, aPost: aPost, success: {
+                
+                // Once you have the image data, copy it into tempPost.
+                tempPost.copy(post: aPost);
+                
+                if let comp = success {
+                    comp();
+                }
+                return;
+            })
+        };
+        
+    } // End of method.
+    
+    
+    
+    
     public func loadUsedIDs() {
         
         fireRef.child("UsedIDs").observeSingleEvent(of: .value) { (snapshot: FIRDataSnapshot) in

@@ -75,6 +75,18 @@ public class Post: NSObject, IGListDiffable {
     }
     
     
+    func copy(post: Post) {
+        self.photo = post.photo;
+        self.caption = post.caption;
+        self.uploader = post.uploader;
+        self.id = post.id;
+        self.flags = post.flags;
+        self.likes = post.likes;
+        self.isProfilePicture = post.isProfilePicture;
+    }
+    
+    
+    
     
     func toString() -> String {
         return "id=\(id!), caption=\(caption), likes=\(likes), profile picture?: \(isProfilePicture)";

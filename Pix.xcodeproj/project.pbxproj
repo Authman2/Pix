@@ -14,6 +14,7 @@
 		5A28BE4C1E1492CF00DD0396 /* FeedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A28BE4B1E1492CF00DD0396 /* FeedCell.swift */; };
 		5A3121171E24562500B38C45 /* TermsOfServicePage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A3121161E24562500B38C45 /* TermsOfServicePage.swift */; };
 		5A44AB461E1C7ACB0029A480 /* ActivityPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A44AB451E1C7ACB0029A480 /* ActivityPage.swift */; };
+		5A735C021E31BCC500CBB349 /* LikedPhotosPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A735C011E31BCC500CBB349 /* LikedPhotosPage.swift */; };
 		5A756DCA1DE5E802003FD2C0 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5A756DC91DE5E802003FD2C0 /* GoogleService-Info.plist */; };
 		5A8C7DF01E25A7A300F3F687 /* ActionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A8C7DEF1E25A7A300F3F687 /* ActionSheet.swift */; };
 		5A8C7DF21E25AE0000F3F687 /* BlockedUsersPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A8C7DF11E25AE0000F3F687 /* BlockedUsersPage.swift */; };
@@ -57,6 +58,7 @@
 		5A28BE4B1E1492CF00DD0396 /* FeedCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedCell.swift; sourceTree = "<group>"; };
 		5A3121161E24562500B38C45 /* TermsOfServicePage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TermsOfServicePage.swift; sourceTree = "<group>"; };
 		5A44AB451E1C7ACB0029A480 /* ActivityPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityPage.swift; sourceTree = "<group>"; };
+		5A735C011E31BCC500CBB349 /* LikedPhotosPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LikedPhotosPage.swift; sourceTree = "<group>"; };
 		5A756DC91DE5E802003FD2C0 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		5A8C7DEF1E25A7A300F3F687 /* ActionSheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActionSheet.swift; sourceTree = "<group>"; };
 		5A8C7DF11E25AE0000F3F687 /* BlockedUsersPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockedUsersPage.swift; sourceTree = "<group>"; };
@@ -152,6 +154,7 @@
 				5AD645631E0DEFE600E5929C /* Post.swift */,
 				5AD645681E0DFEF800E5929C /* UploadPhotosViewController.swift */,
 				5A93F8EE1E0F0F72008C7154 /* PostDetailPage.swift */,
+				5A735C011E31BCC500CBB349 /* LikedPhotosPage.swift */,
 			);
 			name = Posts;
 			sourceTree = "<group>";
@@ -411,6 +414,7 @@
 				5A44AB461E1C7ACB0029A480 /* ActivityPage.swift in Sources */,
 				5AF33C681E2A9C7A00BA6B94 /* Utilities.swift in Sources */,
 				5A3121171E24562500B38C45 /* TermsOfServicePage.swift in Sources */,
+				5A735C021E31BCC500CBB349 /* LikedPhotosPage.swift in Sources */,
 				5AD645621E0DB5A400E5929C /* ProfilePageCell.swift in Sources */,
 				5ABBC9061E1083E70056CE16 /* ExploreCell.swift in Sources */,
 				5AC84A9F1E22E3100095288D /* ActivitySectionController.swift in Sources */,
@@ -564,7 +568,7 @@
 					"$(PROJECT_DIR)/build/Debug-iphoneos/Spring",
 				);
 				INFOPLIST_FILE = Pix/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.adeolauthman.Pix;
 				PRODUCT_NAME = "$(TARGET_NAME)";
@@ -590,7 +594,7 @@
 					"$(PROJECT_DIR)/build/Debug-iphoneos/Spring",
 				);
 				INFOPLIST_FILE = Pix/Info.plist;
-				IPHONEOS_DEPLOYMENT_TARGET = 10.0;
+				IPHONEOS_DEPLOYMENT_TARGET = 9.0;
 				LD_RUNPATH_SEARCH_PATHS = "$(inherited) @executable_path/Frameworks";
 				PRODUCT_BUNDLE_IDENTIFIER = com.adeolauthman.Pix;
 				PRODUCT_NAME = "$(TARGET_NAME)";

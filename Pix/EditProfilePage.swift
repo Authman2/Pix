@@ -72,6 +72,11 @@ class EditProfilePage: FormViewController {
                 row.title = "Password";
                 row.placeholder = "Enter new password.";
             }
+            <<< ButtonRow() { row in
+                row.title = "Liked Photos"
+                }.onCellSelection({ (btn: ButtonCellOf<String>, btnRow: ButtonRowOf<String>) in
+                    self.navigationController?.pushViewController(LikedPhotosPage(), animated: true);
+                })
             +++ Section("Privacy")
             <<< SwitchRow() { row in
                 row.title = "Private Account"
