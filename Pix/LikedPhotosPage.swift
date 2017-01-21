@@ -70,6 +70,8 @@ class LikedPhotosPage: UIViewController, IGListAdapterDataSource {
             maker.bottom.equalTo(view.snp.bottom);
         }
         
+        
+        
         var options = PullToRefreshOption();
         options.fixedSectionHeader = false;
         collectionView.addPullRefresh(options: options, refreshCompletion: { (Void) in

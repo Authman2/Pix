@@ -33,7 +33,7 @@ class ActionSheet: UIViewController {
         a.translatesAutoresizingMaskIntoConstraints = false;
         a.setTitle("Cancel", for: .normal);
         a.setTitleColor(.black, for: .normal);
-        a.backgroundColor = UIColor(red: 128, green: 128, blue: 128, alpha: 1);
+        a.backgroundColor = UIColor(red: 200/255, green: 200/255, blue: 200/255, alpha: 1);
         
         return a;
     }();
@@ -44,7 +44,7 @@ class ActionSheet: UIViewController {
         a.translatesAutoresizingMaskIntoConstraints = false;
         a.setTitle("Flag as Inappropriate", for: .normal);
         a.setTitleColor(.red, for: .normal);
-        a.backgroundColor = UIColor(red: 128, green: 128, blue: 128, alpha: 1);
+        a.backgroundColor = UIColor(red: 200/255, green: 200/255, blue: 200/255, alpha: 1);
         
         return a;
     }();
@@ -54,7 +54,7 @@ class ActionSheet: UIViewController {
         a.translatesAutoresizingMaskIntoConstraints = false;
         a.setTitle("Delete", for: .normal);
         a.setTitleColor(.black, for: .normal);
-        a.backgroundColor = UIColor(red: 128, green: 128, blue: 128, alpha: 1);
+        a.backgroundColor = UIColor(red: 200/255, green: 200/255, blue: 200/255, alpha: 1);
         
         return a;
     }();
@@ -74,16 +74,16 @@ class ActionSheet: UIViewController {
             view.addSubview(flag);
             
             titleLabel.anchorToEdge(.top, padding: 5, width: view.width, height: 15);
-            flag.align(.underCentered, relativeTo: titleLabel, padding: 30, width: view.width, height: 30);
+            flag.align(.underCentered, relativeTo: titleLabel, padding: 50, width: view.width, height: 30);
             delete.align(.underCentered, relativeTo: flag, padding: 20, width: view.width, height: 30);
-            cancel.align(.underCentered, relativeTo: delete, padding: 30, width: view.width, height: 30);
+            cancel.align(.underCentered, relativeTo: delete, padding: 20, width: view.width, height: 30);
         } else {
             view.addSubview(titleLabel);
             view.addSubview(cancel);
             view.addSubview(flag);
             
             titleLabel.anchorToEdge(.top, padding: 5, width: view.width, height: 15);
-            flag.align(.underCentered, relativeTo: titleLabel, padding: 30, width: view.width, height: 30);
+            flag.align(.underCentered, relativeTo: titleLabel, padding: 50, width: view.width, height: 30);
             cancel.align(.underCentered, relativeTo: flag, padding: 20, width: view.width, height: 30);
         }
         
