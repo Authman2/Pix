@@ -49,6 +49,15 @@ class ActionSheet: UIViewController {
         return a;
     }();
 
+    let delete: UIButton = {
+        let a = UIButton();
+        a.translatesAutoresizingMaskIntoConstraints = false;
+        a.setTitle("Delete", for: .normal);
+        a.setTitleColor(.black, for: .normal);
+        a.backgroundColor = UIColor(red: 128, green: 128, blue: 128, alpha: 1);
+        
+        return a;
+    }();
     
     
     
@@ -57,16 +66,30 @@ class ActionSheet: UIViewController {
         super.viewDidLoad();
         view.backgroundColor = UIColor(white: 255, alpha: 0.5);
         
-        view.addSubview(titleLabel);
-        view.addSubview(cancel);
-        view.addSubview(flag);
+    
+        if(self.post!.uploader.uid == currentUser.uid) {
+            view.addSubview(titleLabel);
+            view.addSubview(cancel);
+            view.addSubview(delete);
+            view.addSubview(flag);
+            
+            titleLabel.anchorToEdge(.top, padding: 5, width: view.width, height: 15);
+            flag.align(.underCentered, relativeTo: titleLabel, padding: 30, width: view.width, height: 30);
+            delete.align(.underCentered, relativeTo: flag, padding: 20, width: view.width, height: 30);
+            cancel.align(.underCentered, relativeTo: delete, padding: 30, width: view.width, height: 30);
+        } else {
+            view.addSubview(titleLabel);
+            view.addSubview(cancel);
+            view.addSubview(flag);
+            
+            titleLabel.anchorToEdge(.top, padding: 5, width: view.width, height: 15);
+            flag.align(.underCentered, relativeTo: titleLabel, padding: 30, width: view.width, height: 30);
+            cancel.align(.underCentered, relativeTo: flag, padding: 20, width: view.width, height: 30);
+        }
         
-        
-        titleLabel.anchorToEdge(.top, padding: 5, width: view.width, height: 15);
-        flag.align(.underCentered, relativeTo: titleLabel, padding: 30, width: view.width, height: 30);
-        cancel.align(.underCentered, relativeTo: flag, padding: 20, width: view.width, height: 30);
         
         cancel.addTarget(self, action: #selector(cancelMethod), for: .touchUpInside);
+        delete.addTarget(self, action: #selector(deletePost), for: .touchUpInside);
         flag.addTarget(self, action: #selector(flagMethod), for: .touchUpInside);
     }
     
@@ -75,6 +98,30 @@ class ActionSheet: UIViewController {
     @objc func cancelMethod() {
         cancel.backgroundColor = UIColor(red: 170, green: 170, blue: 170, alpha: 1);
         dismiss(animated: true, completion: nil);
+    }
+    
+    
+    @objc func deletePost() {
+        self.fireRef.child("Photos").child(currentUser.uid).child(self.post!.id!).removeValue { (error: Error?, ref: FIRDatabaseReference) in
+            
+            if let err = error {
+                self.debug(message: "Error deleting post: \(err)");
+            } else {
+                
+                let storageRef = FIRStorageReference().child("\(currentUser.uid)/\(self.post!.id!).jpg");
+                storageRef.delete(completion: { (error: Error?) in
+                    if let e = error {
+                        self.debug(message: "Error deleting image data: \(e)");
+                        return;
+                    }
+                })
+                
+                
+                currentUser.posts.removePost(uid: self.post!.id!);
+                self.cancelMethod();
+                return;
+            }
+        }
     }
     
     

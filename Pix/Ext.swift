@@ -165,7 +165,24 @@ public extension Array {
             i += 1;
             let s = itm as! Post;
             
-            if s.id == item.id {
+            if s.id! == item.id! {
+                break;
+            }
+        }
+        i -= 1;
+        
+        remove(at: i);
+    }
+    
+    
+    public mutating func removePost(uid: String) {
+        var i: Int = 0;
+        for itm in self {
+            
+            i += 1;
+            let s = itm as! Post;
+            
+            if s.id! == uid {
                 break;
             }
         }
