@@ -116,8 +116,15 @@ class LikedPhotosPage: UIViewController, IGListAdapterDataSource {
         for user_post_pair in currentUser.likedPhotos {
             
             // Separate it into the user id and the photo id.
-            let UID = user_post_pair.components(separatedBy: " ")[0];
-            let PHOTOID = user_post_pair.components(separatedBy: " ")[1];
+            let components = user_post_pair.components(separatedBy: " ");
+            var UID = "";
+            var PHOTOID = "";
+            if components.count == 0 || components.count == 1 {
+                continue;
+            } else if components.count == 2 {
+                UID = components[0];
+                PHOTOID = components[1];
+            }
             
             // Load that photo data in firebase.
             let fireRef = FIRDatabase.database().reference();
@@ -129,11 +136,18 @@ class LikedPhotosPage: UIViewController, IGListAdapterDataSource {
                 
                 // Load only that photo.
                 var singlePost: Post = Post(photo: nil, caption: "", Uploader: usr, ID: PHOTOID);
-                
                 util.loadSinglePost(user: usr, withPostID: PHOTOID, loadInto: &singlePost, success: {
                     if !self.liked.containsID(id: PHOTOID) {
                         self.liked.append(singlePost);
                     }
+                    
+                    if let comp = completion {
+                        comp();
+                    }
+                }, error: {
+                    // Remove the photos from liked posts if it no longer exists and update the user in firebase.
+                    currentUser.likedPhotos.removeItem(item: user_post_pair);
+                    fireRef.child("Users").child(currentUser.uid).updateChildValues(currentUser.toDictionary() as! [AnyHashable : AnyObject]);
                     
                     if let comp = completion {
                         comp();

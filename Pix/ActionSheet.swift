@@ -108,15 +108,15 @@ class ActionSheet: UIViewController {
                 self.debug(message: "Error deleting post: \(err)");
             } else {
                 
+                // Delete the image data.
                 let storageRef = FIRStorageReference().child("\(currentUser.uid)/\(self.post!.id!).jpg");
                 storageRef.delete(completion: { (error: Error?) in
                     if let e = error {
                         self.debug(message: "Error deleting image data: \(e)");
                         return;
                     }
-                })
-                
-                
+                });
+                                
                 currentUser.posts.removePost(uid: self.post!.id!);
                 self.cancelMethod();
                 return;

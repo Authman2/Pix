@@ -39,6 +39,8 @@ class SignUpPage: UIViewController {
         t.translatesAutoresizingMaskIntoConstraints = false;
         t.backgroundColor = UIColor.white;
         t.textAlignment = .center;
+        t.autocapitalizationType = .none;
+        t.autocorrectionType = .no;
         
         return t;
     }();

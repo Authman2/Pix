@@ -61,7 +61,7 @@ class Utilities: NSObject {
                         // Load the image for the post.
                         aPost?.photo = self.loadPostImage(user: user, aPost: aPost, success: {
                             self.debug(message: "[Loaded the image data for \(aPost!.id!)]");
-                        });
+                        }, error: nil);
                         
                         // If this post (determined by the id variable) is not already in the array, add it.
                         if(!user.posts.containsID(id: aPost!.id!)) {
@@ -95,7 +95,7 @@ class Utilities: NSObject {
                             comp();
                         }
                         
-                    }); // End of loading the profile picture.
+                    }, error: nil); // End of loading the profile picture.
                     
                 } // End of the profile picture checker.
                 else {
@@ -133,7 +133,7 @@ class Utilities: NSObject {
                         // Load the image for the post.
                         aPost?.photo = self.loadPostImage(user: user, aPost: aPost, success: {
                             self.debug(message: "[Loaded the image data for \(aPost!.id!)]");
-                        });
+                        }, error: nil);
                         
                         // If this post (determined by the id variable) is not already in the array, add it.
                         if(!user.posts.containsID(id: aPost!.id!)) {
@@ -168,7 +168,7 @@ class Utilities: NSObject {
                             comp();
                         }
                         
-                    }); // End of loading the profile picture.
+                    }, error: nil); // End of loading the profile picture.
                     
                 } // End of the profile picture checker.
                 else {
@@ -256,7 +256,7 @@ class Utilities: NSObject {
                             comp();
                         }
                         
-                    }); // End of loading the profile picture.
+                    }, error: nil); // End of loading the profile picture.
                     
                 } // End of the profile picture checker.
                 else {
@@ -325,7 +325,7 @@ class Utilities: NSObject {
                             comp();
                         }
                         
-                    }); // End of loading the profile picture.
+                    }, error: nil); // End of loading the profile picture.
                     
                 } // End of the profile picture checker.
                 else {
@@ -344,25 +344,36 @@ class Utilities: NSObject {
     
     
     /** Loads the image data for the Post object in the parameter. That image data gets put into the same Post object so that it can be displayed in a UIImage later on. */
-    public func loadPostImage(user: User, aPost: Post?, success: (()->Void)?) -> UIImage? {
+    public func loadPostImage(user: User, aPost: Post?, success: (()->Void)?, error: (()->Void)?) -> UIImage? {
         
         // Get a reference to the firebase media storage.
         let imgRef = FIRStorage.storage().reference().child("\(user.uid)/\(aPost!.id!).jpg");
-        imgRef.data(withMaxSize: 50 * 1024 * 1024, completion: { (data: Data?, error: Error?) in
+        
+        imgRef.metadata(completion: { (data: FIRStorageMetadata?, err: Error?) in
             
-            if error == nil {
-                
-                // Set the image of the post.
-                let image = UIImage(data: data!);
-                aPost?.photo = image!;
-                
-                if let s = success {
-                    s();
-                }
+            if err == nil {
+                imgRef.data(withMaxSize: 50 * 1024 * 1024, completion: { (data: Data?, err2: Error?) in
+                    
+                    if err2 == nil {
+                        
+                        // Set the image of the post.
+                        let image = UIImage(data: data!);
+                        aPost?.photo = image!;
+                        
+                        if let s = success {
+                            s();
+                        }
+                    } else {
+                        self.debug(message: "There was an error: \(err2.debugDescription)");
+                    }
+                }); // End of access to media storage.
             } else {
-                self.debug(message: "There was an error: \(error.debugDescription)");
+                if let e = error {
+                    e();
+                }
             }
-        }); // End of access to media storage.
+            
+        })
         
         return aPost?.photo;
     } // End of method.
@@ -371,7 +382,7 @@ class Utilities: NSObject {
     
     
     /** Loads a single post by the user and adds it to their array of posts. */
-    public func loadSinglePost(user: User, withPostID id: String, loadInto post: inout Post, success: (()->Void)?) {
+    public func loadSinglePost(user: User, withPostID id: String, loadInto post: inout Post, success: (()->Void)?, error: (()->Void)?) {
         
         let tempPost = post;
         
@@ -391,7 +402,15 @@ class Utilities: NSObject {
                     comp();
                 }
                 return;
-            })
+            }, error: {
+               
+                // Still copy whatever data was there.
+                tempPost.copy(post: aPost);
+                if let err = error {
+                    err();
+                }
+                return;
+            });
         };
         
     } // End of method.

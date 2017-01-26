@@ -282,6 +282,8 @@ class LandingPage: UIViewController {
                             self.debug(message: "Successfully loaded the current user's photos!");
                         });
                         util.loadActivity();
+                        feedPage.postFeed.removeAll();
+                        feedPage.adapter.reloadData(completion: nil);
                         self.goToApp();
                         self.debug(message: "Signed In!");
                     });

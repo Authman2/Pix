@@ -207,7 +207,7 @@ class FeedPage: UIViewController, IGListAdapterDataSource, UIImagePickerControll
                             comp();
                         }
                         
-                    });
+                    }, error: nil);
                     
                 }
                 

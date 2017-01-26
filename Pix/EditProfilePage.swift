@@ -10,6 +10,7 @@ import Foundation
 import UIKit
 import Eureka
 import Firebase
+import Presentr
 
 
 var formBackgroundColor: UIColor?;
@@ -25,12 +26,6 @@ class EditProfilePage: FormViewController {
     
     /* Firebase reference. */
     let fireRef: FIRDatabaseReference = FIRDatabase.database().reference();
-    
-    
-    
-    
-    
-    
     
     
     
@@ -129,29 +124,60 @@ class EditProfilePage: FormViewController {
         let passwordRow: String? = form.rowBy(tag: "PasswordRow")?.value;
         
         
+        var usrn = currentUser.username;
+        var em = currentUser.email;
+        var first = currentUser.firstName;
+        var last = currentUser.lastName;
+        var pass = currentUser.password;
+        
         
         if let usrRow = usernameRow {
-            currentUser.username = usrRow;
+            usrn = usrRow;
         }
         
         if let emRow = emailRow {
-            currentUser.email = emRow;
+            em = emRow;
         }
         
         if let firRow = firstNameRow {
-            currentUser.firstName = firRow;
+            first = firRow;
         }
      
         if let lasRow = lastNameRow {
-            currentUser.lastName = lasRow;
+            last = lasRow;
         }
         
         if let passRow = passwordRow {
-            currentUser.password = passRow;
+            pass = passRow;
         }
         
         
-            
+        
+        
+        currentUser.email = em;
+        currentUser.firstName = first;
+        currentUser.lastName = last;
+        currentUser.password = pass;
+        
+        self.checkUsernameTaken(username: usrn, taken: {
+            // Taken.
+        }) { 
+            currentUser.username = usrn;
+            self.updateIt();
+        }
+        
+        self.checkEmailTaken(email: em, taken: { 
+            // Taken.
+        }) { 
+            currentUser.email = em;
+            self.updateIt();
+        }
+        
+        self.close();
+    }
+    
+    
+    private func updateIt() {
         self.fireRef.child("Users").child(currentUser.uid).setValue(currentUser.toDictionary());
         FIRAuth.auth()?.currentUser?.updateEmail(currentUser.email, completion: { (error: Error?) in
             if error == nil {
@@ -169,13 +195,61 @@ class EditProfilePage: FormViewController {
         })
         
         self.fireRef.child("Users").child(currentUser.uid).updateChildValues(currentUser.toDictionary() as! [AnyHashable : Any]);
-        
-        self.close();
     }
     
     
     
+    private func checkUsernameTaken(username: String, taken: (()->Void)?, available: (()->Void)?) {
+        fireRef.child("Users").observeSingleEvent(of: .value, with: { (snapshot: FIRDataSnapshot) in
+            
+            let userDictionary = snapshot.value as? [String : AnyObject] ?? [:];
+            var tkn = false;
+            for user in userDictionary {
+                let aUser = user.value as! NSDictionary;
+                let usr = aUser.toUser();
+                
+                if usr.username == username {
+                    tkn = true;
+                    if let t = taken {
+                        t();
+                    }
+                    return;
+                }
+            }
+            
+            if tkn == false {
+                if let a = available {
+                    a();
+                }
+            }
+        }); // End of checking for existing username.
+    }
     
+    private func checkEmailTaken(email: String, taken: (()->Void)?, available: (()->Void)?) {
+        fireRef.child("Users").observeSingleEvent(of: .value, with: { (snapshot: FIRDataSnapshot) in
+            
+            let userDictionary = snapshot.value as? [String : AnyObject] ?? [:];
+            var tkn = false;
+            for user in userDictionary {
+                let aUser = user.value as! NSDictionary;
+                let usr = aUser.toUser();
+                
+                if usr.email == email {
+                    tkn = true;
+                    if let t = taken {
+                        t();
+                    }
+                    return;
+                }
+            }
+            
+            if tkn == false {
+                if let a = available {
+                    a();
+                }
+            }
+        }); // End of checking for existing email.
+    }
     
     
 }
