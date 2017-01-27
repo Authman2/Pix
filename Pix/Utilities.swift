@@ -348,32 +348,24 @@ class Utilities: NSObject {
         
         // Get a reference to the firebase media storage.
         let imgRef = FIRStorage.storage().reference().child("\(user.uid)/\(aPost!.id!).jpg");
-        
-        imgRef.metadata(completion: { (data: FIRStorageMetadata?, err: Error?) in
+        imgRef.data(withMaxSize: 50 * 1024 * 1024, completion: { (data: Data?, err2: Error?) in
             
-            if err == nil {
-                imgRef.data(withMaxSize: 50 * 1024 * 1024, completion: { (data: Data?, err2: Error?) in
-                    
-                    if err2 == nil {
-                        
-                        // Set the image of the post.
-                        let image = UIImage(data: data!);
-                        aPost?.photo = image!;
-                        
-                        if let s = success {
-                            s();
-                        }
-                    } else {
-                        self.debug(message: "There was an error: \(err2.debugDescription)");
-                    }
-                }); // End of access to media storage.
+            if err2 == nil {
+                
+                // Set the image of the post.
+                let image = UIImage(data: data!);
+                aPost?.photo = image!;
+                
+                if let s = success {
+                    s();
+                }
             } else {
-                if let e = error {
-                    e();
+                self.debug(message: "There was an error: \(err2.debugDescription)");
+                if let er = error {
+                    er();
                 }
             }
-            
-        })
+        }); // End of access to media storage.
         
         return aPost?.photo;
     } // End of method.

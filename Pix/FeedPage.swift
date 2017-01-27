@@ -95,7 +95,7 @@ class FeedPage: UIViewController, IGListAdapterDataSource, UIImagePickerControll
             self.gatherUsers(completion: {
                 //self.debug(message: "FOLLOWING: \(self.followingUsers)");
                 
-                if !currentUser.following.isEmpty {
+                if !self.followingUsers.isEmpty {
                     
                     self.loadFollowingPhotos(eachCompletion: {
                         //self.debug(message: "POSTS: \(self.postFeed)");
@@ -194,29 +194,36 @@ class FeedPage: UIViewController, IGListAdapterDataSource, UIImagePickerControll
         for user in self.followingUsers {
             
             util.loadUsersPhotos(withoutImageData: user, continous: false, completion: {
+                //self.debug(message: "FOUND IT: \(user.posts)");
                 
-                for post in user.posts {
-                    
-                    post.photo = util.loadPostImage(user: user, aPost: post, success: { 
-                       
-                        if !self.postFeed.containsID(id: post.id) {
-                            self.postFeed.append(post);
-                        }
+                if !user.posts.isEmpty {
+                    for post in user.posts {
                         
-                        if let comp = eachCompletion {
-                            comp();
-                        }
-                        
-                    }, error: nil);
-                    
+                        post.photo = util.loadPostImage(user: user, aPost: post, success: {
+                            
+                            if !self.postFeed.containsID(id: post.id) {
+                                self.postFeed.append(post);
+                            }
+                            
+                            if let comp = eachCompletion {
+                                comp();
+                            }
+                            
+                        }, error: {
+                            self.debug(message: "FEED PAGE: ERROR LOADING PHOTO.");
+                        });
+                    }
+                } else {
+                    if let comp = eachCompletion {
+                        comp();
+                    }
+                    return;
                 }
-                
             })
             
         } // End of for loop.
         
     }
-    
     
     
     /**
