@@ -14,7 +14,7 @@ import PullToRefreshSwift
 import OneSignal
 import IGListKit
 
-class ProfilePage: UIViewController, IGListAdapterDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class ProfilePage: ProfileDisplayPage, IGListAdapterDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate  {
 
     
     /********************************
@@ -23,7 +23,7 @@ class ProfilePage: UIViewController, IGListAdapterDataSource, UIImagePickerContr
      *
      ********************************/
     
-    
+        
     /* The adapter. */
     lazy var adapter: IGListAdapter = {
         return IGListAdapter(updater: IGListAdapterUpdater(), viewController: self, workingRangeSize: 1);
@@ -135,6 +135,7 @@ class ProfilePage: UIViewController, IGListAdapterDataSource, UIImagePickerContr
         navigationController?.navigationBar.isHidden = false;
         navigationItem.hidesBackButton = true;
         navigationItem.title = "Profile";
+        viewcontrollerName = "Profile";
         
         setupCollectionView();
         view.addSubview(collectionView)
@@ -213,10 +214,9 @@ class ProfilePage: UIViewController, IGListAdapterDataSource, UIImagePickerContr
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated);
-        //self.adapter.performUpdates(animated: true, completion: nil);
-        self.adapter.reloadData { (b: Bool) in
-//            self.debug(message: "PHOTOS: \(currentUser.posts)");
-        }
+        lastProfile = self;
+        
+        self.adapter.reloadData(completion: nil);
         
         editProfileButton.isEnabled = true;
         editProfileButton.tintColor = .white;
@@ -373,5 +373,6 @@ class ProfilePage: UIViewController, IGListAdapterDataSource, UIImagePickerContr
     func emptyView(for listAdapter: IGListAdapter) -> UIView? {
         return EmptyPhotoView(place: .top);
     }
+    
     
 }

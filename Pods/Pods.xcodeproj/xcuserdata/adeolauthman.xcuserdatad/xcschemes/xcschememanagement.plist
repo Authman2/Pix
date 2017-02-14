@@ -34,7 +34,17 @@
 			<key>isShown</key>
 			<false/>
 		</dict>
+		<key>Hero.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
 		<key>IGListKit.xcscheme</key>
+		<dict>
+			<key>isShown</key>
+			<false/>
+		</dict>
+		<key>IQKeyboardManagerSwift.xcscheme</key>
 		<dict>
 			<key>isShown</key>
 			<false/>
@@ -82,12 +92,32 @@
 	</dict>
 	<key>SuppressBuildableAutocreation</key>
 	<dict>
-		<key>1D7DB04B9DE603116121CA8467727CB0</key>
+		<key>130C2FE4C827483D35EFAF65322C5A01</key>
 		<dict>
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>23D41DCB329A4585EB5B308E70334F98</key>
+		<key>1EB657F5A0E6E47B32634AE63F38DAE3</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>4DC059E04CBA98AEDDB5C34E02D551E9</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>65DAC08028CB9BFE6FF4B878D5703EE1</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>66F9F12A2D7B6A6645E325700D1280DE</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>6ACA726C3AF2C99800C4BA3303B45EA7</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -102,27 +132,7 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>7810E72B9F764BECA1326DA5D4A00130</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
 		<key>847967DF920D160B2A2F1DD41197EBA4</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>86A3B98CBA631F6204E5A995B6B5F2C9</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>88123DA67F1E32191B9AF2A11C3F004F</key>
-		<dict>
-			<key>primary</key>
-			<true/>
-		</dict>
-		<key>97F95981CD1DF5BDD68D8E47DBA484DD</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -137,7 +147,7 @@
 			<key>primary</key>
 			<true/>
 		</dict>
-		<key>A6CFBF73B8CFC6EC19DF6E862301A901</key>
+		<key>B8BD6A09ECAA8A565B16C5C6D5292F35</key>
 		<dict>
 			<key>primary</key>
 			<true/>
@@ -148,6 +158,16 @@
 			<true/>
 		</dict>
 		<key>C64F0FDD564E859332AD6D302CCC004D</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>CEEACB55958975251AC10C11B4D44B24</key>
+		<dict>
+			<key>primary</key>
+			<true/>
+		</dict>
+		<key>ED956C02D4501FEF63AF8732BAAA34E4</key>
 		<dict>
 			<key>primary</key>
 			<true/>

@@ -23,5 +23,7 @@ target 'Pix' do
     pod 'OneSignal'
     pod 'Eureka', '~> 2.0.0-beta.1'
     pod 'IGListKit', '~> 2.0.0'
+    pod 'Hero'
+    pod 'IQKeyboardManagerSwift', '4.0.6'
 
 end

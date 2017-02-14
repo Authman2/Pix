@@ -12,8 +12,9 @@ import Neon
 import Firebase
 import OneSignal
 import Presentr
+import Hero
 
-class PostDetailPage: UIViewController {
+class PostDetailPage: UIViewController, UIScrollViewDelegate {
 
     /********************************
      *
@@ -23,15 +24,32 @@ class PostDetailPage: UIViewController {
     
     /* A Post object for data grabbing. */
     var post: Post!
+    static let backgroundColor = UIColor(red: 71/255, green: 250/255, blue: 153/255, alpha: 1);
+    
+    
+    let back: UIButton = {
+        let a = UIButton(type: UIButtonType.custom);
+        a.setImage(UIImage(named: "back_btn@3x.png"), for: .normal);
+        a.transform = a.transform.rotated(by: CGFloat(M_PI_2));
+        a.transform = a.transform.rotated(by: CGFloat(M_PI_2));
+        a.transform = a.transform.rotated(by: CGFloat(M_PI_2));
+        a.setTitleColor(.white, for: .normal);
+        a.tintColor = .white;
+        
+        return a;
+    }();
+    
+    
+    var scrollView: UIScrollView!;
     
     
     /* The image view. */
     let imageView: UIImageView = {
         var imageView = UIImageView();
         imageView.translatesAutoresizingMaskIntoConstraints = false;
-        imageView.backgroundColor = UIColor(red: 239/255, green: 255/255, blue:245/255, alpha: 1);
-        imageView.contentMode = .scaleAspectFit;
+        imageView.backgroundColor = .clear;
         imageView.clipsToBounds = false;
+        imageView.contentMode = .scaleToFill;
         
         return imageView;
     }();
@@ -41,8 +59,8 @@ class PostDetailPage: UIViewController {
     let captionLabel: UILabel = {
         let c = UILabel();
         c.translatesAutoresizingMaskIntoConstraints = false;
-        c.textColor = .black;
-        c.backgroundColor = UIColor(red: 239/255, green: 255/255, blue:245/255, alpha: 1);
+        c.textColor = .white;
+        c.backgroundColor = .clear;
         c.numberOfLines = 0;
         c.font = UIFont(name: c.font.fontName, size: 15);
         
@@ -54,8 +72,8 @@ class PostDetailPage: UIViewController {
     let likesLabel: UILabel = {
         let l = UILabel();
         l.translatesAutoresizingMaskIntoConstraints = false;
-        l.textColor = .black;
-        l.backgroundColor = UIColor(red: 239/255, green: 255/255, blue:245/255, alpha: 1);
+        l.textColor = .white;
+        l.backgroundColor = .clear;
         
         return l;
     }();
@@ -65,8 +83,8 @@ class PostDetailPage: UIViewController {
     let uploaderLabel: UILabel = {
         let l = UILabel();
         l.translatesAutoresizingMaskIntoConstraints = false;
-        l.textColor = .black;
-        l.backgroundColor = UIColor(red: 239/255, green: 255/255, blue:245/255, alpha: 1);
+        l.textColor = .white;
+        l.backgroundColor = .clear;
         
         return l;
     }();
@@ -85,11 +103,96 @@ class PostDetailPage: UIViewController {
      *
      ********************************/
     
-    /* Setup the look of the view. In other words, arrange the components. 
-     @param post -- The Post object that all of the information is grabbed from. */
-    public func setup(post: Post) {
-        self.post = post;
+    override func viewDidLoad() {
+        super.viewDidLoad();
+        self.view.backgroundColor = PostDetailPage.backgroundColor;
+        self.configureGestures();
+
         
+        scrollView = UIScrollView(frame: view.bounds);
+        scrollView.backgroundColor = PostDetailPage.backgroundColor;
+        scrollView.translatesAutoresizingMaskIntoConstraints = false;
+        scrollView.alwaysBounceVertical = true;
+        scrollView.alwaysBounceHorizontal = false;
+        imageView.frame = scrollView.frame;
+        scrollView.contentSize = imageView.frame.size;
+        scrollView.delegate = self;
+        
+        // Get the important info.
+        imageView.image = post.photo;
+        captionLabel.text = "\(post.caption!)";
+        likesLabel.text = "Likes: \(post.likes)";
+        uploaderLabel.text = "\(post.uploader.firstName) \(post.uploader.lastName)";
+        
+        /* Layout the components. */
+        scrollView.addSubview(back);
+        scrollView.addSubview(imageView);
+        scrollView.addSubview(captionLabel);
+        scrollView.addSubview(likesLabel);
+        scrollView.addSubview(uploaderLabel);
+        scrollView.bringSubview(toFront: back);
+        view.addSubview(scrollView);
+        
+        
+        /* Layout with Snapkit */
+        scrollView.snp.makeConstraints { (maker: ConstraintMaker) in
+            maker.top.equalTo(view.snp.top);
+            maker.height.equalTo(1000);
+            maker.left.equalTo(view.snp.left);
+            maker.right.equalTo(view.snp.right);
+        }
+        imageView.snp.makeConstraints { (maker: ConstraintMaker) in
+            maker.left.equalTo(0);
+            maker.right.equalTo(view.snp.right);
+            maker.top.equalTo(view.snp.top);
+            maker.height.equalTo(500);
+        }
+        uploaderLabel.snp.makeConstraints { (maker: ConstraintMaker) in
+            maker.left.equalTo(5);
+            maker.top.equalTo(imageView.snp.bottom).offset(10);
+            maker.width.equalTo(scrollView.width);
+            maker.height.equalTo(30);
+        }
+        likesLabel.snp.makeConstraints { (maker: ConstraintMaker) in
+            maker.left.equalTo(5);
+            maker.top.equalTo(uploaderLabel.snp.bottom);
+            maker.width.equalTo(100);
+            maker.height.equalTo(30);
+        }
+        captionLabel.snp.makeConstraints { (maker: ConstraintMaker) in
+            maker.top.equalTo(likesLabel.snp.bottom);
+            maker.left.equalTo(5);
+            maker.right.equalTo(view.snp.right).offset(5);
+        }
+        back.snp.makeConstraints { (maker: ConstraintMaker) in
+            maker.left.equalTo(5);
+            maker.top.equalTo(10);
+            maker.width.equalTo(50);
+            maker.height.equalTo(50);
+        }
+        
+    } // End of setup method.
+    
+
+    @objc func goBack() {
+        UIView.animate(withDuration: 0.4, delay: 0, options: [], animations: {
+            self.navigationController?.navigationBar.isHidden = false;
+            self.navigationController?.navigationBar.alpha = 1;
+            lastProfile.navigationItem.titleView?.isHidden = false;
+            lastProfile.navigationItem.titleView?.alpha = 1;
+            
+        }, completion: { (finished: Bool) in
+            lastProfile.navigationItem.title = lastProfile.viewcontrollerName;
+        });
+        
+        // the following two lines configures the animation. default is .auto
+        Hero.shared.setDefaultAnimationForNextTransition(animations[1]);
+        Hero.shared.setContainerColorForNextTransition(view.backgroundColor);
+        
+        hero_replaceViewController(with: lastProfile);
+    }
+    
+    func configureGestures() {
         // Tap gesture
         let tap = UITapGestureRecognizer(target: self, action: #selector(likePhoto));
         tap.numberOfTapsRequired = 2;
@@ -100,51 +203,10 @@ class PostDetailPage: UIViewController {
         let longPress = UILongPressGestureRecognizer(target: self, action: #selector(openActionSheet));
         imageView.addGestureRecognizer(longPress);
         view.addGestureRecognizer(longPress);
-
-        
-        // Get the important info.
-        imageView.image = post.photo;
-        captionLabel.text = "\(post.caption!)";
-        likesLabel.text = "Likes: \(post.likes)";
-        uploaderLabel.text = "\(post.uploader.firstName) \(post.uploader.lastName)";
-        
-        /* Layout the components. */
-        view.addSubview(imageView);
-        
-        view.addSubview(captionLabel);
-        view.addSubview(likesLabel);
-        view.addSubview(uploaderLabel);
         
         
-        /* Layout with Snapkit */
-        likesLabel.snp.makeConstraints { (maker: ConstraintMaker) in
-            maker.bottom.equalTo(view.snp.bottom);
-            maker.height.equalTo(20);
-            maker.right.equalTo(view.snp.right);
-        }
-        uploaderLabel.snp.makeConstraints { (maker: ConstraintMaker) in
-            maker.bottom.equalTo(view.snp.bottom);
-            maker.height.equalTo(20);
-            maker.left.equalTo(view.snp.left);
-            maker.right.equalTo(likesLabel.snp.left);
-        }
-        captionLabel.snp.makeConstraints { (maker: ConstraintMaker) in
-            maker.bottom.equalTo(uploaderLabel.snp.top);
-            maker.width.equalTo(view.frame.width);
-            maker.height.equalTo(50);
-            maker.left.equalTo(view.snp.left);
-            maker.right.equalTo(view.snp.right);
-        }
-        imageView.snp.makeConstraints { (maker: ConstraintMaker) in
-            maker.left.equalTo(0);
-            maker.right.equalTo(view.snp.right);
-            maker.top.equalTo(0);
-            maker.bottom.equalTo(captionLabel.snp.top);
-        }
-        
-    } // End of setup method.
-    
-    
+        back.addTarget(self, action: #selector(goBack), for: .touchUpInside);
+    }
     
     @objc func likePhoto() {
         

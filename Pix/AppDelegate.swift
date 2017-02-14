@@ -12,6 +12,8 @@ import UserNotifications
 import AUNavigationMenuController
 import SwiftMessages
 import OneSignal
+import IQKeyboardManagerSwift
+import Hero
 
 
 /* The different pages are global for easy access. */
@@ -21,6 +23,7 @@ var explorePage: ExplorePage!;
 var activityPage: ActivityPage!;
 var profilePage: ProfilePage!;
 var otherProfilePage: OtherProfilePage!;
+var lastProfile: ProfileDisplayPage!;
 var navContr: AUNavigationMenuController!;
 
 
@@ -33,6 +36,9 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        // Keyboard managers
+        IQKeyboardManager.sharedManager().enable = true;
+        
         
         // OneSignal notifications.
         //Add this line. Replace '5eb5a37e-b458-11e3-ac11-000c2940e62c' with your OneSignal App ID.
@@ -86,6 +92,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         activityPage = ActivityPage();
         profilePage = ProfilePage();
         otherProfilePage = OtherProfilePage();
+        lastProfile = profilePage;
         
         
         // Create the navigation controller with options.
@@ -94,6 +101,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         auNavOptions.itemTextColor = .white;
         auNavOptions.pullAmount = 150;
         navContr.configureOptions(options: auNavOptions);
+        navContr.isHeroEnabled = true;
         
         
         /* Add all of the views as menu items. */
@@ -107,11 +115,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
             
         });
         navContr.addMenuItem(name: "Profile", image: UIImage(named: "ProfileIcon.png"), destination: profilePage, completion: { void in
-//            util.loadUsersPhotos(user: currentUser, continous: true, completion: {
-//                profilePage.adapter.reloadData(completion: { (b: Bool) in
-//                    profilePage.reloadLabels();
-//                })
-//            });
+                
         });
         
         

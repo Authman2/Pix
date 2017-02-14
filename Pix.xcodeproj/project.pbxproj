@@ -14,10 +14,12 @@
 		5A28BE4C1E1492CF00DD0396 /* FeedCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A28BE4B1E1492CF00DD0396 /* FeedCell.swift */; };
 		5A3121171E24562500B38C45 /* TermsOfServicePage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A3121161E24562500B38C45 /* TermsOfServicePage.swift */; };
 		5A44AB461E1C7ACB0029A480 /* ActivityPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A44AB451E1C7ACB0029A480 /* ActivityPage.swift */; };
+		5A63B6EE1E52B25900725EE6 /* ProfileDisplayPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A63B6ED1E52B25900725EE6 /* ProfileDisplayPage.swift */; };
 		5A735C021E31BCC500CBB349 /* LikedPhotosPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A735C011E31BCC500CBB349 /* LikedPhotosPage.swift */; };
 		5A756DCA1DE5E802003FD2C0 /* GoogleService-Info.plist in Resources */ = {isa = PBXBuildFile; fileRef = 5A756DC91DE5E802003FD2C0 /* GoogleService-Info.plist */; };
 		5A8C7DF01E25A7A300F3F687 /* ActionSheet.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A8C7DEF1E25A7A300F3F687 /* ActionSheet.swift */; };
 		5A8C7DF21E25AE0000F3F687 /* BlockedUsersPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A8C7DF11E25AE0000F3F687 /* BlockedUsersPage.swift */; };
+		5A920A9E1E4EC43B002B8809 /* back_btn@3x.png in Resources */ = {isa = PBXBuildFile; fileRef = 5A920A9D1E4EC43B002B8809 /* back_btn@3x.png */; };
 		5A93F8EF1E0F0F72008C7154 /* PostDetailPage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A93F8EE1E0F0F72008C7154 /* PostDetailPage.swift */; };
 		5AA6D0371E2BF034002CE674 /* OtherProfilePage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5AA6D0361E2BF034002CE674 /* OtherProfilePage.swift */; };
 		5ABBC9041E10781C0056CE16 /* ExplorePage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5ABBC9031E10781C0056CE16 /* ExplorePage.swift */; };
@@ -58,10 +60,12 @@
 		5A28BE4B1E1492CF00DD0396 /* FeedCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedCell.swift; sourceTree = "<group>"; };
 		5A3121161E24562500B38C45 /* TermsOfServicePage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = TermsOfServicePage.swift; sourceTree = "<group>"; };
 		5A44AB451E1C7ACB0029A480 /* ActivityPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActivityPage.swift; sourceTree = "<group>"; };
+		5A63B6ED1E52B25900725EE6 /* ProfileDisplayPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ProfileDisplayPage.swift; sourceTree = "<group>"; };
 		5A735C011E31BCC500CBB349 /* LikedPhotosPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = LikedPhotosPage.swift; sourceTree = "<group>"; };
 		5A756DC91DE5E802003FD2C0 /* GoogleService-Info.plist */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = text.plist.xml; path = "GoogleService-Info.plist"; sourceTree = "<group>"; };
 		5A8C7DEF1E25A7A300F3F687 /* ActionSheet.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ActionSheet.swift; sourceTree = "<group>"; };
 		5A8C7DF11E25AE0000F3F687 /* BlockedUsersPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = BlockedUsersPage.swift; sourceTree = "<group>"; };
+		5A920A9D1E4EC43B002B8809 /* back_btn@3x.png */ = {isa = PBXFileReference; lastKnownFileType = image.png; path = "back_btn@3x.png"; sourceTree = "<group>"; };
 		5A93F8EE1E0F0F72008C7154 /* PostDetailPage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = PostDetailPage.swift; sourceTree = "<group>"; };
 		5AA6D0361E2BF034002CE674 /* OtherProfilePage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = OtherProfilePage.swift; sourceTree = "<group>"; };
 		5AA766F61E1B542600765C7A /* Pix.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; path = Pix.entitlements; sourceTree = "<group>"; };
@@ -193,6 +197,7 @@
 		5AFE5F681E12F6D0008BEA7E /* Images */ = {
 			isa = PBXGroup;
 			children = (
+				5A920A9D1E4EC43B002B8809 /* back_btn@3x.png */,
 				5AF5CC121E1DB9C7007DE325 /* ActivityIcon.png */,
 				5AF5CC131E1DB9C7007DE325 /* ExploreIcon.png */,
 				5AF5CC141E1DB9C7007DE325 /* HomeIcon.png */,
@@ -249,6 +254,7 @@
 				5A1BA7631E21C20800666EC9 /* EmptyViews.swift */,
 				5A8C7DEF1E25A7A300F3F687 /* ActionSheet.swift */,
 				5AF33C671E2A9C7A00BA6B94 /* Utilities.swift */,
+				5A63B6ED1E52B25900725EE6 /* ProfileDisplayPage.swift */,
 			);
 			name = Extras;
 			sourceTree = "<group>";
@@ -341,6 +347,7 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5A920A9E1E4EC43B002B8809 /* back_btn@3x.png in Resources */,
 				5AFE5F6A1E12F6DF008BEA7E /* friends_icon@3x.png in Resources */,
 				5AF5CC181E1DB9C7007DE325 /* HomeIcon.png in Resources */,
 				5AFF275B1DDB60F4001CBF95 /* LaunchScreen.storyboard in Resources */,
@@ -431,6 +438,7 @@
 				5AF109051E26ABCF0030D4DF /* UnblockUserPage.swift in Sources */,
 				5A8C7DF21E25AE0000F3F687 /* BlockedUsersPage.swift in Sources */,
 				5A93F8EF1E0F0F72008C7154 /* PostDetailPage.swift in Sources */,
+				5A63B6EE1E52B25900725EE6 /* ProfileDisplayPage.swift in Sources */,
 				5AE3CCE41E0C89DC009F7816 /* SignUpPage.swift in Sources */,
 				5ABBC9041E10781C0056CE16 /* ExplorePage.swift in Sources */,
 				5A28BE4C1E1492CF00DD0396 /* FeedCell.swift in Sources */,

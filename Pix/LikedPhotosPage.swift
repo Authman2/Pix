@@ -56,6 +56,7 @@ class LikedPhotosPage: UIViewController, IGListAdapterDataSource {
     
     override func viewDidLoad() {
         super.viewDidLoad();
+        navigationItem.title = "Liked Photos";
         
         collectionView.register(ProfilePageCell.self, forCellWithReuseIdentifier: "Cell");
         collectionView.backgroundColor = UIColor(red: 239/255, green: 255/255, blue:245/255, alpha: 1);

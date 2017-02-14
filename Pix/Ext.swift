@@ -12,7 +12,7 @@ import UIKit
 import Spring
 import DynamicColor
 import IGListKit
-
+import Hero
 
 
 /* IDs that have already been used. */
@@ -21,6 +21,7 @@ var usedIds: [String] = [String]();
 /* An array for displaying the user's activity. */
 var notificationActivityLog: [NSDictionary] = [NSDictionary]();
 
+let animations: [HeroDefaultAnimationType] = [.zoom, .zoomOut, .none];
 
 
 public extension String {

@@ -111,8 +111,7 @@ class FeedPage: UIViewController, IGListAdapterDataSource, UIImagePickerControll
         });
         
     } // End of viewDidLoad().
-    
-    
+        
     override func viewDidLayoutSubviews() {
         super.viewDidLayoutSubviews();
         collectionView.frame = view.bounds;

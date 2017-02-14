@@ -14,7 +14,7 @@ import PullToRefreshSwift
 import OneSignal
 import IGListKit
 
-class OtherProfilePage: UIViewController, IGListAdapterDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class OtherProfilePage: ProfileDisplayPage, IGListAdapterDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     
     /********************************
@@ -228,6 +228,8 @@ class OtherProfilePage: UIViewController, IGListAdapterDataSource, UIImagePicker
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated);
         self.adapter.performUpdates(animated: true, completion: nil);
+        lastProfile = self;
+        viewcontrollerName = navigationItem.title!;
         
         backButton.isEnabled = true;
         backButton.tintColor = .white;
