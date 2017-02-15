@@ -13,6 +13,8 @@ import Firebase
 import OneSignal
 import Presentr
 import Hero
+import ChameleonFramework
+import DynamicColor
 
 class PostDetailPage: UIViewController, UIScrollViewDelegate {
 
@@ -24,7 +26,7 @@ class PostDetailPage: UIViewController, UIScrollViewDelegate {
     
     /* A Post object for data grabbing. */
     var post: Post!
-    static let backgroundColor = UIColor(red: 71/255, green: 250/255, blue: 153/255, alpha: 1);
+    static let backgroundColor = UIColor.flatForestGreen.lighten(byPercentage: 0.35);
     
     
     let back: UIButton = {
@@ -107,7 +109,6 @@ class PostDetailPage: UIViewController, UIScrollViewDelegate {
         super.viewDidLoad();
         self.view.backgroundColor = PostDetailPage.backgroundColor;
         self.configureGestures();
-
         
         scrollView = UIScrollView(frame: view.bounds);
         scrollView.backgroundColor = PostDetailPage.backgroundColor;
@@ -118,11 +119,13 @@ class PostDetailPage: UIViewController, UIScrollViewDelegate {
         scrollView.contentSize = imageView.frame.size;
         scrollView.delegate = self;
         
+        
         // Get the important info.
         imageView.image = post.photo;
         captionLabel.text = "\(post.caption!)";
         likesLabel.text = "Likes: \(post.likes)";
         uploaderLabel.text = "\(post.uploader.firstName) \(post.uploader.lastName)";
+        
         
         /* Layout the components. */
         scrollView.addSubview(back);
@@ -142,15 +145,15 @@ class PostDetailPage: UIViewController, UIScrollViewDelegate {
             maker.right.equalTo(view.snp.right);
         }
         imageView.snp.makeConstraints { (maker: ConstraintMaker) in
-            maker.left.equalTo(0);
+            maker.left.equalTo(scrollView.snp.left);
             maker.right.equalTo(view.snp.right);
-            maker.top.equalTo(view.snp.top);
+            maker.top.equalTo(scrollView.snp.top).offset(-20);
             maker.height.equalTo(500);
         }
         uploaderLabel.snp.makeConstraints { (maker: ConstraintMaker) in
             maker.left.equalTo(5);
             maker.top.equalTo(imageView.snp.bottom).offset(10);
-            maker.width.equalTo(scrollView.width);
+            maker.width.equalTo(view.width);
             maker.height.equalTo(30);
         }
         likesLabel.snp.makeConstraints { (maker: ConstraintMaker) in
@@ -162,7 +165,7 @@ class PostDetailPage: UIViewController, UIScrollViewDelegate {
         captionLabel.snp.makeConstraints { (maker: ConstraintMaker) in
             maker.top.equalTo(likesLabel.snp.bottom);
             maker.left.equalTo(5);
-            maker.right.equalTo(view.snp.right).offset(5);
+            maker.right.equalTo(view.snp.right).offset(10);
         }
         back.snp.makeConstraints { (maker: ConstraintMaker) in
             maker.left.equalTo(5);
@@ -172,6 +175,11 @@ class PostDetailPage: UIViewController, UIScrollViewDelegate {
         }
         
     } // End of setup method.
+    
+    
+    override func viewDidAppear(_ animated: Bool) {
+        super.viewDidAppear(animated);
+    }
     
 
     @objc func goBack() {
@@ -185,7 +193,6 @@ class PostDetailPage: UIViewController, UIScrollViewDelegate {
             lastProfile.navigationItem.title = lastProfile.viewcontrollerName;
         });
         
-        // the following two lines configures the animation. default is .auto
         Hero.shared.setDefaultAnimationForNextTransition(animations[1]);
         Hero.shared.setContainerColorForNextTransition(view.backgroundColor);
         
@@ -204,9 +211,9 @@ class PostDetailPage: UIViewController, UIScrollViewDelegate {
         imageView.addGestureRecognizer(longPress);
         view.addGestureRecognizer(longPress);
         
-        
         back.addTarget(self, action: #selector(goBack), for: .touchUpInside);
     }
+    
     
     @objc func likePhoto() {
         

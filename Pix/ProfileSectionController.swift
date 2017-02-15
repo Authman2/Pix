@@ -51,8 +51,10 @@ class ProfileSectionController: IGListSectionController, IGListSectionType {
         if let _ = currentCell {
             let detail = PostDetailPage();
             detail.post = self.post!;
+            detail.isHeroEnabled = true;
             
             self.vc?.navigationItem.title = "";
+            if(navContr.open == true) { navContr.togglePulldownMenu(); }
             UIView.animate(withDuration: 0.4, delay: 0, options: [], animations: {
                 self.vc?.navigationController?.navigationBar.alpha = 0;
                 self.vc?.navigationItem.titleView?.alpha = 0;
@@ -65,16 +67,6 @@ class ProfileSectionController: IGListSectionController, IGListSectionType {
             Hero.shared.setContainerColorForNextTransition(detail.view.backgroundColor);
             
             vc?.hero_replaceViewController(with: detail);
-            
-//            detail.transitioningDelegate = vc;
-//            detail.modalPresentationStyle = .custom;
-            
-//            detail.imageView.heroID = "imageView";
-//            detail.uploaderLabel.heroID = "uploaderLabel";
-//            detail.likesLabel.heroID = "likesLabel";
-//            detail.captionLabel.heroID = "captionLabel";
-            
-            //vc?.present(detail, animated: true, completion: nil);
         }
     }
     

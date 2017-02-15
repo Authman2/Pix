@@ -11,7 +11,7 @@ import PullToRefreshSwift
 import Firebase
 import IGListKit
 
-class FeedPage: UIViewController, IGListAdapterDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
+class FeedPage: ProfileDisplayPage, IGListAdapterDataSource, UIImagePickerControllerDelegate, UINavigationControllerDelegate {
     
     
     /********************************
@@ -124,7 +124,8 @@ class FeedPage: UIViewController, IGListAdapterDataSource, UIImagePickerControll
         navigationController?.navigationBar.isHidden = false;
         navigationItem.hidesBackButton = true;
         navigationItem.title = "Feed";
-        
+        lastProfile = self;
+        viewcontrollerName = "Feed";
         
         // Remove any posts that belong to people you have unfollowed recently.
         self.removeUnfollowedPosts(completion: nil);

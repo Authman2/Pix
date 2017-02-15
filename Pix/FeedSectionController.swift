@@ -8,6 +8,7 @@
 
 import UIKit
 import IGListKit
+import Hero
 
 class FeedSectionController: IGListSectionController, IGListSectionType {
 
@@ -54,6 +55,25 @@ class FeedSectionController: IGListSectionController, IGListSectionType {
         self.post = object as? Post;
     }
     
-    func didSelectItem(at index: Int) {}
+    func didSelectItem(at index: Int) {
+        let detail = PostDetailPage();
+        detail.post = self.post!;
+        detail.isHeroEnabled = true;
+        
+        self.vc?.navigationItem.title = "";
+        if(navContr.open == true) { navContr.togglePulldownMenu(); }
+        UIView.animate(withDuration: 0.4, delay: 0, options: [], animations: {
+            self.vc?.navigationController?.navigationBar.alpha = 0;
+            self.vc?.navigationItem.titleView?.alpha = 0;
+        }, completion: { (finished: Bool) in
+            self.vc?.navigationController?.navigationBar.isHidden = true;
+            self.vc?.navigationItem.titleView?.isHidden = true;
+        })
+        
+        Hero.shared.setDefaultAnimationForNextTransition(animations[0]);
+        Hero.shared.setContainerColorForNextTransition(detail.view.backgroundColor);
+        
+        vc?.hero_replaceViewController(with: detail);
+    }
     
 }

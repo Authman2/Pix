@@ -13,7 +13,7 @@ import SnapKit
 import Firebase
 import PullToRefreshSwift
 
-class LikedPhotosPage: UIViewController, IGListAdapterDataSource {
+class LikedPhotosPage: ProfileDisplayPage, IGListAdapterDataSource {
     
     /********************************
      *
@@ -99,6 +99,8 @@ class LikedPhotosPage: UIViewController, IGListAdapterDataSource {
     
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated);
+        lastProfile = self;
+        viewcontrollerName = "Liked Photos";
     }
     
     
