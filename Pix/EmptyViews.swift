@@ -74,3 +74,26 @@ class EmptyActivityView: UIView {
     
 }
 
+
+class EmptyCommentsView: UIView {
+    
+    let titleLabel: UILabel = {
+        let a = UILabel();
+        a.translatesAutoresizingMaskIntoConstraints = false;
+        a.text = "No comments";
+        a.textAlignment = .center;
+        a.textColor = .black;
+        
+        return a;
+    }();
+    
+    
+    
+    
+    override func layoutSubviews() {
+        addSubview(titleLabel);
+        titleLabel.anchorInCenter(width: width, height: height);
+    }
+    
+}
+

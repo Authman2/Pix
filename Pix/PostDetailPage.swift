@@ -15,6 +15,7 @@ import Presentr
 import Hero
 import ChameleonFramework
 import DynamicColor
+import Spring
 
 class PostDetailPage: UIViewController, UIScrollViewDelegate {
 
@@ -76,6 +77,7 @@ class PostDetailPage: UIViewController, UIScrollViewDelegate {
         l.translatesAutoresizingMaskIntoConstraints = false;
         l.textColor = .white;
         l.backgroundColor = .clear;
+        l.font = UIFont(name: l.font.fontName, size: 15);
         
         return l;
     }();
@@ -87,8 +89,20 @@ class PostDetailPage: UIViewController, UIScrollViewDelegate {
         l.translatesAutoresizingMaskIntoConstraints = false;
         l.textColor = .white;
         l.backgroundColor = .clear;
+        l.font = UIFont(name: l.font.fontName, size: 15);
         
         return l;
+    }();
+    
+    
+    /* The button to open the comments page. */
+    let commentsBtn: SpringButton = {
+        let a = SpringButton();
+        a.setTitle("Comments", for: .normal);
+        a.backgroundColor = PostDetailPage.backgroundColor?.darkened();
+        a.titleLabel?.font = UIFont(name: (a.titleLabel?.font.fontName)!, size: 15);
+        
+        return a;
     }();
 
 
@@ -133,6 +147,7 @@ class PostDetailPage: UIViewController, UIScrollViewDelegate {
         scrollView.addSubview(captionLabel);
         scrollView.addSubview(likesLabel);
         scrollView.addSubview(uploaderLabel);
+        scrollView.addSubview(commentsBtn);
         scrollView.bringSubview(toFront: back);
         view.addSubview(scrollView);
         
@@ -173,6 +188,12 @@ class PostDetailPage: UIViewController, UIScrollViewDelegate {
             maker.width.equalTo(50);
             maker.height.equalTo(50);
         }
+        commentsBtn.snp.makeConstraints { (maker: ConstraintMaker) in
+            maker.left.equalTo(scrollView.snp.left);
+            maker.top.equalTo(captionLabel.snp.bottom).offset(30);
+            maker.right.equalTo(view.snp.right);
+            maker.height.equalTo(35);
+        }
         
     } // End of setup method.
     
@@ -212,6 +233,24 @@ class PostDetailPage: UIViewController, UIScrollViewDelegate {
         view.addGestureRecognizer(longPress);
         
         back.addTarget(self, action: #selector(goBack), for: .touchUpInside);
+        commentsBtn.addTarget(self, action: #selector(goToComments), for: .touchUpInside);
+    }
+    
+    
+    @objc func goToComments() {
+        commentsBtn.animateButtonClick();
+        
+        let presenter: Presentr = {
+            let pres = Presentr(presentationType: .bottomHalf);
+            pres.dismissOnSwipe = true;
+            pres.dismissAnimated = true;
+            pres.backgroundOpacity = 0.7;
+            return pres;
+        }();
+        
+        let commVC = CommentsPage();
+        commVC.post = self.post;
+        customPresentViewController(presenter, viewController: commVC, animated: true, completion: nil);
     }
     
     

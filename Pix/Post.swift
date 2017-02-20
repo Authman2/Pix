@@ -45,6 +45,9 @@ public class Post: NSObject, IGListDiffable {
     var flags: Int = 0;
     
     
+    /* All of the comments on the picture. */
+    var comments: [String]!;
+    
     
     
     
@@ -59,6 +62,7 @@ public class Post: NSObject, IGListDiffable {
         self.caption = caption;
         self.uploader = Uploader;
         self.id = ID;
+        self.comments = [String]();
     }
     
     
@@ -70,7 +74,8 @@ public class Post: NSObject, IGListDiffable {
                                              "caption" : caption,
                                              "likes" : likes,
                                              "is_profile_picture" : isProfilePicture,
-                                             "flags" : flags]);
+                                             "flags" : flags,
+                                             "comments" : comments]);
         return dict;
     }
     
@@ -83,6 +88,7 @@ public class Post: NSObject, IGListDiffable {
         self.flags = post.flags;
         self.likes = post.likes;
         self.isProfilePicture = post.isProfilePicture;
+        self.comments = post.comments;
     }
     
     

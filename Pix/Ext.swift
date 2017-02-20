@@ -383,12 +383,14 @@ public extension NSDictionary {
         let likes = value(forKey: "likes") as? Int ?? 0;
         let isProfPic = value(forKey: "is_profile_picture") as? Bool ?? false;
         let flags = value(forKey: "flags") as? Int ?? 0;
+        let comments = value(forKey: "comments") as? [String] ?? [];
         
         
         let post = Post(photo: nil, caption: caption, Uploader: user, ID: id);
         post.isProfilePicture = isProfPic;
         post.flags = flags;
         post.likes = likes;
+        post.comments = comments;
         
         return post;
     }
