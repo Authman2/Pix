@@ -10,11 +10,6 @@ import Foundation
 import UIKit
 
 
-
-/* A global variable for the current user. */
-var currentUser: User!;
-
-
 public class User: NSObject {
     
     /********************************

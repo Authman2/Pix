@@ -45,22 +45,22 @@ class EditProfilePage: FormViewController {
             <<< TextRow(){ row in
                 row.tag = "UsernameRow";
                 row.title = "Username";
-                row.value = "\(currentUser.username)";
+                row.value = "\(Networking.currentUser!.username)";
             }
             <<< TextRow(){ row in
                 row.tag = "EmailRow";
                 row.title = "Email";
-                row.value = "\(currentUser.email)";
+                row.value = "\(Networking.currentUser!.email)";
             }
             <<< TextRow() { row in
                 row.tag = "FirstNameRow";
                 row.title = "First Name";
-                row.value = "\(currentUser.firstName)";
+                row.value = "\(Networking.currentUser!.firstName)";
             }
             <<< TextRow() { row in
                 row.tag = "LastRow";
                 row.title = "Last Name";
-                row.value = "\(currentUser.lastName)";
+                row.value = "\(Networking.currentUser!.lastName)";
             }
             <<< TextRow() { row in
                 row.tag = "PasswordRow";
@@ -75,9 +75,9 @@ class EditProfilePage: FormViewController {
             +++ Section("Privacy")
             <<< SwitchRow() { row in
                 row.title = "Private Account"
-                row.value = currentUser.isPrivate;
+                row.value = Networking.currentUser!.isPrivate;
                 }.onChange { row in
-                    currentUser.isPrivate = (row.value ?? false) ? true : false;
+                    Networking.currentUser!.isPrivate = (row.value ?? false) ? true : false;
                     row.updateCell()
                 }.cellSetup { cell, row in
                     cell.backgroundColor = .white
@@ -124,11 +124,11 @@ class EditProfilePage: FormViewController {
         let passwordRow: String? = form.rowBy(tag: "PasswordRow")?.value;
         
         
-        var usrn = currentUser.username;
-        var em = currentUser.email;
-        var first = currentUser.firstName;
-        var last = currentUser.lastName;
-        var pass = currentUser.password;
+        var usrn = Networking.currentUser!.username;
+        var em = Networking.currentUser!.email;
+        var first = Networking.currentUser!.firstName;
+        var last = Networking.currentUser!.lastName;
+        var pass = Networking.currentUser!.password;
         
         
         if let usrRow = usernameRow {
@@ -154,22 +154,22 @@ class EditProfilePage: FormViewController {
         
         
         
-        currentUser.email = em;
-        currentUser.firstName = first;
-        currentUser.lastName = last;
-        currentUser.password = pass;
+        Networking.currentUser!.email = em;
+        Networking.currentUser!.firstName = first;
+        Networking.currentUser!.lastName = last;
+        Networking.currentUser!.password = pass;
         
         self.checkUsernameTaken(username: usrn, taken: {
             // Taken.
         }) { 
-            currentUser.username = usrn;
+            Networking.currentUser!.username = usrn;
             self.updateIt();
         }
         
         self.checkEmailTaken(email: em, taken: { 
             // Taken.
         }) { 
-            currentUser.email = em;
+            Networking.currentUser!.email = em;
             self.updateIt();
         }
         
@@ -178,23 +178,25 @@ class EditProfilePage: FormViewController {
     
     
     private func updateIt() {
-        self.fireRef.child("Users").child(currentUser.uid).setValue(currentUser.toDictionary());
-        FIRAuth.auth()?.currentUser?.updateEmail(currentUser.email, completion: { (error: Error?) in
-            if error == nil {
-                self.debug(message: "Email was reset!");
-            } else {
-                self.debug(message: "There was an issue updating the email: \(error.debugDescription)");
-            }
-        })
-        FIRAuth.auth()?.currentUser?.updatePassword(currentUser.password, completion: { (error: Error?) in
-            if error == nil {
-                self.debug(message: "Password was reset!");
-            } else {
-                self.debug(message: "There was an issue updating the password: \(error.debugDescription)");
-            }
-        })
+        Networking.updateCurrentUserInFirebase();
         
-        self.fireRef.child("Users").child(currentUser.uid).updateChildValues(currentUser.toDictionary() as! [AnyHashable : Any]);
+//        self.fireRef.child("Users").child(Networking.currentUser!.uid).setValue(Networking.currentUser!.toDictionary());
+//        FIRAuth.auth()?.currentUser?.updateEmail(Networking.currentUser!.email, completion: { (error: Error?) in
+//            if error == nil {
+//                self.debug(message: "Email was reset!");
+//            } else {
+//                self.debug(message: "There was an issue updating the email: \(error.debugDescription)");
+//            }
+//        })
+//        FIRAuth.auth()?.currentUser?.updatePassword(Networking.currentUser!.password, completion: { (error: Error?) in
+//            if error == nil {
+//                self.debug(message: "Password was reset!");
+//            } else {
+//                self.debug(message: "There was an issue updating the password: \(error.debugDescription)");
+//            }
+//        })
+//        
+//        self.fireRef.child("Users").child(Networking.currentUser!.uid).updateChildValues(Networking.currentUser!.toDictionary() as! [AnyHashable : Any]);
     }
     
     

@@ -13,9 +13,11 @@ import IGListKit
 class CommentsSectionController: IGListSectionController, IGListSectionType {
     
     
-    var post: Post?;
+    var commentString: String?;
+    var cell: CommentsCell?;
     
     
+        
     func numberOfItems() -> Int {
         return 1;
     }
@@ -25,15 +27,16 @@ class CommentsSectionController: IGListSectionController, IGListSectionType {
     }
     
     func cellForItem(at index: Int) -> UICollectionViewCell {
-        let cell = collectionContext!.dequeueReusableCell(of: FeedCell.self, for: self, at: index) as! CommentsCell;
+        let cell = collectionContext!.dequeueReusableCell(of: CommentsCell.self, for: self, at: index) as! CommentsCell;
+        self.cell = cell;
         
-        cell.setup(string: post!.comments[index]);
+        cell.setup(string: self.commentString);
         
         return cell
     }
     
     func didUpdate(to object: Any) {
-        self.post = object as? Post;
+        self.commentString = object as? String;
     }
     
     func didSelectItem(at index: Int) {}

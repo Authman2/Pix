@@ -172,7 +172,7 @@ class FeedPage: ProfileDisplayPage, IGListAdapterDataSource, UIImagePickerContro
                 
                 
                 // Add to the array if it has the same uid.
-                if currentUser.following.contains(usr.uid) {
+                if Networking.currentUser!.following.contains(usr.uid) {
                     self.followingUsers.append(usr);
                 }
             }
@@ -244,7 +244,7 @@ class FeedPage: ProfileDisplayPage, IGListAdapterDataSource, UIImagePickerContro
         
         for post in self.postFeed {
             
-            if !currentUser.following.containsUsername(username: post.uploader.uid) {
+            if !Networking.currentUser!.following.containsUsername(username: post.uploader.uid) {
                 
                 self.postFeed.removeItem(item: post);
                 
@@ -278,7 +278,7 @@ class FeedPage: ProfileDisplayPage, IGListAdapterDataSource, UIImagePickerContro
         if let photo = info[UIImagePickerControllerOriginalImage] as? UIImage {
             
             let vc = UploadPhotosViewController();
-            let post = Post(photo: photo, caption: "", Uploader: currentUser, ID: nil);
+            let post = Post(photo: photo, caption: "", Uploader: Networking.currentUser!, ID: nil);
             vc.post = post;
             vc.imageView.image = photo;
             navigationController?.pushViewController(vc, animated: true);

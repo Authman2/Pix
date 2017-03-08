@@ -67,7 +67,7 @@ class ActionSheet: UIViewController {
         view.backgroundColor = UIColor(white: 255, alpha: 0.5);
         
     
-        if(self.post!.uploader.uid == currentUser.uid) {
+        if(self.post!.uploader.uid == Networking.currentUser!.uid) {
             view.addSubview(titleLabel);
             view.addSubview(cancel);
             view.addSubview(delete);
@@ -102,14 +102,14 @@ class ActionSheet: UIViewController {
     
     
     @objc func deletePost() {
-        self.fireRef.child("Photos").child(currentUser.uid).child(self.post!.id!).removeValue { (error: Error?, ref: FIRDatabaseReference) in
+        self.fireRef.child("Photos").child(Networking.currentUser!.uid).child(self.post!.id!).removeValue { (error: Error?, ref: FIRDatabaseReference) in
             
             if let err = error {
                 self.debug(message: "Error deleting post: \(err)");
             } else {
                 
                 // Delete the image data.
-                let storageRef = FIRStorageReference().child("\(currentUser.uid)/\(self.post!.id!).jpg");
+                let storageRef = FIRStorageReference().child("\(Networking.currentUser!.uid)/\(self.post!.id!).jpg");
                 storageRef.delete(completion: { (error: Error?) in
                     if let e = error {
                         self.debug(message: "Error deleting image data: \(e)");
@@ -117,7 +117,7 @@ class ActionSheet: UIViewController {
                     }
                 });
                                 
-                currentUser.posts.removePost(uid: self.post!.id!);
+                Networking.currentUser!.posts.removePost(uid: self.post!.id!);
                 self.cancelMethod();
                 return;
             }

@@ -232,71 +232,28 @@ class LandingPage: UIViewController {
         
         // Sign in.
         if((self.emailField.text?.length())! > 0 && (self.passwordField.text?.length())! > 0) {
-            FIRAuth.auth()?.signIn(withEmail: emailField.text!, password: passwordField.text!, completion: { (usr: FIRUser?, error: Error?) in
-                if error != nil {
-
-                    self.debug(message: "Wrong Password!");
-                    self.statusLabel.textColor = UIColor.red;
-                    self.statusLabel.isHidden = false;
-                    self.statusLabel.text = "Incorrect password.";
-                    
-                } else {
-                    
-                    // Search in the database for the user.
-                    self.fireRef.child("Users").observeSingleEvent(of: .value, with: { (snapshot) in
-                        
-                        let userDictionary = snapshot.value as? [String : AnyObject] ?? [:];
-                        
-                        for user in userDictionary {
-                            let value = user.value as? NSDictionary
-                            
-                            // Get a user object from the dictionary.
-                            let usr = value?.toUser();
-                            
-                            
-                            // If there is a match with the emails, login.
-                            if(usr?.email == self.emailField.text!) {
-                                currentUser = usr;
-                                
-                                self.debug(message: "Logged in!");
-                                self.statusLabel.textColor = UIColor.green;
-                                self.statusLabel.isHidden = false;
-                                self.statusLabel.text = "Logging In!";
-                                
-                                break;
-                            } else {
-                                
-                                self.statusLabel.textColor = UIColor.red;
-                                self.statusLabel.isHidden = false;
-                                self.statusLabel.text = "Could not find that user.";
-                                
-                                
-                            } // End of email check.
-                            
-                        } // End of for loop.
-                        
-                        
-                        
-                        // Load up the current user's photos while moving to the main app.
-                        util.loadUsersPhotos(user: currentUser, continous: true, completion: {
-                            self.debug(message: "Successfully loaded the current user's photos!");
-                        });
-                        util.loadActivity();
-                        feedPage.postFeed.removeAll();
-                        feedPage.adapter.reloadData(completion: nil);
-                        self.goToApp();
-                        self.debug(message: "Signed In!");
-                    });
-
-                    
-                }
-            });
             
-        } else {
-            self.debug(message: "Invalid Credentials!");
-            self.statusLabel.textColor = UIColor.red;
-            self.statusLabel.isHidden = false;
-            self.statusLabel.text = "Invalid Credentials.";
+            Networking.loginUser(withEmail: self.emailField.text!, andPassword: self.passwordField.text!, success: {
+                
+                // Logging in message.
+                self.statusLabel.textColor = UIColor.green;
+                self.statusLabel.isHidden = false;
+                self.statusLabel.text = "Logging In!";
+
+                if let cUser = Networking.currentUser {
+                    // Load up the current user's photos while moving to the main app.
+                    util.loadUsersPhotos(user: cUser, continous: true, completion: nil);
+                    util.loadActivity();
+                    feedPage.postFeed.removeAll();
+                    feedPage.adapter.reloadData(completion: nil);
+                    self.goToApp();
+                }
+                
+            }, failure: {
+                self.statusLabel.textColor = UIColor.red;
+                self.statusLabel.isHidden = false;
+                self.statusLabel.text = "Email or password is incorrect.";
+            })
         }
     }
     

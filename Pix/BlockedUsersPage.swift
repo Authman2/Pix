@@ -144,7 +144,7 @@ class BlockedUsersPage: UIViewController, IGListAdapterDataSource {
     override func viewDidAppear(_ animated: Bool) {
         super.viewDidAppear(animated);
         
-        if let val = UserDefaults.standard.stringArray(forKey: "\(currentUser.uid)_blocked_users") {
+        if let val = UserDefaults.standard.stringArray(forKey: "\(Networking.currentUser!.uid)_blocked_users") {
             blockedUsernames = val;
         }
         
@@ -172,13 +172,14 @@ class BlockedUsersPage: UIViewController, IGListAdapterDataSource {
                 if self.textField.text == user!.username {
                     
                     // If not already added.
-                    if !currentUser.blockedUsers.containsUsername(username: user!.uid) {
+                    if !Networking.currentUser!.blockedUsers.containsUsername(username: user!.uid) {
                         
-                        currentUser.blockedUsers.append(user!.uid);
+                        Networking.currentUser!.blockedUsers.append(user!.uid);
                         blockedUsernames.append(user!.username);
-                        UserDefaults.standard.setValue(blockedUsernames, forKey: "\(currentUser.uid)_blocked_users");
+                        UserDefaults.standard.setValue(blockedUsernames, forKey: "\(Networking.currentUser!.uid)_blocked_users");
                         
-                        self.fireRef.child("Users").child(currentUser.uid).updateChildValues(currentUser.toDictionary() as! [AnyHashable : Any]);
+                        Networking.updateCurrentUserInFirebase();
+                        //self.fireRef.child("Users").child(Networking.currentUser!.uid).updateChildValues(Networking.currentUser!.toDictionary() as! [AnyHashable : Any]);
                         self.adapter.performUpdates(animated: true, completion: nil);
                         break;
                     }

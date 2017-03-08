@@ -8,6 +8,7 @@
 
 import UIKit
 import SnapKit
+import ChameleonFramework
 
 class CommentsCell: UICollectionViewCell {
     
@@ -23,8 +24,7 @@ class CommentsCell: UICollectionViewCell {
     var nameLabel: UILabel = {
         let a = UILabel();
         a.translatesAutoresizingMaskIntoConstraints = false;
-        a.textColor = navContr.navigationBar.tintColor;
-        a.backgroundColor = .white;
+        a.textColor = UIColor.flatWhite;
         a.numberOfLines = 0;
         a.font = UIFont(name: a.font.fontName, size: 12);
         
@@ -34,8 +34,7 @@ class CommentsCell: UICollectionViewCell {
     var commentLabel: UILabel = {
         let a = UILabel();
         a.translatesAutoresizingMaskIntoConstraints = false;
-        a.textColor = navContr.navigationBar.tintColor;
-        a.backgroundColor = .white;
+        a.textColor = UIColor.flatWhite;
         a.numberOfLines = 0;
         a.font = UIFont(name: a.font.fontName, size: 12);
         
@@ -50,16 +49,27 @@ class CommentsCell: UICollectionViewCell {
      *
      ********************************/
     
-    public func setup(string: String) {
-        /* Get all the data needed. */
-        self.commentString = string;
-        let comps = commentString.components(separatedBy: " ");
-        
-        
-        /* Put the right text on the labels. */
-        nameLabel.text = "\(comps[0])";
-        commentLabel.text = "\(comps[1])";
-        
+    public func setup(string: String?) {
+
+        if let s = string {
+            /* Get all the data needed. */
+            self.commentString = s;
+            let id = commentString.substring(i: 0, j: self.commentString.indexOf(string: " "));
+            let comment = commentString.substring(i: self.commentString.indexOf(string: " ")+1, j: self.commentString.length());
+            var name = "";
+            
+            /* Quickly get a user object. */
+            Networking.loadUserWithId(id: id, success: { (usr: User) in
+                name = "\(usr.firstName) \(usr.lastName)";
+                
+                /* Put the right text on the labels. */
+                self.nameLabel.text = "\(name)";
+                self.commentLabel.text = "\(comment)";
+                
+            }, failure: nil);
+            
+        }
+        backgroundColor = UIColor.flatGrayDark;
         
         /* Add the elements to the view. */
         addSubview(nameLabel);

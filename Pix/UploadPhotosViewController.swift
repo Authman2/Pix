@@ -110,22 +110,38 @@ class UploadPhotosViewController: UIViewController {
         post.id = randomName;
         post.flags = 0;
         
-        let storageRef = FIRStorageReference().child("\(currentUser.uid)/\(randomName).jpg");
-        let data = UIImageJPEGRepresentation(self.post.photo, 100) as NSData?;
-        
-        let _ = storageRef.put(data! as Data, metadata: nil) { (metaData, error) in
-            
-            if (error == nil) {
-                
-                self.debug(message: "Photo Uploaded!");
-                let postObj = self.post.toDictionary();
-                self.fireRef.child("Photos").child("\(currentUser.uid)").child("\(randomName)").setValue(postObj);
-                self.cancel();
-                
-            } else {
-                print(error.debugDescription);
+        Networking.saveImageToFirebase(img: self.post.photo, toUser: Networking.currentUser!, success: { 
+            let postObj = self.post.toDictionary();
+            if let cUser = Networking.currentUser {
+                Networking.saveObject(object: postObj, path: "Photos/\(cUser.uid)/\(randomName)", success: { 
+                    
+                }, failure: { (err: Error) in
+                    
+                })
+                //self.fireRef.child("Photos").child("\(cUser.uid)").child("\(randomName)").setValue(postObj);
             }
-        }
+        }, failure: {
+            
+        })
+        
+//        let storageRef = FIRStorageReference().child("\(Networking.currentUser!.uid)/\(randomName).jpg");
+//        let data = UIImageJPEGRepresentation(self.post.photo, 100) as NSData?;
+//        
+//        let _ = storageRef.put(data! as Data, metadata: nil) { (metaData, error) in
+//            
+//            if (error == nil) {
+//                
+//                self.debug(message: "Photo Uploaded!");
+//                let postObj = self.post.toDictionary();
+//                if let cUser = Networking.currentUser {
+//                    self.fireRef.child("Photos").child("\(cUser.uid)").child("\(randomName)").setValue(postObj);
+//                }
+//                self.cancel();
+//                
+//            } else {
+//                print(error.debugDescription);
+//            }
+//        }
         
     } // End of upload method.
     

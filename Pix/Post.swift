@@ -45,8 +45,8 @@ public class Post: NSObject, IGListDiffable {
     var flags: Int = 0;
     
     
-    /* All of the comments on the picture. */
-    var comments: [String]!;
+    /* All of the comments on the picture. In the form "userid commentstring" */
+    var comments: [String]?;
     
     
     
@@ -75,7 +75,7 @@ public class Post: NSObject, IGListDiffable {
                                              "likes" : likes,
                                              "is_profile_picture" : isProfilePicture,
                                              "flags" : flags,
-                                             "comments" : comments]);
+                                             "comments" : comments ?? []]);
         return dict;
     }
     

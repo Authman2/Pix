@@ -96,13 +96,14 @@ class UnblockUserPage: UIViewController {
     
     
     @objc func yesMethod() {
-        if currentUser.blockedUsers.containsUsername(username: uid!) {
-            currentUser.blockedUsers.removeItem(item: uid!);
+        if Networking.currentUser!.blockedUsers.containsUsername(username: uid!) {
+            Networking.currentUser!.blockedUsers.removeItem(item: uid!);
             blockedUsernames.removeItem(item: username!);
-            UserDefaults.standard.setValue(blockedUsernames, forKey: "\(currentUser.uid)_blocked_users");
-            
-            let fireRef = FIRDatabase.database().reference();
-            fireRef.child("Users").child(currentUser.uid).updateChildValues(currentUser.toDictionary() as! [AnyHashable : Any]);
+            UserDefaults.standard.setValue(blockedUsernames, forKey: "\(Networking.currentUser!.uid)_blocked_users");
+
+            Networking.updateCurrentUserInFirebase();
+//            let fireRef = FIRDatabase.database().reference();
+//            fireRef.child("Users").child(Networking.currentUser!.uid).updateChildValues(Networking.currentUser!.toDictionary() as! [AnyHashable : Any]);
             blockedPage?.adapter.performUpdates(animated: true, completion: nil);
         }
         noMethod();

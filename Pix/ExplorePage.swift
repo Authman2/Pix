@@ -168,7 +168,7 @@ class ExplorePage: UITableViewController, UISearchResultsUpdating {
             // Tell the profile page which user to use.
             otherProfilePage.useUser = listOfUsers[indexPath.row];
             
-            if(currentUser.following.containsUsername(username: listOfUsers[indexPath.row].uid)) {
+            if(Networking.currentUser!.following.containsUsername(username: listOfUsers[indexPath.row].uid)) {
                 otherProfilePage.followButton.setTitle("Unfollow", for: .normal);
             } else {
                 otherProfilePage.followButton.setTitle("Follow", for: .normal);
@@ -178,7 +178,7 @@ class ExplorePage: UITableViewController, UISearchResultsUpdating {
             // Load all of that user's photos.
             
             /* CHECK IF PRIVATE ACCOUNT. */
-            if otherProfilePage.useUser.isPrivate == false || (otherProfilePage.useUser.isPrivate == true && currentUser.following.containsUsername(username: otherProfilePage.useUser.uid)) {
+            if otherProfilePage.useUser.isPrivate == false || (otherProfilePage.useUser.isPrivate == true && Networking.currentUser!.following.containsUsername(username: otherProfilePage.useUser.uid)) {
                 
                 util.loadUsersPhotos(user: otherProfilePage.useUser, continous: false, completion: {
                     otherProfilePage.adapter.reloadData(completion: { (b: Bool) in

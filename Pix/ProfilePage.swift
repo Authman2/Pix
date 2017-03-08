@@ -229,23 +229,25 @@ class ProfilePage: ProfileDisplayPage, IGListAdapterDataSource, UIImagePickerCon
     
     
     func reloadLabels() {
-        nameLabel.text = "\(currentUser.firstName) \(currentUser.lastName)";
-        followersLabel.text = "Followers: \(currentUser.followers.count)";
-        followingLabel.text = "Following: \(currentUser.following.count)";
-        profilePicture.image = currentUser.profilepic;
-        
-        privateLabel.text = "\(currentUser.username) is private. Send a follow request to see their photos.";
-        
-        privateLabel.isHidden = true;
-        collectionView.isHidden = false;
-        profilePicture.image = currentUser.profilepic;
+        if let cUser = Networking.currentUser {
+            nameLabel.text = "\(cUser.firstName) \(cUser.lastName)";
+            followersLabel.text = "Followers: \(cUser.followers.count)";
+            followingLabel.text = "Following: \(cUser.following.count)";
+            profilePicture.image = cUser.profilepic;
+            
+            privateLabel.text = "\(cUser.username) is private. Send a follow request to see their photos.";
+            
+            privateLabel.isHidden = true;
+            collectionView.isHidden = false;
+            profilePicture.image = cUser.profilepic;
+        }
     }
     
     
     @objc func logout() {
         do {
             try FIRAuth.auth()?.signOut();
-            currentUser = nil;
+            Networking.currentUser = nil;
             feedPage.followingUsers.removeAll();
             feedPage.postFeed.removeAll();
             explorePage.listOfUsers.removeAll();
@@ -300,12 +302,12 @@ class ProfilePage: ProfileDisplayPage, IGListAdapterDataSource, UIImagePickerCon
                 
             // Set the picture on the image view and also on the actual user object.
             profilePicture.image = photo;
-            let id = currentUser.profilePicName;
-            currentUser.profilepic = photo;
+            let id = Networking.currentUser!.profilePicName;
+            Networking.currentUser!.profilepic = photo;
             
             
             // Delete the old picture from firebase, and replace it with the new one, but keep the same id.
-            let storageRef = FIRStorageReference().child("\(currentUser.uid)/\(id!).jpg");
+            let storageRef = FIRStorageReference().child("\(Networking.currentUser!.uid)/\(id!).jpg");
             storageRef.delete { error in
                 // If there's an error.
                 if let error = error {
@@ -318,10 +320,16 @@ class ProfilePage: ProfileDisplayPage, IGListAdapterDataSource, UIImagePickerCon
                         
                         if (error == nil) {
                             
-                            let post = Post(photo: photo, caption: "", Uploader: currentUser, ID: id!);
+                            let post = Post(photo: photo, caption: "", Uploader: Networking.currentUser!, ID: id!);
                             post.isProfilePicture = true;
                             let postObj = post.toDictionary();
-                            self.fireRef.child("Photos").child("\(currentUser.uid)").child("\(id!)").setValue(postObj);
+                            Networking.saveObject(object: postObj, path: "Photos/\(Networking.currentUser!.uid)/\(id!)", success: { 
+                                
+                            }, failure: { (err: Error) in
+                                
+                            });
+                            
+//                            self.fireRef.child("Photos").child("\(Networking.currentUser!.uid)").child("\(id!)").setValue(postObj);
                             self.debug(message: "Old profile picture was removed; replace with new one.");
                             
                         } else {
@@ -363,7 +371,11 @@ class ProfilePage: ProfileDisplayPage, IGListAdapterDataSource, UIImagePickerCon
     
     
     func objects(for listAdapter: IGListAdapter) -> [IGListDiffable] {
-        return currentUser.posts;
+        if let cUser = Networking.currentUser {
+            return cUser.posts;
+        } else {
+            return [];
+        }
     }
     
     func listAdapter(_ listAdapter: IGListAdapter, sectionControllerFor object: Any) -> IGListSectionController {

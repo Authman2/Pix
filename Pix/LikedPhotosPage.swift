@@ -77,7 +77,7 @@ class LikedPhotosPage: ProfileDisplayPage, IGListAdapterDataSource {
         options.fixedSectionHeader = false;
         collectionView.addPullRefresh(options: options, refreshCompletion: { (Void) in
             
-            if !currentUser.likedPhotos.isEmpty {
+            if !Networking.currentUser!.likedPhotos.isEmpty {
                 self.loadPhotosForEachUser(completion: {
                     self.adapter.performUpdates(animated: true, completion: { (b: Bool) in
                         self.collectionView.stopPullRefreshEver();
@@ -116,7 +116,7 @@ class LikedPhotosPage: ProfileDisplayPage, IGListAdapterDataSource {
     public func loadPhotosForEachUser(completion: (()->Void)?) {
         
         // Go through each element in the liked photos.
-        for user_post_pair in currentUser.likedPhotos {
+        for user_post_pair in Networking.currentUser!.likedPhotos {
             
             // Separate it into the user id and the photo id.
             let components = user_post_pair.components(separatedBy: " ");
@@ -149,8 +149,8 @@ class LikedPhotosPage: ProfileDisplayPage, IGListAdapterDataSource {
                     }
                 }, error: {
                     // Remove the photos from liked posts if it no longer exists and update the user in firebase.
-                    currentUser.likedPhotos.removeItem(item: user_post_pair);
-                    fireRef.child("Users").child(currentUser.uid).updateChildValues(currentUser.toDictionary() as! [AnyHashable : AnyObject]);
+                    Networking.currentUser!.likedPhotos.removeItem(item: user_post_pair);
+                    fireRef.child("Users").child(Networking.currentUser!.uid).updateChildValues(Networking.currentUser!.toDictionary() as! [AnyHashable : AnyObject]);
                     
                     if let comp = completion {
                         comp();

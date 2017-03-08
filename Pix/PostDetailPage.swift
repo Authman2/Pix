@@ -248,42 +248,44 @@ class PostDetailPage: UIViewController, UIScrollViewDelegate {
             return pres;
         }();
         
-        let commVC = CommentsPage();
-        commVC.post = self.post;
+        let commVC = CommentsPage(post: self.post);
         customPresentViewController(presenter, viewController: commVC, animated: true, completion: nil);
     }
     
     
     @objc func likePhoto() {
         
-        // If the id for this photo is not already in the current user's list of liked photos, then add it and update firebase.
-        // Otherwise, unlike it.
-        if !currentUser.likedPhotos.containsUsername(username: "\(self.post.uploader.uid) \(self.post.id!)") {
-            
-            currentUser.likedPhotos.append("\(self.post.uploader.uid) \(self.post.id!)");
-            post.likes += 1;
-            fireRef.child("Users").child(currentUser.uid).setValue(currentUser.toDictionary());
-            fireRef.child("Photos").child(post.uploader.uid).child(post.id!).setValue(post.toDictionary());
-            
-            // Send notification.
-            if(self.post.uploader.notification_ID != currentUser.notification_ID) {
-                OneSignal.postNotification(["contents": ["en": "\(currentUser.username) liked your photo!"], "include_player_ids": ["\(self.post.uploader.notification_ID)"]], onSuccess: { (dict: [AnyHashable : Any]?) in
-                    
-                    self.debug(message: "Follow notification was sent!");
-                    
-                }, onFailure: { (error: Error?) in
-                    self.debug(message: "There was an error sending the notification.");
-                });
-            }
-            
-        } else {
-            
-            if currentUser.likedPhotos.count > 0 {
-                currentUser.likedPhotos.removeItem(item: self.post.id!);
-                post.likes -= 1;
-                fireRef.child("Users").child(currentUser.uid).setValue(currentUser.toDictionary());
+        if let cUser = Networking.currentUser {
+            // If the id for this photo is not already in the current user's list of liked photos, then add it and update firebase.
+            // Otherwise, unlike it.
+            if !cUser.likedPhotos.containsUsername(username: "\(self.post.uploader.uid) \(self.post.id!)") {
+                
+                cUser.likedPhotos.append("\(self.post!.uploader!.uid) \(self.post!.id!)");
+                post.likes += 1;
+                
+                Networking.updateCurrentUserInFirebase();
                 fireRef.child("Photos").child(post.uploader.uid).child(post.id!).setValue(post.toDictionary());
                 
+                // Send notification.
+                if(self.post.uploader.notification_ID != cUser.notification_ID) {
+                    OneSignal.postNotification(["contents": ["en": "\(cUser.username) liked your photo!"], "include_player_ids": ["\(self.post.uploader.notification_ID)"]], onSuccess: { (dict: [AnyHashable : Any]?) in
+                        
+                        self.debug(message: "Follow notification was sent!");
+                        
+                    }, onFailure: { (error: Error?) in
+                        self.debug(message: "There was an error sending the notification.");
+                    });
+                }
+                
+            } else {
+                
+                if cUser.likedPhotos.count > 0 {
+                    cUser.likedPhotos.removeItem(item: self.post.id!);
+                    post.likes -= 1;
+                    Networking.updateCurrentUserInFirebase();
+                    fireRef.child("Photos").child(post.uploader.uid).child(post.id!).setValue(post.toDictionary());
+                    
+                }
             }
         }
         

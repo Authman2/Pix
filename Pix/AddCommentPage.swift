@@ -12,6 +12,7 @@ import SnapKit
 import Neon
 import SnapKit
 import Firebase
+import Presentr
 
 
 class AddCommentPage: UIViewController {
@@ -25,6 +26,8 @@ class AddCommentPage: UIViewController {
     /* The post object. */
     var post: Post!;
     
+    /* The comments page. */
+    var commentsPage: CommentsPage!;
     
     /* Firebase reference. */
     var fireRef: FIRDatabaseReference = FIRDatabase.database().reference();
@@ -90,6 +93,9 @@ class AddCommentPage: UIViewController {
     
     
     @objc func sendComment() {
-        
+        self.post.comments?.append("\(Networking.currentUser!.uid) \(textArea.text!)");
+        self.fireRef.child("Photos").child(self.post.uploader.uid).child(self.post.id).updateChildValues(self.post.toDictionary() as! [AnyHashable : Any]);
+        commentsPage.adapter.performUpdates(animated: true, completion: nil);
+        dismiss(animated: true, completion: nil);
     }
 }

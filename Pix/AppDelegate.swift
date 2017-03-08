@@ -36,9 +36,11 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
 
 
     func application(_ application: UIApplication, didFinishLaunchingWithOptions launchOptions: [UIApplicationLaunchOptionsKey: Any]?) -> Bool {
+        
+        FIRApp.configure();
+        
         // Keyboard managers
         IQKeyboardManager.sharedManager().enable = true;
-        
         
         // OneSignal notifications.
         //Add this line. Replace '5eb5a37e-b458-11e3-ac11-000c2940e62c' with your OneSignal App ID.
@@ -66,8 +68,6 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
         }
         application.registerForRemoteNotifications();
         
-        
-        FIRApp.configure();
         
         // Add observer for InstanceID token refresh callback.
         NotificationCenter.default.addObserver(self, selector: #selector(self.tokenRefreshNotification), name: .firInstanceIDTokenRefresh, object: nil)
@@ -296,7 +296,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                         interactionNeeded = true;
                     }
                     if (messageID as! String).contains("started following you") {
-                        currentUser.followers.append(usr.uid);
+                        Networking.currentUser!.followers.append(usr.uid);
                         interactionNeeded = false;
                     }
                     
@@ -305,7 +305,7 @@ class AppDelegate: UIResponder, UIApplicationDelegate, UNUserNotificationCenterD
                     activity.user = usr;
                     
                     notificationActivityLog.append(activity.toDictionary());
-                    UserDefaults.standard.setValue(notificationActivityLog, forKey: "\(currentUser.uid)_activity_log");
+                    UserDefaults.standard.setValue(notificationActivityLog, forKey: "\(Networking.currentUser!.uid)_activity_log");
                 }
                 
             }

@@ -151,16 +151,16 @@ class FeedCell: UICollectionViewCell {
         
         // If the id for this photo is not already in the current user's list of liked photos, then add it and update firebase.
         // Otherwise, unlike it.
-        if !currentUser.likedPhotos.containsUsername(username: "\(self.post.uploader.uid) \(self.post.id!)") {
+        if !Networking.currentUser!.likedPhotos.containsUsername(username: "\(self.post.uploader.uid) \(self.post.id!)") {
             
-            currentUser.likedPhotos.append("\(self.post.uploader.uid) \(self.post.id!)");
+            Networking.currentUser!.likedPhotos.append("\(self.post.uploader.uid) \(self.post.id!)");
             post.likes += 1;
-            fireRef.child("Users").child(currentUser.uid).updateChildValues(currentUser.toDictionary() as! [AnyHashable : Any]);
+            fireRef.child("Users").child(Networking.currentUser!.uid).updateChildValues(Networking.currentUser!.toDictionary() as! [AnyHashable : Any]);
             fireRef.child("Photos").child(post.uploader.uid).child(post.id!).updateChildValues(post.toDictionary() as! [AnyHashable : Any]);
             
             // Send notification.
-            if(self.post.uploader.notification_ID != currentUser.notification_ID) {
-                OneSignal.postNotification(["contents": ["en": "\(currentUser.username) liked your photo!"], "include_player_ids": ["\(self.post.uploader.notification_ID)"]], onSuccess: { (dict: [AnyHashable : Any]?) in
+            if(self.post.uploader.notification_ID != Networking.currentUser!.notification_ID) {
+                OneSignal.postNotification(["contents": ["en": "\(Networking.currentUser!.username) liked your photo!"], "include_player_ids": ["\(self.post.uploader.notification_ID)"]], onSuccess: { (dict: [AnyHashable : Any]?) in
                     
                     print("----------> Like notification was sent!");
                     
@@ -171,10 +171,10 @@ class FeedCell: UICollectionViewCell {
             
         } else {
             
-            if currentUser.likedPhotos.count > 0 {
-                currentUser.likedPhotos.removeItem(item: self.post.id!);
+            if Networking.currentUser!.likedPhotos.count > 0 {
+                Networking.currentUser!.likedPhotos.removeItem(item: self.post.id!);
                 post.likes -= 1;
-                fireRef.child("Users").child(currentUser.uid).updateChildValues(currentUser.toDictionary() as! [AnyHashable : Any]);
+                fireRef.child("Users").child(Networking.currentUser!.uid).updateChildValues(Networking.currentUser!.toDictionary() as! [AnyHashable : Any]);
                 fireRef.child("Photos").child(post.uploader.uid).child(post.id!).updateChildValues(post.toDictionary() as! [AnyHashable : Any]);
                 
             }

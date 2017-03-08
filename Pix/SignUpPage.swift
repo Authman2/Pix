@@ -193,7 +193,7 @@ class SignUpPage: UIViewController {
                     if ((self.usernameField.text?.length())! > 0) {
                         
                         signupButton.animateButtonClick();
-                     
+                        
                         fireRef.child("Users").observeSingleEvent(of: .value, with: { (snapshot: FIRDataSnapshot) in
                             
                             let userDictionary = snapshot.value as? [String : AnyObject] ?? [:];
@@ -260,56 +260,42 @@ class SignUpPage: UIViewController {
             user.profilePicName = "";
             user.profilePicName = user.randomName();
         }
+        user.profilepic = UIImage(named: "friends_icon@3x.png");
         
         usedIds.append(user.profilePicName);
         let _ = FIRDatabase.database().reference().child("UsedIDs").setValue(usedIds);
             
         // Authenticate the user.
-        FIRAuth.auth()?.createUser(withEmail: em, password: pass, completion: { (usr: FIRUser?, error: Error?) in
-            // No errors creating the user.
-            if error == nil {
-                
-                user.uid = usr!.uid;
-                self.fireRef.child("Users").child(user.uid).setValue(user.toDictionary());
-                self.debug(message: "User created!");
-                
-                // Upload an image for the user's profile picture.
-                self.uploadProfilePic(user: user, id: user.profilePicName!, profileImage: user.profilepic);
-                
-                self.dismiss(animated: true, completion: nil);
-                let _ = self.navigationController?.popViewController(animated: true);
-                
-                // Error.
-            } else {
-                print(error.debugDescription);
-            }
-        });
+        Networking.createUser(user: user, success: { 
+            
+            self.uploadProfilePic(user: user, id: user.profilePicName!, profileImage: user.profilepic);
+            self.dismiss(animated: true, completion: nil);
+            let _ = self.navigationController?.popViewController(animated: true);
+            
+            self.debug(message: "Created a new user!");
+        }, failure: {
+            self.debug(message: "There was a problem creating the user.");
+        })
     }
     
     
     
     func uploadProfilePic(user: User, id: String, profileImage: UIImage) {
-        let storageRef = FIRStorageReference().child("\(user.uid)/\(id).jpg");
-        let data = UIImageJPEGRepresentation(profileImage, 100) as NSData?;
-        
-        let _ = storageRef.put(data! as Data, metadata: nil) { (metaData, error) in
+        Networking.saveImageToFirebase(img: profileImage, toUser: user, success: { 
             
-            if (error == nil) {
+            // Create a post for the database.
+            let post = Post(photo: profileImage, caption: "", Uploader: user, ID: id);
+            post.isProfilePicture = true;
+            post.flags = 0;
+            Networking.saveObject(object: post.toDictionary(), path: "Photos/\(user.uid)/\(id)", success: {
                 
-                self.debug(message: "Profile Picture Uploaded!");
-                
-                // Create a post for the database.
-                let post = Post(photo: profileImage, caption: "", Uploader: user, ID: id);
-                post.isProfilePicture = true;
-                post.flags = 0;
-                
-                let postObj = post.toDictionary();
-                self.fireRef.child("Photos").child("\(user.uid)").child("\(id)").setValue(postObj);
-                
-            } else {
-                print(error.debugDescription);
-            }
-        }
+            }, failure: { (err: Error) in
+                self.debug(message: "Failed to save it to the database.");
+            });
+            
+        }, failure: {
+            self.debug(message: "Failed to upload it to storage.");
+        });
         
     } // End of upload method.
 

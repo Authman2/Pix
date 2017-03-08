@@ -129,7 +129,7 @@ class ActivityRequestCell: UICollectionViewCell {
             
             // Update the array.
             notificationActivityLog[insertIndex] = self.activity!.toDictionary();
-            UserDefaults.standard.setValue(notificationActivityLog, forKey: "\(currentUser.uid)_activity_log");
+            UserDefaults.standard.setValue(notificationActivityLog, forKey: "\(Networking.currentUser!.uid)_activity_log");
         }
         
     } // End of method.
@@ -150,7 +150,7 @@ class ActivityRequestCell: UICollectionViewCell {
             
             // Update the array.
             notificationActivityLog[insertIndex] = self.activity!.toDictionary();
-            UserDefaults.standard.setValue(notificationActivityLog, forKey: "\(currentUser.uid)_activity_log");
+            UserDefaults.standard.setValue(notificationActivityLog, forKey: "\(Networking.currentUser!.uid)_activity_log");
         }
     }
 

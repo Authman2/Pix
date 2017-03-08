@@ -8,6 +8,9 @@
 
 /* Begin PBXBuildFile section */
 		224E1014B1A0AB4DE75C4631 /* Pods_Pix.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5FD7E68563DAAF1D98D03AAB /* Pods_Pix.framework */; };
+		5A09C0F71E637E6E00F43399 /* Networking.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A09C0F41E637E6E00F43399 /* Networking.swift */; };
+		5A09C0F81E637E6E00F43399 /* NetworkingUsers.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A09C0F51E637E6E00F43399 /* NetworkingUsers.swift */; };
+		5A09C0F91E637E6E00F43399 /* NetworkingStorage.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A09C0F61E637E6E00F43399 /* NetworkingStorage.swift */; };
 		5A1BA7621E21BF5100666EC9 /* FeedSectionController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A1BA7611E21BF5100666EC9 /* FeedSectionController.swift */; };
 		5A1BA7641E21C20800666EC9 /* EmptyViews.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A1BA7631E21C20800666EC9 /* EmptyViews.swift */; };
 		5A28BE4A1E1459C900DD0396 /* CircleImageView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 5A28BE491E1459C900DD0396 /* CircleImageView.swift */; };
@@ -60,6 +63,9 @@
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		5A09C0F41E637E6E00F43399 /* Networking.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = Networking.swift; sourceTree = "<group>"; };
+		5A09C0F51E637E6E00F43399 /* NetworkingUsers.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkingUsers.swift; sourceTree = "<group>"; };
+		5A09C0F61E637E6E00F43399 /* NetworkingStorage.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = NetworkingStorage.swift; sourceTree = "<group>"; };
 		5A1BA7611E21BF5100666EC9 /* FeedSectionController.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = FeedSectionController.swift; sourceTree = "<group>"; };
 		5A1BA7631E21C20800666EC9 /* EmptyViews.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = EmptyViews.swift; sourceTree = "<group>"; };
 		5A28BE491E1459C900DD0396 /* CircleImageView.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = CircleImageView.swift; sourceTree = "<group>"; };
@@ -129,6 +135,16 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		5A09C0F31E637E6600F43399 /* Networking */ = {
+			isa = PBXGroup;
+			children = (
+				5A09C0F41E637E6E00F43399 /* Networking.swift */,
+				5A09C0F51E637E6E00F43399 /* NetworkingUsers.swift */,
+				5A09C0F61E637E6E00F43399 /* NetworkingStorage.swift */,
+			);
+			name = Networking;
+			sourceTree = "<group>";
+		};
 		5A44AB441E1C7A910029A480 /* Activity */ = {
 			isa = PBXGroup;
 			children = (
@@ -275,6 +291,7 @@
 		5AFF276D1DDB6FE6001CBF95 /* Extras */ = {
 			isa = PBXGroup;
 			children = (
+				5A09C0F31E637E6600F43399 /* Networking */,
 				5AFF276E1DDB6FF7001CBF95 /* Ext.swift */,
 				5A28BE491E1459C900DD0396 /* CircleImageView.swift */,
 				5A1BA7631E21C20800666EC9 /* EmptyViews.swift */,
@@ -445,16 +462,19 @@
 				5AD645691E0DFEF800E5929C /* UploadPhotosViewController.swift in Sources */,
 				5AA6D0371E2BF034002CE674 /* OtherProfilePage.swift in Sources */,
 				5AF109011E26A4800030D4DF /* BlockedUserSectionController.swift in Sources */,
+				5A09C0F71E637E6E00F43399 /* Networking.swift in Sources */,
 				5AD6455F1E0D819B00E5929C /* ProfilePage.swift in Sources */,
 				5A44AB461E1C7ACB0029A480 /* ActivityPage.swift in Sources */,
 				5AF33C681E2A9C7A00BA6B94 /* Utilities.swift in Sources */,
 				5A3121171E24562500B38C45 /* TermsOfServicePage.swift in Sources */,
 				5A735C021E31BCC500CBB349 /* LikedPhotosPage.swift in Sources */,
 				5AD645621E0DB5A400E5929C /* ProfilePageCell.swift in Sources */,
+				5A09C0F81E637E6E00F43399 /* NetworkingUsers.swift in Sources */,
 				5ABBC9061E1083E70056CE16 /* ExploreCell.swift in Sources */,
 				5AC84A9F1E22E3100095288D /* ActivitySectionController.swift in Sources */,
 				5AC9815C1E56431800C21C2A /* CommentsPage.swift in Sources */,
 				5A1BA7621E21BF5100666EC9 /* FeedSectionController.swift in Sources */,
+				5A09C0F91E637E6E00F43399 /* NetworkingStorage.swift in Sources */,
 				5AC981631E566B8100C21C2A /* AddCommentPage.swift in Sources */,
 				5A28BE4A1E1459C900DD0396 /* CircleImageView.swift in Sources */,
 				5AF109031E26A48B0030D4DF /* BlockedUserCell.swift in Sources */,

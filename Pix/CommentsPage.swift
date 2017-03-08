@@ -53,7 +53,6 @@ class CommentsPage: UIViewController, IGListAdapterDataSource {
         p.backgroundColor = UIColor.white;
         p.textColor = .black;
         p.textAlignment = .center;
-        p.isSecureTextEntry = true;
         p.autocorrectionType = .no;
         p.autocapitalizationType = .none;
         
@@ -74,10 +73,10 @@ class CommentsPage: UIViewController, IGListAdapterDataSource {
      *
      ********************************/
     
-    override func viewDidLoad() {
-        super.viewDidLoad();
+    init(post: Post) {
+        super.init(nibName: nil, bundle: nil);
+        self.post = post;
         self.setupCollectionView();
-        
         
         /* Add to the view and layout. */
         view.addSubview(addCommentField);
@@ -101,6 +100,10 @@ class CommentsPage: UIViewController, IGListAdapterDataSource {
         addCommentField.addTarget(self, action: #selector(openAddCommentBox), for: .editingDidBegin);
     }
     
+    required init?(coder aDecoder: NSCoder) {
+        fatalError("init(coder:) has not been implemented")
+    }
+    
     func setupCollectionView() {
         collectionView.register(CommentsCell.self, forCellWithReuseIdentifier: "Cell");
         collectionView.backgroundColor = .flatGray;
@@ -119,6 +122,7 @@ class CommentsPage: UIViewController, IGListAdapterDataSource {
             return pres;
         }();
         let addVC = AddCommentPage();
+        addVC.commentsPage = self;
         addVC.post = self.post;
         
         customPresentViewController(pres, viewController: addVC, animated: true, completion: nil);
@@ -135,7 +139,7 @@ class CommentsPage: UIViewController, IGListAdapterDataSource {
      ********************************/
     
     func objects(for listAdapter: IGListAdapter) -> [IGListDiffable] {
-        return self.post.comments as [IGListDiffable];
+        return self.post.comments! as [IGListDiffable];
     }
     
     func listAdapter(_ listAdapter: IGListAdapter, sectionControllerFor object: Any) -> IGListSectionController {

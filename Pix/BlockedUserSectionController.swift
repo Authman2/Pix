@@ -56,7 +56,9 @@ public class BlockedUserSectionController: IGListSectionController, IGListSectio
         
         let detailView = UnblockUserPage();
         detailView.username = username;
-        detailView.uid = currentUser.blockedUsers[index];
+        if let cUser = Networking.currentUser {
+            detailView.uid = cUser.blockedUsers[index];
+        }
         detailView.blockedPage = vc as! BlockedUsersPage?;
         
         

@@ -96,7 +96,9 @@ class ActivityPage: UIViewController, IGListAdapterDataSource {
     @objc func clearActivity() {
         activities.removeAll();
         notificationActivityLog.removeAll();
-        UserDefaults.standard.setValue(notificationActivityLog, forKey: "\(currentUser.uid)_activity_log");
+        if let cUser = Networking.currentUser {
+            UserDefaults.standard.setValue(notificationActivityLog, forKey: "\(cUser.uid)_activity_log");
+        }
         self.adapter.performUpdates(animated: true, completion: nil);
     }
     

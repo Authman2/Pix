@@ -246,7 +246,7 @@ class OtherProfilePage: ProfileDisplayPage, IGListAdapterDataSource, UIImagePick
         profilePicture.image = useUser.profilepic;
         
         privateLabel.text = "\(useUser.username) is private. Send a follow request to see their photos.";
-        if useUser.isPrivate == false || (useUser.isPrivate == true && currentUser.following.containsUsername(username: useUser.uid)) {
+        if useUser.isPrivate == false || (useUser.isPrivate == true && Networking.currentUser!.following.containsUsername(username: useUser.uid)) {
             privateLabel.isHidden = true;
             collectionView.isHidden = false;
         } else {
@@ -257,7 +257,7 @@ class OtherProfilePage: ProfileDisplayPage, IGListAdapterDataSource, UIImagePick
         
         // Blocked users.
         // You cannot follow/unfollow or see the photos of users who you blocked.
-        if currentUser.blockedUsers.containsUsername(username: useUser.uid) || useUser.blockedUsers.containsUsername(username: currentUser.uid) {
+        if Networking.currentUser!.blockedUsers.containsUsername(username: useUser.uid) || useUser.blockedUsers.containsUsername(username: Networking.currentUser!.uid) {
             
             collectionView.isHidden = true;
             followButton.isHidden = true;
@@ -298,21 +298,25 @@ class OtherProfilePage: ProfileDisplayPage, IGListAdapterDataSource, UIImagePick
         // Unfollow
         if(self.followButton.titleLabel?.text == "Unfollow") {
             
-            // Set the values of the objects.
-            if currentUser.following.containsUsername(username: useUser.uid) {
-                currentUser.following.removeItem(item: useUser.uid);
+            if let cUser = Networking.currentUser {
+                // Set the values of the objects.
+                if cUser.following.containsUsername(username: useUser.uid) {
+                    cUser.following.removeItem(item: useUser.uid);
+                }
+                if useUser.followers.containsUsername(username: cUser.uid) {
+                    useUser.followers.removeItem(item: cUser.uid);
+                }
+                
+                // Update the button.
+                self.followButton.setTitle("Follow", for: .normal);
+                
+                // Update both users in firebase.
+                Networking.updateUserInFirebase(user: useUser);
+                Networking.updateCurrentUserInFirebase();
+                
+//                fireRef.child("Users").child(cUser.uid).setValue(cUser.toDictionary());
+//                fireRef.child("Users").child(useUser.uid).setValue(useUser.toDictionary());
             }
-            if useUser.followers.containsUsername(username: currentUser.uid) {
-                useUser.followers.removeItem(item: currentUser.uid);
-            }
-            
-            // Update the button.
-            self.followButton.setTitle("Follow", for: .normal);
-            
-            // Update both users in firebase.
-            fireRef.child("Users").child(currentUser.uid).setValue(currentUser.toDictionary());
-            fireRef.child("Users").child(useUser.uid).setValue(useUser.toDictionary());
-            
             //feedPage.loadPhotos();
             
             
@@ -332,8 +336,8 @@ class OtherProfilePage: ProfileDisplayPage, IGListAdapterDataSource, UIImagePick
                     self.followButton.setTitle("Requested", for: .normal);
                     
                     // Send a follow request.
-                    if(useUser.notification_ID != currentUser.notification_ID) {
-                        OneSignal.postNotification(["contents": ["en": "\(currentUser.username) wants to follow you!"], "include_player_ids": ["\(useUser.notification_ID)"]], onSuccess: { (dict: [AnyHashable : Any]?) in
+                    if(useUser.notification_ID != Networking.currentUser!.notification_ID) {
+                        OneSignal.postNotification(["contents": ["en": "\(Networking.currentUser!.username) wants to follow you!"], "include_player_ids": ["\(useUser.notification_ID)"]], onSuccess: { (dict: [AnyHashable : Any]?) in
                             
                             self.debug(message: "Follow request notification was sent!");
                             
@@ -354,51 +358,56 @@ class OtherProfilePage: ProfileDisplayPage, IGListAdapterDataSource, UIImagePick
     
     
     public func acceptFollowRequest(user: User, followDirection: followDirection) {
-        // Make sure it is not the same user.
-        if user !== currentUser || user.uid != currentUser.uid {
-            
-            // Set the values of the objects.
-            if followDirection == .toFrom {
-                if(!currentUser.followers.containsUsername(username: user.uid)) {
-                    currentUser.followers.append(user.uid);
+        if let cUser = Networking.currentUser {
+            // Make sure it is not the same user.
+            if user !== cUser || user.uid != cUser.uid {
+                
+                // Set the values of the objects.
+                if followDirection == .toFrom {
+                    if(!cUser.followers.containsUsername(username: user.uid)) {
+                        cUser.followers.append(user.uid);
+                    }
+                    if(!user.following.containsUsername(username: cUser.uid)) {
+                        user.following.append(cUser.uid);
+                    }
+                } else {
+                    if(!cUser.following.containsUsername(username: user.uid)) {
+                        cUser.following.append(user.uid);
+                    }
+                    if(!user.followers.containsUsername(username: cUser.uid)) {
+                        user.followers.append(cUser.uid);
+                    }
                 }
-                if(!user.following.containsUsername(username: currentUser.uid)) {
-                    user.following.append(currentUser.uid);
+                
+                
+                // Update the button.
+                self.followButton.setTitle("Unfollow", for: .normal);
+                
+                // Update both users in firebase.
+                Networking.updateUserInFirebase(user: useUser);
+                Networking.updateCurrentUserInFirebase();
+                
+//                fireRef.child("Users").child(cUser.uid).setValue(cUser.toDictionary());
+//                fireRef.child("Users").child(user.uid).setValue(user.toDictionary());
+                
+                
+                // Update the current user object.
+                //util.reloadCurrentUser();
+                
+                
+                // Send notification.
+                if(user.notification_ID != cUser.notification_ID) {
+                    OneSignal.postNotification(["contents": ["en": "\(cUser.username) started following you!"], "include_player_ids": ["\(user.notification_ID)"]], onSuccess: { (dict: [AnyHashable : Any]?) in
+                        
+                        self.debug(message: "Follow notification was sent!");
+                        
+                    }, onFailure: { (error: Error?) in
+                        self.debug(message: "There was an error sending the notification.");
+                    })
                 }
-            } else {
-                if(!currentUser.following.containsUsername(username: user.uid)) {
-                    currentUser.following.append(user.uid);
-                }
-                if(!user.followers.containsUsername(username: currentUser.uid)) {
-                    user.followers.append(currentUser.uid);
-                }
+                
+                self.debug(message: "Follow request accepted!");
             }
-            
-            
-            // Update the button.
-            self.followButton.setTitle("Unfollow", for: .normal);
-            
-            // Update both users in firebase.
-            fireRef.child("Users").child(currentUser.uid).setValue(currentUser.toDictionary());
-            fireRef.child("Users").child(user.uid).setValue(user.toDictionary());
-            
-            
-            // Update the current user object.
-            //util.reloadCurrentUser();
-            
-            
-            // Send notification.
-            if(user.notification_ID != currentUser.notification_ID) {
-                OneSignal.postNotification(["contents": ["en": "\(currentUser.username) started following you!"], "include_player_ids": ["\(user.notification_ID)"]], onSuccess: { (dict: [AnyHashable : Any]?) in
-                    
-                    self.debug(message: "Follow notification was sent!");
-                    
-                }, onFailure: { (error: Error?) in
-                    self.debug(message: "There was an error sending the notification.");
-                })
-            }
-            
-            self.debug(message: "Follow request accepted!");
         }
     }
     

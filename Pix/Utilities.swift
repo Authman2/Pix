@@ -427,7 +427,7 @@ class Utilities: NSObject {
         //        UserDefaults.standard.removeObject(forKey: "\(currentUser.uid)_activity_log");
         
         // Load up all of the current user's activity.
-        if let defVal = UserDefaults.standard.array(forKey: "\(currentUser.uid)_activity_log") {
+        if let defVal = UserDefaults.standard.array(forKey: "\(Networking.currentUser!.uid)_activity_log") {
             notificationActivityLog = defVal as! [NSDictionary];
         }
         
@@ -437,13 +437,18 @@ class Utilities: NSObject {
 
     public func reloadCurrentUser() {
         // Search in the database for the user.
-        self.fireRef.child("Users").child(currentUser.uid).observeSingleEvent(of: .value, with: { (snapshot) in
+        Networking.refreshCurrentUser(success: { (usr: User) in
+            Networking.currentUser = usr;
+        }, failure: {
             
-            let value = snapshot.value as? NSDictionary ?? [:];
-            
-            let usr = value.toUser();
-            currentUser = usr;
         });
+//        self.fireRef.child("Users").child(currentUser.uid).observeSingleEvent(of: .value, with: { (snapshot) in
+//            
+//            let value = snapshot.value as? NSDictionary ?? [:];
+//            
+//            let usr = value.toUser();
+//            currentUser = usr;
+//        });
     }
 
 }
