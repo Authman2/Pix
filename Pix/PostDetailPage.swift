@@ -130,7 +130,6 @@ class PostDetailPage: UIViewController, UIScrollViewDelegate {
         scrollView.alwaysBounceVertical = true;
         scrollView.alwaysBounceHorizontal = false;
         imageView.frame = scrollView.frame;
-        scrollView.contentSize = imageView.frame.size;
         scrollView.delegate = self;
         
         
@@ -140,6 +139,7 @@ class PostDetailPage: UIViewController, UIScrollViewDelegate {
         likesLabel.text = "Likes: \(post.likes)";
         uploaderLabel.text = "\(post.uploader.firstName) \(post.uploader.lastName)";
         
+        scrollView.contentSize = CGSize(width: view.width, height: view.height * 1.2);
         
         /* Layout the components. */
         scrollView.addSubview(back);
@@ -155,7 +155,7 @@ class PostDetailPage: UIViewController, UIScrollViewDelegate {
         /* Layout with Snapkit */
         scrollView.snp.makeConstraints { (maker: ConstraintMaker) in
             maker.top.equalTo(view.snp.top);
-            maker.height.equalTo(1000);
+            maker.bottom.equalTo(view.snp.bottom);
             maker.left.equalTo(view.snp.left);
             maker.right.equalTo(view.snp.right);
         }
